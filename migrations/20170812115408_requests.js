@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
     table.integer('time_estimate').notNullable().defaultTo(1);
     table.text('time_window').notNullable();
     table.boolean('completed').notNullable().defaultTo(false);
+    table.timestamps(true, true);
     table.integer('user_id')
       .notNullable()
       .references('id')

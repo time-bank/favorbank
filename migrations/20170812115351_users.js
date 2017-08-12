@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.string('first_name').notNullable().defaultTo('');
     table.string('last_name').notNullable().defaultTo('');
+    table.string('balance').notNullable().defaultTo(0);
     table.string('telephone').notNullable();
     table.string('email').notNullable().unique();
     table.enu('preferred_contact', ['phone', 'text', 'email']).notNullable.defaultTo('phone');
