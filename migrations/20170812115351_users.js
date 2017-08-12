@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
     table.string('telephone').notNullable();
     table.string('email').notNullable().unique();
     table.enu('preferred_contact', ['phone', 'text', 'email']).notNullable.defaultTo('phone');
+    table.specificType('hashed_password', 'char(60)').notNullable();
     table.timestamps(true, true)
   })
 };
