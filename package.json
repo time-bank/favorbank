@@ -1,11 +1,12 @@
 {
   "name": "favorbank",
   "version": "1.0.0",
-  "description": "Mobile-first app to ask and sign up for favors among your friends.",
+  "description": "Mobile-first app to call in and sign up for favors among your friends.",
   "main": "knex.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "knex": "knex"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/time-bank/favorbank/issues"
   },
-  "homepage": "https://github.com/time-bank/favorbank#readme"
+  "homepage": "https://github.com/time-bank/favorbank#readme",
+  "dependencies": {
+    "knex": "^0.13.0",
+    "pg": "^7.1.0"
+  }
 }
