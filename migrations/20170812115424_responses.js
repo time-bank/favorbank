@@ -3,7 +3,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('responses', (table) => {
     table.increments();
-    table.enu('response_status', ['pending', 'approved', 'rejected'].notNullable().defaultTo('pending'));
+    table.enu('response_status', ['pending', 'approved', 'rejected']).notNullable().defaultTo('pending');
     table.timestamps(true, true);
     table.integer('user_id')
       .notNullable()
