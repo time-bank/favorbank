@@ -1,0 +1,21 @@
+{
+  "name": "favorbank",
+  "version": "1.0.0",
+  "description": "Mobile-first app to ask and sign up for favors among your friends.",
+  "main": "knex.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/time-bank/favorbank.git"
+  },
+  "keywords": [],
+  "author": "Heather Arvidson <heather.arvidson@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/time-bank/favorbank/issues"
+  },
+  "homepage": "https://github.com/time-bank/favorbank#readme"
+}
