@@ -6,10 +6,10 @@ exports.up = function(knex, Promise) {
     table.string('first_name').notNullable().defaultTo('');
     table.string('last_name').notNullable().defaultTo('');
     table.string('balance').notNullable().defaultTo(0);
-    table.string('telephone').notNullable();
+    table.string('tel').notNullable();
     table.string('email').notNullable().unique();
-    table.enu('preferred_contact', ['phone', 'text', 'email']).notNullable().defaultTo('phone');
-    table.specificType('hashed_password', 'char(60)').notNullable();
+    table.enu('preferred_contact', ['tel', 'text', 'email']).notNullable().defaultTo('tel');
+    table.specificType('hashed_password', 'char(64)').notNullable();
     table.timestamps(true, true)
   })
 };
