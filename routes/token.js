@@ -18,10 +18,9 @@ router.post('/token', (req, res, next) => {
   .then((row) => {
     console.log(row);
     if (!row) {
-      return next(boom.create(400, 'Invalid email or password.')
+      return next(boom.create(400, 'Invalid EMAIL or password.')
     )};
     user = camelizeKeys(row);
-
     return bcrypt.compare(req.body.password, user.hashedPassword)
   })
     .then(() => {
@@ -44,6 +43,8 @@ router.post('/token', (req, res, next) => {
       return next(boom.create(500, 'Internal server error, /token POST.'))
     })
 });
+
+
 
 
 module.exports = router;
