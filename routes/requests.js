@@ -60,7 +60,8 @@ router.patch('/requests/:id', (req, res, next) => {
           title: req.body.title,
           description: req.body.description,
           time_estimate: req.body.timeEstimate,
-          time_window: req.body.timeWindow
+          time_window: req.body.timeWindow,
+          completed: req.body.completed
         }, '*')
     })
     .then((request) => {
@@ -71,7 +72,7 @@ router.patch('/requests/:id', (req, res, next) => {
     });
 });
 
-//get all active responses
+//get all active requests (i.e., requests that do not have an associated response in responses table)
 router.get('/requests', (req, res, next) => {
   console.log("hello route");
   knex('requests')

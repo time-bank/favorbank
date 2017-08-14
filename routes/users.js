@@ -42,7 +42,27 @@ router.post('/users', (req, res, next) => {
   });
 });
 
+//returns an array containing all requests for that user that have not yet been completed
+router.get('/users/:id/requests', (req, res, next) => {
+  const userId = Number.parseInt(req.params.id);
 
+  if (Number.isNaN(userId) || userId < 0) {
+    return next(boom.create(404, 'Not found.'));
+  }
+
+  knex('requests')
+    .where('user_id', userId)
+    .where('completed', false)
+    .then((rows) => {
+      if (!rows) {
+        return next(boom.create(400, 'Bad request.'));
+      }
+      res.send(rows);
+    })
+    .catch((err) => {
+      return next(boom.create(500, 'Internal server error.'));
+    });
+});
 
 
 module.exports = router;
