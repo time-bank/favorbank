@@ -9,6 +9,21 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
+router.get('/token', (req, res, next) => {
+  //check that user has cookieParser: returns T or F
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
+    if (err) {
+      return res.send({
+        result: false
+      });
+    }
+    return res.send({
+      result: true,
+      userId: payload.userId
+    });
+  });
+});
+
 router.post('/token', (req, res, next) => {
   let user;
 
