@@ -20,7 +20,16 @@
   },
   "homepage": "https://github.com/time-bank/favorbank#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
+    "boom": "^5.2.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
     "knex": "^0.13.0",
+    "morgan": "^1.8.2",
+    "path": "^0.12.7",
     "pg": "^7.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^4.0.0"
   }
 }

@@ -16,10 +16,8 @@ const responsesList = [
 ]
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
   return knex('responses').del()
     .then(function () {
-      // Inserts seed entries
       return knex('responses').insert(
         responsesList
       );
