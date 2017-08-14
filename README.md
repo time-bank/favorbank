@@ -1,2 +1,2 @@
 # favorbank
-Mobile-first app to call in and sign up for favors among your friends.
+Mobile-first app to call in and commit to favors among your friends.
