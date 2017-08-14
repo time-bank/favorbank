@@ -14,7 +14,7 @@ const authorize = function(req, res, next) {
       return next(boom.create(401, 'Unauthorized.'));
     }
     req.claim = payload;
-    next()
+    next();
   });
 };
 
@@ -40,10 +40,9 @@ router.post('/requests', (req, res, next) => {
 //add authorize once hooked up to frontend
 router.patch('/requests/:id', (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
-  console.log(favorId);
 
   if (Number.isNaN(favorId) || favorId < 0) {
-    return next(boom.create(404, 'Not found--weird id.'));
+    return next(boom.create(404, 'Not found.'));
   }
 
   knex('requests')
@@ -52,7 +51,7 @@ router.patch('/requests/:id', (req, res, next) => {
     .then((row) => {
       console.log(row);
       if (!row) {
-        return next(boom.Create(404, 'Not found--no req by this id.'));
+        return next(boom.Create(404, 'Not found.'));
       }
 
       return knex('requests')
@@ -69,8 +68,48 @@ router.patch('/requests/:id', (req, res, next) => {
     })
     .catch((err) => {
       return next(boom.create(500, 'Internal server error.'))
+    });
+});
+
+//get all active responses
+router.get('/requests', (req, res, next) => {
+  console.log("hello route");
+  knex('requests')
+    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'time_window', 'completed', 'requests.created_at', 'requests.updated_at')
+    .leftJoin('responses', 'requests.id', 'responses.request_id')
+    .whereNull('request_id')
+    .then((activeRequests) => {
+      console.log(activeRequests);
     })
-})
+    .catch((err) => {
+      return next(boom.create(500, 'Internal server error.'))
+    })
+});
+
+
+
+//find responses to a favor request with id '/:id'--if array.length === 0, then request is active, with no associated responses
+// router.get('/requests/:id/responses', (req, res, next) => {
+//   const favorId = Number.parseInt(req.params.id);
+//
+//   if (Number.isNaN(favorId) || favorId < 0) {
+//     return next(boom.create(404, 'Not found.'));
+//   }
+//
+//   knex('responses')
+//     .where('request_id', favorId)
+//     .first()
+//     .then((row) => {
+//       if (!row) {
+//         res.send('active');
+//       }
+//       res.send(row);
+//     })
+//     .catch((err) => {
+//       return next(boom.create(500, 'Internal server error.'));
+//     });
+// });
+
 
 
 

@@ -15,6 +15,7 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('requests')
       .onDelete('CASCADE')
+      .unique()
       .index()
   })
 };
