@@ -1,25 +1,41 @@
 /*overrides*/
 
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 100%;
+}
+
+/* collapsable content */
+.collapse-content-button-text a {
+  color: #ffab40;
+  margin-right: 24px;
+}
+
+.collapse-content-button-text {
+  padding-left: 0px;
+  -webkit-transition: color .3s ease;
+  transition: color .3s ease;
+  text-transform: uppercase;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+}
+
 /*avatar image stuff*/
 
-materialize.min.css:6
+
 .collection .collection-item.avatar:not(.circle-clipper)>.circle, .collection .collection-item.avatar :not(.circle-clipper)>.circle {
     position: absolute;
     width: 42px;
     height: 42px;
-    overflow: initial;
+    overflow: inherit;
     left: 15px;
     display: inline-block;
     vertical-align: middle;
 }
 
-.collection .collection-item.avatar i.circle {
-    font-size: 42px;
-    line-height: 42px;
-    color: #999;
-    background-color: #fff;
-    text-align: center;
-}
 
 .collection .collection-item.avatar i.circle {
     font-size: 48px;
@@ -29,14 +45,33 @@ materialize.min.css:6
     text-align: center;
 }
 
+.collapsible-body {
+    padding: 0px;
+}
+
 /*end overrides*/
 
 /*helpers*/
+
+.collection .collection-item.avatar i.circle-right {
+    font-size: 48px;
+    line-height: 42px;
+    color: #999;
+    background-color: #fff;
+    text-align: center;
+}
+
+
 .helper-absolute {
   position: absolute;
 }
 
 .helper-lower-right-item {
+  right: 20px;
+}
+
+.helper-right-item {
+  top: 10px;
   right: 20px;
 }
 
@@ -59,4 +94,10 @@ materialize.min.css:6
 
 .helper-flex-right {
   align-content: flex-end;
+}
+
+.helper-flex-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
