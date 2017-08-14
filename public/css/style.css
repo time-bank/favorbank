@@ -1,0 +1,62 @@
+/*overrides*/
+
+/*avatar image stuff*/
+
+materialize.min.css:6
+.collection .collection-item.avatar:not(.circle-clipper)>.circle, .collection .collection-item.avatar :not(.circle-clipper)>.circle {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    overflow: initial;
+    left: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.collection .collection-item.avatar i.circle {
+    font-size: 42px;
+    line-height: 42px;
+    color: #999;
+    background-color: #fff;
+    text-align: center;
+}
+
+.collection .collection-item.avatar i.circle {
+    font-size: 48px;
+    line-height: 42px;
+    color: #999;
+    background-color: #fff;
+    text-align: center;
+}
+
+/*end overrides*/
+
+/*helpers*/
+.helper-absolute {
+  position: absolute;
+}
+
+.helper-lower-right-item {
+  right: 20px;
+}
+
+.helper-position-relative {
+  position: relative;
+}
+
+
+.helper-inline {
+  display: inline;
+}
+
+.helper-flex {
+  display: flex;
+}
+
+.helper-flex-left {
+  align-content: flex-start;
+}
+
+.helper-flex-right {
+  align-content: flex-end;
+}
