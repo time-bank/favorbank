@@ -12,3 +12,8 @@ router.post('/users', (req, res, next) => {
   //check to see whether user exists
 
 });
+
+
+
+
+module.exports = router;
