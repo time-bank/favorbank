@@ -6,7 +6,7 @@ const usersList = [
   email: 'ajp@lovesong.com',
   tel: '2061111111',
   preferred_contact: 'email',
-  hashed_password: '31169547937549D33C70FC8A7DAB6704506518C0F58ED7EB34001413CF5D3C47',  //theydonotsing
+  hashed_password: '$2a$12$rPCLzGBfiFnoTMwgvC0A/e259BWuYVXhtfSn/MmjTrNc1C0ENGw1K',  //theydonotsing
   created_at: new Date('2017-08-01 14:26:16 UTC'),
   updated_at: new Date('2017-08-01 14:26:16 UTC')
   },
@@ -18,7 +18,7 @@ const usersList = [
   email: 'waiting@godot.com',
   tel: '2062222222',
   preferred_contact: 'text',
-  hashed_password: 'E50F4FB39DEEAC857D74AB29E0EE6B0401B42D5877BAFD84FB5192199E723C65',// failbetter
+  hashed_password: '$2a$12$oEnJjrb2XsPOTGhrn0o21.Ck5qiOXF4OIXes1rjCrbQJlRlSwoTVW',// failbetter
   created_at: new Date('2017-08-02 14:26:16 UTC'),
   updated_at: new Date('2017-08-02 14:26:16 UTC')
 },
@@ -29,7 +29,7 @@ const usersList = [
   email: 'lb@lighthouse.com',
   tel: '2063333333',
   preferred_contact: 'tel',
-  hashed_password: 'D5B7B23E6461293A8A2B4E12C8DFBFA394E39F091F567B11F66B9BAA3FC8E338',   // rapture
+  hashed_password: '$2a$12$eqJeBc.Rh2i3GeIDpq1c0.Fv0UUd26/vtziZR7jBvYi.W6P3Bk95W',   // rapture
   created_at: new Date('2017-08-03 14:26:16 UTC'),
   updated_at: new Date('2017-08-03 14:26:16 UTC')
   }
