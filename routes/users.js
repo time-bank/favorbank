@@ -10,11 +10,30 @@ const {
 } = require('humps');
 const router = express.Router();
 
-//access a user's account balance
+//return a user's account balance
 router.get('/users/:id/balance', (req, res, next) => {
-  //check is self--req.claim.userId needs to equal :id
+  const userId = Number.parseInt(req.params.id);
 
-})
+  if (Number.isNaN(userId) || userId < 0) {
+    return next(boom.create(404, 'Not found.'));
+  }
+
+  //check is self--req.claim.userId needs to equal :id
+  // if (userId !== req.claim.userId) {
+  //   return next(boom.create(500, 'Internal server error.'))
+  // }
+
+  knex('users')
+    .where('id', userId)
+    .select('balance')
+    .first()
+    .then((balance) => {
+      res.send(balance)
+    })
+    .catch((err) => {
+      return next(boom.create(500, 'Internal server error.'))
+    });
+});
 
 //register a new user
 router.post('/users', (req, res, next) => {
@@ -114,6 +133,11 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     return next(boom.create(404, 'Not found.'));
   }
 
+  //check is self--req.claim.userId needs to equal :id
+  // if (reqUserId !== req.claim.userId) {
+  //   return next(boom.create(500, 'Internal server error.'))
+  // }
+
   //check that request has a response associated with it
   knex('responses')
     .where('request_id', reqId)
@@ -142,13 +166,13 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
         .where('id', reqId)
         .update({
           completed: true
-        }, '*')
+        }, '*');
     })
     .then(() => {
       //update balance of requests_user_id
       return knex('users')
         .where('id', reqUserId)
-        .first()
+        .first();
     })
     .then((row) => {
       if (!row) {
@@ -161,13 +185,13 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
         .where('id', reqUserId)
         .update({
           balance: reqUserBalance
-        }, '*')
+        }, '*');
     })
     .then(() => {
       //update balance of responses_user_id
       return knex('users')
         .where('id', resUserId)
-        .first()
+        .first();
     })
     .then((row) => {
       if (!row) {
@@ -180,13 +204,13 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
         .where('id', resUserId)
         .update({
           balance: resUserBalance
-        }, '*')
+        }, '*');
     })
     .then(() => {
       res.send('Account balances have been updated.');
     })
     .catch((err) => {
-      return next(err)
+      return next(err);
     });
 });
 
