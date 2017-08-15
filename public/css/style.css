@@ -10,7 +10,6 @@
 .collapse-content-button-text a {
   color: #ffab40;
   margin-left: 24px;
-
 }
 
 .collapse-content-button-text {
@@ -37,7 +36,6 @@
     vertical-align: middle;
 }
 
-
 .collection .collection-item.avatar i.circle {
     font-size: 48px;
     line-height: 42px;
@@ -49,6 +47,20 @@
 .collapsible-body {
     border-top: 0;
     padding: 0px;
+}
+
+
+.collapsible {
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    margin: 0;
+}
+
+.navbar-fixed {
+    position: relative;
+    height: 104px;
+    z-index: 997;
 }
 
 /*end overrides*/

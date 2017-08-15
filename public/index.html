@@ -38,97 +38,457 @@
 
 <body>
 
-  <header>
-    <nav class="nav-extended">
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Logo</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
-        </ul>
-        <ul class="side-nav" id="mobile-demo">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
-        </ul>
-      </div>
-      <div class="nav-content">
-        <ul class="tabs tabs-transparent">
-          <li class="tab"><a href="#test1">Test 1</a></li>
-          <li class="tab"><a class="active" href="#test2">Test 2</a></li>
-          <li class="tab disabled"><a href="#test3">Disabled Tab</a></li>
-          <li class="tab"><a href="#test4">Test 4</a></li>
-        </ul>
-      </div>
-    </nav>
-    <div id="test1" class="col s12">Test 1</div>
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test3" class="col s12">Test 3</div>
-    <div id="test4" class="col s12">Test 4</div>
-  </header>
+  <!-- <header> -->
 
-  <main>
-    <div class="container">
-      <div id="snacks" class="row">
+<!--
+    <div class="navbar-fixed">
+       <nav>
+         <div class="nav-wrapper">
+           <a href="#!" class="brand-logo">Logo</a>
+           <ul class="right hide-on-med-and-down">
+             <li><a href="sass.html">Sass</a></li>
+             <li><a href="badges.html">Components</a></li>
+           </ul>
+         </div>
+       </nav>
+     </div>
+ -->
 
-        <!--- public listing list-item elements--->
-        <ul class="collapsible collection" data-collapsible="accordion">
+    <!-- <div class="navbar-fixed"> -->
+  <!-- </div> -->
 
-          <li>
-            <div class="collapsible-header">
-              <div class="collection-item avatar helper-position-relative">
-                <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
-                <i class="circle material-icons">account_circle</i>
-                <span class="title">Title of Favor Text</span>
-                <p>Name
-                  <p class="helper-absolute">Time From - Time To</p>
-                  <p class="helper-absolute helper-lower-right-item">3 Hours</p>
-                </p>
+  <!-- </div> -->
+  <!-- </header> -->
+
+<div class="navbar-fixed">
+  <nav class="nav-extended">
+     <div class="nav-wrapper">
+       <a href="#" class="brand-logo">Logo</a>
+       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+       <ul id="nav-mobile" class="right hide-on-med-and-down">
+         <li><a href="sass.html">Sass</a></li>
+         <li><a href="badges.html">Components</a></li>
+         <li><a href="collapsible.html">JavaScript</a></li>
+       </ul>
+       <ul class="side-nav" id="mobile-demo">
+         <li><a href="sass.html">Sass</a></li>
+         <li><a href="badges.html">Components</a></li>
+         <li><a href="collapsible.html">JavaScript</a></li>
+       </ul>
+     </div>
+     <div class="nav-content">
+       <ul class="tabs tabs-transparent">
+         <li class="tab"><a href="#test1">Test 1</a></li>
+         <li class="tab"><a class="active" href="#test2">Test 2</a></li>
+         <li class="tab disabled"><a href="#test3">Disabled Tab</a></li>
+         <li class="tab"><a href="#test4">Test 4</a></li>
+       </ul>
+     </div>
+   </nav>
+</div>
 
 
-                <!------------------------------------------------------------------------->
+   <div id="test1" class="col s12">
 
-                <!--here are the alternative icons for public request list item headers --->
+     <main>
+       <div class="container">
+         <!-- <div id="snacks" class="row"> -->
 
-                <!--what user sees when it is their listing on the public requests-->
-                <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+           <!--- public listing list-item elements--->
+           <ul class="collapsible collection" data-collapsible="accordion">
 
-                <!--what user sees when it is some one else's listing on the public requests-->
-                <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
 
-                <!------------------------------------------------------------------------->
+                   <!------------------------------------------------------------------------->
 
-              </div>
-            </div>
-            <div class="collapsible-body">
-              <div class="collection collection-item avatar helper-collapsible-body">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                <div class="helper-flex-collapse">
-                  <div class="collapse-content-button-text">
-                    <!------------------------------------------------------------------------->
+                   <!--here are the alternative icons for public request list item headers --->
 
-                    <!-- here are the alternative actions for public request collapsible body-->
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
 
-                    <!--what user sees when it is their listing on the public requests-->
-                    <a href="#">edit</a>
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
 
-                    <!--what user sees when it is some one else's listing on the public requests-->
-                    <!-- <a href="#">do this favor</a> -->
+                   <!------------------------------------------------------------------------->
 
-                    <!------------------------------------------------------------------------->
-                  </div>
-                </div>
-              </div>
-            </div>
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
 
-          </li>
+                       <!-- here are the alternative actions for public request collapsible body-->
 
-        </ul>
-      </div>
-    </div>
-  </main>
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+             <li>
+               <div class="collapsible-header">
+                 <div class="collection-item avatar helper-position-relative">
+                   <!-- <img src="images/yuna.jpg" alt="" class="circle"> -->
+                   <i class="circle material-icons">account_circle</i>
+                   <span class="title">Title of Favor Text</span>
+                   <p>Name
+                     <p class="helper-absolute">Time From - Time To</p>
+                     <p class="helper-absolute helper-lower-right-item">3 Hours</p>
+                   </p>
+
+                   <!------------------------------------------------------------------------->
+
+                   <!--here are the alternative icons for public request list item headers --->
+
+                   <!--what user sees when it is their listing on the public requests-->
+                   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+
+                   <!--what user sees when it is some one else's listing on the public requests-->
+                   <!-- <a href="#!" class="secondary-content"><i class="material-icons">message</i></a> -->
+
+                   <!------------------------------------------------------------------------->
+
+                 </div>
+               </div>
+               <div class="collapsible-body">
+                 <div class="collection collection-item avatar helper-collapsible-body">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                   <div class="helper-flex-collapse">
+                     <div class="collapse-content-button-text">
+                       <!------------------------------------------------------------------------->
+
+                       <!-- here are the alternative actions for public request collapsible body-->
+
+                       <!--what user sees when it is their listing on the public requests-->
+                       <a href="#">edit</a>
+
+                       <!--what user sees when it is some one else's listing on the public requests-->
+                       <!-- <a href="#">do this favor</a> -->
+
+                       <!------------------------------------------------------------------------->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+             </li>
+
+           </ul>
+         <!-- </div> -->
+
+       </div>
+
+     </main>
+
+
+   </div>
+   <div id="test2" class="col s12">Test 2</div>
+   <div id="test3" class="col s12">Test 3</div>
+   <div id="test4" class="col s12">Test 4</div>
+
+
+
 
 </body>
 
