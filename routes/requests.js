@@ -91,7 +91,7 @@ router.post('/requests/:id/responses', (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
 
   if (Number.isNaN(favorId) || favorId < 0) {
-    return next(boom.create(404, 'Not found.'));
+    return next(boom.create(400, 'Bad request.'));
   }
 
   knex('responses')
