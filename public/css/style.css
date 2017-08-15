@@ -143,8 +143,7 @@
 }
 
 
-.collapsible-header .active {
+.collapsible-header.active {
     background-color: red;
     border-bottom: 0;
 }
-  
