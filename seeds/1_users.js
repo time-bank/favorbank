@@ -29,6 +29,17 @@ const usersList = [
   hashed_password: '$2a$12$eqJeBc.Rh2i3GeIDpq1c0.Fv0UUd26/vtziZR7jBvYi.W6P3Bk95W',   // rapture
   created_at: new Date('2017-08-03 14:26:16 UTC'),
   updated_at: new Date('2017-08-03 14:26:16 UTC')
+},
+  {
+    id: 4,
+    first_name: 'Bartleby',
+    last_name: '[Unknown]',
+    balance: 0,
+    email: 'bartleby@thescrivner.com',
+    tel: '2064444444',
+    hashed_password: '$2a$12$U08MGT8OhnwDcqK79J0zEe3rnvkTc8aCjoumoWxXbr66wQ9plMYVm',    // prefernotto
+    created_at: new Date('2017-08-04 14:26:16 UTC'),
+    updated_at: new Date('2017-08-04 14:26:16 UTC')
   }
 ]
 
