@@ -20,6 +20,17 @@ const requestsList = [
     user_id: 2,
     created_at: new Date('2017-08-11 14:26:16 UTC'),
     updated_at: new Date('2017-08-11 14:26:16 UTC')
+  },
+  {
+    id: 3,
+    title: 'Model for painting.',
+    description: 'Just need to sit pretty for an abstract painting.',
+    time_estimate: 4,
+    time_window: 'Some Saturday.',
+    completed: false,
+    user_id: 3,
+    created_at: new Date('2017-08-12 14:26:16 UTC'),
+    updated_at: new Date('2017-08-12 14:26:16 UTC')
   }
 
 ]

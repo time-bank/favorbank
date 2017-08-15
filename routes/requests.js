@@ -80,10 +80,11 @@ router.get('/requests', (req, res, next) => {
     .whereNull('request_id')
     .then((activeRequests) => {
       console.log(activeRequests);
+      res.send(activeRequests);
     })
     .catch((err) => {
       return next(boom.create(500, 'Internal server error.'))
-    })
+    });
 });
 
 //add a new response to a specific request
