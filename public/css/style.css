@@ -9,7 +9,7 @@
 /* collapsable content */
 .collapse-content-button-text a {
   color: #ffab40;
-  margin-right: 24px;
+  margin-left: 24px;
 }
 
 .collapse-content-button-text {
@@ -61,6 +61,14 @@
     text-align: center;
 }
 
+.collapsible-header i {
+    width: 2rem;
+    font-size: 24px;
+    display: inline-block;
+    text-align: center;
+    margin-right: 1rem;
+}
+
 
 .helper-absolute {
   position: absolute;
@@ -79,7 +87,13 @@
   position: relative;
 }
 
-
+.helper-icon {
+  position: relative;
+  top: 6px;
+  /*margin-right: 0rem; figure out how to control this*/
+  color: #26a69a;
+  padding-right: 0rem;
+}
 .helper-inline {
   display: inline;
 }
@@ -87,6 +101,13 @@
 .helper-flex {
   display: flex;
 }
+
+.helper-flex-collapse {
+    padding-left: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
 
 .helper-flex-left {
   align-content: flex-start;
@@ -100,4 +121,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+
+
+
+
+.collapsible-header {
+    /* display: -webkit-box; */
+    /* display: -webkit-flex; */
+    /*display: -ms-flexbox;*/
+    display: block;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
+    padding: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
 }
