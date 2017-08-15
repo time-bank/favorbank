@@ -165,10 +165,11 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
       return knex('requests')
         .where('id', reqId)
         .update({
-          completed: true
+          completed: true,
+          actual_hours: actualHours
         }, '*');
     })
-    .then(() => {
+    .then((result) => {
       //update balance of requests_user_id
       return knex('users')
         .where('id', reqUserId)

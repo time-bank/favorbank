@@ -18,6 +18,22 @@ const authorize = function(req, res, next) {
   });
 };
 
+//get all active requests (i.e., requests that do not have an associated response in responses table)
+router.get('/requests', (req, res, next) => {
+  knex('requests')
+    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'time_window', 'completed', 'requests.created_at', 'requests.updated_at')
+    .leftJoin('responses', 'requests.id', 'responses.request_id')
+    .whereNull('request_id')
+    .then((activeRequests) => {
+      console.log(activeRequests);
+      res.send(activeRequests);
+    })
+    .catch((err) => {
+      return next(boom.create(500, 'Internal server error.'))
+    });
+});
+
+
 //add authorize (and test) once hooked up to frontend
 router.post('/requests', (req, res, next) => {
   return knex('requests')
@@ -66,21 +82,6 @@ router.patch('/requests/:id', (req, res, next) => {
     })
     .then((request) => {
       res.send(request[0])
-    })
-    .catch((err) => {
-      return next(boom.create(500, 'Internal server error.'))
-    });
-});
-
-//get all active requests (i.e., requests that do not have an associated response in responses table)
-router.get('/requests', (req, res, next) => {
-  knex('requests')
-    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'time_window', 'completed', 'requests.created_at', 'requests.updated_at')
-    .leftJoin('responses', 'requests.id', 'responses.request_id')
-    .whereNull('request_id')
-    .then((activeRequests) => {
-      console.log(activeRequests);
-      res.send(activeRequests);
     })
     .catch((err) => {
       return next(boom.create(500, 'Internal server error.'))
