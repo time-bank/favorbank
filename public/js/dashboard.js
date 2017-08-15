@@ -5,3 +5,6 @@
 
 
 //to delete a request:  DELETE (`/requests/${userID}`
+
+
+//to delete a response: delete('/responses/:id'

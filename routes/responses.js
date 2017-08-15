@@ -13,7 +13,7 @@ const router = express.Router();
 // })
 
 //cancel a responses
-router.delete('responses/:id', (req, res, next) => {
+router.delete('/responses/:id', (req, res, next) => {
   const responseId = Number.parseInt(req.params.id)
 
   if (Number.isNaN(responseId) || responseId < 0) {
@@ -37,6 +37,7 @@ router.delete('responses/:id', (req, res, next) => {
     })
     .then(() => {
       delete responseToDelete.id,
+      delete responseToDelete.user_id,
       res.send(responseToDelete)
     })
     .catch((err) => {
