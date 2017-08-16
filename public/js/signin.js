@@ -1,7 +1,7 @@
 $('#form').submit((event) => {
   event.preventDefault();
 
-  
+  console.log('submit worked');
 
   const email = $('#email').val().trim();
   const password = $('#password').val();
@@ -11,15 +11,20 @@ $('#form').submit((event) => {
       data: JSON.stringify({ email, password }), //the "body"
       dataType: 'json',
       type: 'POST',
-      url: '/login'
+      url: '/token'
     };
 
     $.ajax(options)
       .done(() => {
-        window.location.href = '/index.html';
+        Materialize.toast('Success!', 3000);
+        // window.location.href = '/index.html';
       })
       .fail(($xhr) => {
         Materialize.toast($xhr.responseText, 3000);
       });
 
 });
+
+function changeWindows(url) {
+  window.location.href = url;
+}
