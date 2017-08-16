@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
     table.text('description');
     table.integer('time_estimate').notNullable().defaultTo(1);
     table.integer('actual_hours');
-    table.text('time_window').notNullable();
+    table.text('timeframe').notNullable();
     table.boolean('completed').notNullable().defaultTo(false);
     table.timestamps(true, true);
     table.integer('user_id')
