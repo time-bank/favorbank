@@ -1,19 +1,24 @@
 'use strict';
 
+
 const activeRequests = $('#active-requests');
-const activeRequestUl = $('#active-request-ul')
+const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
 const dashboard = $('#dashboard');
 
 
 
-
-
-
 //to get all active requests:
-// $.getJSON(`requests`)
+$.getJSON(`requests`)
 .then((requests) => {
-  // createActiveRequests(requests)
+  // activeRequestUl.empty()
 
+  for (const request of requests) {
+    console.log(request);
+    const isSelf = true;
+    const newRequest = createActiveRequest(request, isSelf);
+    activeRequestUl.append(newRequest);
+  }
+  activeRequests.append(activeRequestUl)
 
 })
 
@@ -21,13 +26,14 @@ const dashboard = $('#dashboard');
 //to add a new response:
 //$.ajax    post('/requests/:id/responses'
 
-function createActiveRequests(requests) {
+function createActiveRequest(isSelf) {
   const newRequest = $('<li>');
+
   const headerDiv = $('<div>').addClass('collapsible-header');
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const titleSpan = $('<span>').addClass('title').text(`REQUEST TITLE`);
-  const name = $('<p>').text(`REQUESTER NAME`);
+  const title = $('<span>').addClass('title').text(`REQUEST TITLE`);
+  const name = $('<p>').text(`FIRST NAME + LAST NAME`);
   const timeframe = $('<p>').addClass('helper-absolute').text(`TIMEFRAME`);
   const estimate = $('<p>').addClass('helper-absolute helper-lower-right-item').text(`NUM hours`);
   const deleteLink = $('<a>').addClass('secondary-content').attr('href', '#!');
@@ -35,14 +41,39 @@ function createActiveRequests(requests) {
 
   // up to here belongs in avatarDiv
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const collabsibleContent = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(`DESCRIPTION TEXT`);
+  const description = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(`DESCRIPTION TEXT`);
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
-  const buttonText = $('<div>').addClass('collapse-content-button-text');
+  const button = $('<div>').addClass('collapse-content-button-text');
+  const buttonLink = $('<a>').attr('href', 'favor.html');
 
+  if (isSelf) {
+    buttonLink.text('edit');
+  } else {
+    buttonLink.text('help out')
+  }
+
+  deleteLink.append(deleteIcon);
+  avatarDiv.append(avatarIcon);
+  avatarDiv.append(title);
+  avatarDiv.append(name);
+  avatarDiv.append(timeframe);
+  avatarDiv.append(estimate);
+  avatarDiv.append(deleteLink);
+  headerDiv.append(avatarDiv);
+
+  button.append(buttonLink);
+  flexDiv.append(button);
+  description.append(flexDiv);
+  collabsibleDiv.append(description);
+
+  newRequest.append(headerDiv);
+  newRequest.append(collabsibleDiv);
+
+  return newRequest;
 }
 // <li>
-  // <div class="collapsible-header">
-    // <div class="collection-item avatar helper-position-relative">
+  // HEADERDIV<div class="collapsible-header">
+    // AVATARDIV <div class="collection-item avatar helper-position-relative">
       // <i class="circle material-icons">account_circle</i>
       // <span class="title">Title of Favor Text</span>
       // <p>Name</p>
@@ -52,11 +83,11 @@ function createActiveRequests(requests) {
     //   <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
     // </div>
   // </div>
-  // <div class="collapsible-body">
-    // <div class="collection collection-item avatar helper-collapsible-body">
+  // COLLASIBLEDIV <div class="collapsible-body">
+    // COLLABSIBLE CONTENT <div class="collection collection-item avatar helper-collapsible-body">
       // Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      // <div class="helper-flex-collapse">
-//         <div class="collapse-content-button-text">
+      // flexDiv <div class="helper-flex-collapse">
+//        buttonText <div class="collapse-content-button-text">
 //         </div>
 //       </div>
 //     </div>
