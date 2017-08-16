@@ -18,6 +18,22 @@ const authorize = function(req, res, next) {
   });
 };
 
+//get all active requests (i.e., requests that do not have an associated response in responses table)
+router.get('/requests', (req, res, next) => {
+  knex('requests')
+    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'time_window', 'completed', 'requests.created_at', 'requests.updated_at')
+    .leftJoin('responses', 'requests.id', 'responses.request_id')
+    .whereNull('request_id')
+    .then((activeRequests) => {
+      console.log(activeRequests);
+      res.send(activeRequests);
+    })
+    .catch((err) => {
+      return next(boom.create(500, 'Internal server error.'))
+    });
+});
+
+
 //add authorize (and test) once hooked up to frontend
 router.post('/requests', (req, res, next) => {
   return knex('requests')
@@ -72,26 +88,12 @@ router.patch('/requests/:id', (req, res, next) => {
     });
 });
 
-//get all active requests (i.e., requests that do not have an associated response in responses table)
-router.get('/requests', (req, res, next) => {
-  knex('requests')
-    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'time_window', 'completed', 'requests.created_at', 'requests.updated_at')
-    .leftJoin('responses', 'requests.id', 'responses.request_id')
-    .whereNull('request_id')
-    .then((activeRequests) => {
-      console.log(activeRequests);
-    })
-    .catch((err) => {
-      return next(boom.create(500, 'Internal server error.'))
-    })
-});
-
 //add a new response to a specific request
 router.post('/requests/:id/responses', (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
 
   if (Number.isNaN(favorId) || favorId < 0) {
-    return next(boom.create(404, 'Not found.'));
+    return next(boom.create(400, 'Bad request.'));
   }
 
   knex('responses')

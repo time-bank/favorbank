@@ -65,6 +65,6 @@ router.delete('/token', (req, res) => {
 })
 
 
-
+//get token: send back user.id instead of T or F
 
 module.exports = router;

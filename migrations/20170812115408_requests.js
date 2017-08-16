@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     table.string('title').notNullable();
     table.text('description');
     table.integer('time_estimate').notNullable().defaultTo(1);
+    table.integer('actual_hours');
     table.text('time_window').notNullable();
     table.boolean('completed').notNullable().defaultTo(false);
     table.timestamps(true, true);
