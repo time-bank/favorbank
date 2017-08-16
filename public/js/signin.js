@@ -17,7 +17,7 @@ $('#form').submit((event) => {
     $.ajax(options)
       .done(() => {
         Materialize.toast('Success!', 3000);
-        // window.location.href = '/index.html';
+        setTimeout(changeWindows('index.html'), 3000)
       })
       .fail(($xhr) => {
         Materialize.toast($xhr.responseText, 3000);
