@@ -49,7 +49,6 @@
     padding: 0px;
 }
 
-
 .collapsible {
     border-top: 0;
     border-right: 0;
@@ -62,10 +61,6 @@
     height: 104px;
     z-index: 997;
 }
-
-/*end overrides*/
-
-/*helpers*/
 
 .collection .collection-item.avatar i.circle-right {
     font-size: 48px;
@@ -83,6 +78,31 @@
     margin-right: 1rem;
 }
 
+.collapsible-header {
+    /* display: -webkit-box; */
+    /* display: -webkit-flex; */
+    /*display: -ms-flexbox;*/
+    display: block;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
+    padding: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.collapsible-header.active {
+    border-bottom: 0;
+}
+
+.collapsible {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/*end overrides*/
+
+/*helpers*/
 
 .helper-absolute {
   position: absolute;
@@ -137,25 +157,69 @@
   align-items: center;
 }
 
+.helper-collection-ul:nth-last-child(1) {
+  border-bottom: 0;
+  padding-bottom: 84px;
+}
 
+.helper-no-border-top {
+  border-top: 0;
+}
 
+.helper-no-border-bottom {
+  border-bottom: 0;
+}
 
+/*footer*/
 
-.collapsible-header {
-    /* display: -webkit-box; */
-    /* display: -webkit-flex; */
-    /*display: -ms-flexbox;*/
-    display: block;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    line-height: 1.5;
-    padding: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
+.footer-fixed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    background-color: #26a69a; /*#ee6e73;*/
+    height: 84px;
+    position: fixed;
+    z-index: 997;
+    box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.14), 0 -1px 5px 0 rgba(0,0,0,0.12), 0 -3px 1px -2px rgba(0,0,0,0.2);
+    bottom: 0px;
+}
+
+.footer-text {
+  /*vertical-align: middle;*/
+  /*align-items: center;*/
+  /*align-items: center;*/
+  /*padding: 24px;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+  align-self: center;
+  text-transform: uppercase;
+}
+
+.helper-position-fab {
+  position: absolute;
+  right: 56px;
+  bottom: 56px;
+  z-index: 998;
+}
+
+.helper-dashboard-text-header {
+  font-size: 14px;
+  font-weight: normal;
+  color: black;
+  padding-top: 0;
+  padding-left: 1.5rem;
 }
 
 
-.collapsible-header.active {
-    background-color: red;
-    border-bottom: 0;
+
+/*body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
+
+main {
+  flex: 1 0 auto;
+}*/
