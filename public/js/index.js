@@ -8,57 +8,81 @@ const dashboard = $('#dashboard');
 
 
 //to get all active requests:
-$.getJSON(`requests`)
-.then((requests) => {
-  // activeRequestUl.empty()
+$.getJSON(`/requests`)
+  .then((requests) => {
+    // activeRequestUl.empty()
 
-  for (const request of requests) {
-    console.log(request);
-    const isSelf = true;
-    const newRequest = createActiveRequest(request, isSelf);
-    activeRequestUl.append(newRequest);
-  }
-  activeRequests.append(activeRequestUl)
+    for (const request of requests) {
+      const title = request.title;
+      const description = request.description;
+      const name = `${request.first_name} ${request.last_name}`;
+      const timeframe = request.timeframe;
+      let estimate = request.time_estimate;
+      const userId = request.user_id;
+      const isSelf = request.isSelf;
+      // const isSelf = false;
 
-})
+      if (estimate === 1) {
+        estimate = `${estimate} hour`
+      } else {
+        estimate = `${estimate} hours`
+      }
+
+
+      const data = { title, description, name, timeframe, estimate, isSelf };
+
+
+      console.log(request);
+      const newRequest = createActiveRequest(data);
+      activeRequestUl.append(newRequest);
+    }
+    activeRequests.append(activeRequestUl)
+
+  })
 
 
 //to add a new response:
 //$.ajax    post('/requests/:id/responses'
 
-function createActiveRequest(isSelf) {
+function createActiveRequest(data) {
   const newRequest = $('<li>');
 
   const headerDiv = $('<div>').addClass('collapsible-header');
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const title = $('<span>').addClass('title').text(`REQUEST TITLE`);
-  const name = $('<p>').text(`FIRST NAME + LAST NAME`);
-  const timeframe = $('<p>').addClass('helper-absolute').text(`TIMEFRAME`);
-  const estimate = $('<p>').addClass('helper-absolute helper-lower-right-item').text(`NUM hours`);
-  const deleteLink = $('<a>').addClass('secondary-content').attr('href', '#!');
-  const deleteIcon = $('<i>').addClass('material-icons').text('delete');
+  const title = $('<span>').addClass('title').text(data.title);
+  const name = $('<p>').text(data.name);
+  const timeframe = $('<p>').addClass('helper-absolute').text(data.timeframe);
+  const estimate = $('<p>').addClass('helper-absolute helper-lower-right-item').text(`${data.estimate}`);
+  const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
+  const actionIcon = $('<i>').addClass('material-icons');
 
   // up to here belongs in avatarDiv
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const description = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(`DESCRIPTION TEXT`);
+  const description = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(data.description);
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
   const button = $('<div>').addClass('collapse-content-button-text');
-  const buttonLink = $('<a>').attr('href', 'favor.html');
+  const buttonLink = $('<a>');
 
-  if (isSelf) {
-    buttonLink.text('edit');
+  if (data.isSelf) {
+    buttonLink.text('edit').attr('href', 'favor.html');
+    actionLink.attr('href', '#!');
+    actionIcon.text('delete');
   } else {
-    buttonLink.text('help out')
+    buttonLink.text('help out').attr('href', 'index.html', 'id', 'commit');
+    actionLink.attr('href', '#!');
+    actionIcon.text('message');
   }
 
-  deleteLink.append(deleteIcon);
   avatarDiv.append(avatarIcon);
   avatarDiv.append(title);
   avatarDiv.append(name);
   avatarDiv.append(timeframe);
   avatarDiv.append(estimate);
-  avatarDiv.append(deleteLink);
+
+  actionLink.append(actionIcon);
+  avatarDiv.append(actionLink);
+
   headerDiv.append(avatarDiv);
 
   button.append(buttonLink);
