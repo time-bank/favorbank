@@ -21,7 +21,7 @@ const authorize = function(req, res, next) {
 //get all active requests (i.e., requests that do not have an associated response in responses table)
 router.get('/requests', (req, res, next) => {
   knex('requests')
-    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'time_window', 'completed', 'requests.created_at', 'requests.updated_at')
+    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'timeframe', 'completed', 'requests.created_at', 'requests.updated_at')
     .leftJoin('responses', 'requests.id', 'responses.request_id')
     .whereNull('request_id')
     .then((activeRequests) => {
@@ -33,7 +33,7 @@ router.get('/requests', (req, res, next) => {
     });
 });
 
-
+//post new favors from favor.html form
 //add authorize (and test) once hooked up to frontend
 router.post('/requests', (req, res, next) => {
   return knex('requests')
@@ -41,7 +41,7 @@ router.post('/requests', (req, res, next) => {
       title: req.body.title,
       description: req.body.description,
       time_estimate: req.body.timeEstimate,
-      time_window: req.body.timeWindow,
+      timeframe: req.body.timeframe,
       user_id: req.body.userId
       // user_id: req.claim.userId
     }, '*')
@@ -49,6 +49,7 @@ router.post('/requests', (req, res, next) => {
       res.send(favor[0])
     })
     .catch((err) => {
+      console.log(err);
       return next(boom.create(500, 'Internal server error.'))
     });
 });
@@ -76,7 +77,7 @@ router.patch('/requests/:id', (req, res, next) => {
           title: req.body.title,
           description: req.body.description,
           time_estimate: req.body.timeEstimate,
-          time_window: req.body.timeWindow,
+          timeframe: req.body.timeframe,
           completed: req.body.completed
         }, '*')
     })
