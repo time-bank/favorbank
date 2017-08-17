@@ -81,16 +81,21 @@ router.get('/users/:id/requests', (req, res, next) => {
   knex('requests')
     .where('requests.user_id', userId)
     .where('requests.completed', false)
-    .select('completed', 'requests.created_at AS request_created_at', 'requests.updated_at AS request_updated_at', 'description', 'requests.id', 'time_estimate', 'timeframe', 'title', 'requests.user_id AS request_user_id', 'responses.user_id AS response_user_id', 'responses.created_at AS response_created_at', 'responses.updated_at AS response_updated_at', 'users.first_name AS response_first_name', 'users.last_name AS response_last_name', 'users.email AS response_email', 'users.tel AS response_tel')
+    .select('completed', 'requests.created_at AS request_created_at', 'requests.updated_at AS request_updated_at', 'description', 'requests.id', 'time_estimate', 'timeframe', 'title', 'requests.user_id AS request_user_id', 'responses.user_id AS response_user_id', 'responses.created_at AS response_created_at', 'responses.updated_at AS response_updated_at', 'users.first_name', 'users.last_name', 'users.email', 'users.tel')
     .leftJoin('responses', 'requests.id', 'responses.request_id')
     .leftJoin('users', 'responses.user_id', 'users.id')
     .then((rows) => {
       if (!rows) {
         return next(boom.create(400, 'Bad request.'));
       }
+      rows.map((row) => {
+        row.isSelf = true
+        return row
+      })
       res.send(rows);
     })
     .catch((err) => {
+      console.log(err);
       return next(boom.create(500, 'Internal server error.'));
     });
 });
@@ -105,13 +110,17 @@ router.get('/users/:id/responses', (req, res, next) => {
   knex('responses')
     .where('responses.user_id', userId)
     .where('requests.completed', false)
-    .select('requests.completed', 'requests.created_at AS request_created_at', 'requests.updated_at AS request_updated_at', 'requests.description', 'requests.id', 'requests.time_estimate', 'requests.timeframe', 'requests.title', 'requests.user_id AS request_user_id', 'responses.user_id AS response_user_id', 'responses.created_at AS response_created_at', 'responses.updated_at AS response_updated_at', 'users.first_name AS request_first_name', 'users.last_name AS request_last_name', 'users.email AS request_email', 'users.tel AS request_tel')
+    .select('requests.completed', 'requests.created_at AS request_created_at', 'requests.updated_at AS request_updated_at', 'requests.description', 'requests.id', 'requests.time_estimate', 'requests.timeframe', 'requests.title', 'requests.user_id AS request_user_id', 'responses.user_id AS response_user_id', 'responses.created_at AS response_created_at', 'responses.updated_at', 'users.first_name', 'users.last_name', 'users.email', 'users.tel')
     .innerJoin('requests', 'requests.id', 'responses.request_id')
     .innerJoin('users', 'requests.user_id', 'users.id')
     .then((rows) => {
       if (!rows) {
         return next(boom.create(400, 'Bad request.'));
       }
+      rows.map((row) => {
+        row.committed = true;
+        return row
+      })
       res.send(rows);
     })
     .catch((err) => {

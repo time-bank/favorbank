@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const authorize = function(req, res, next) {
-  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, palyload) => {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
     if (err) {
       return next(boom.create(401, 'Unauthorized.'));
     }
@@ -19,16 +19,26 @@ const authorize = function(req, res, next) {
 };
 
 //get all active requests (i.e., requests that do not have an associated response in responses table)
-router.get('/requests', (req, res, next) => {
+router.get('/requests', authorize, (req, res, next) => {
   knex('requests')
-    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'timeframe', 'completed', 'requests.created_at', 'requests.updated_at')
+    .select('requests.id', 'requests.user_id', 'title', 'description', 'time_estimate', 'timeframe', 'completed', 'requests.created_at', 'requests.updated_at', 'users.first_name', 'users.last_name', 'users.email', 'users.tel')
     .leftJoin('responses', 'requests.id', 'responses.request_id')
     .whereNull('request_id')
+    .innerJoin('users', 'requests.user_id', 'users.id')
     .then((activeRequests) => {
+      activeRequests.map((request) => {
+        if (req.claim.userId === request.user_id) {
+          request.isSelf = true
+        } else {
+          request.isSelf = false
+        }
+        return request
+      })
       console.log(activeRequests);
       res.send(activeRequests);
     })
     .catch((err) => {
+      console.log(err);
       return next(boom.create(500, 'Internal server error.'))
     });
 });
