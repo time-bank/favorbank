@@ -24,66 +24,30 @@
   <script defer src="temp.js" charset="utf-8"></script>
 </head>
 
-
-<!-- <head>
-  <meta charset="utf-8">
-  <title>Favor Bank</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
-  <script defer src="js/index.js" charset="utf-8"></script>
-</head> -->
-
 <body>
 
-  <!-- <header> -->
-
-  <!--
-    <div class="navbar-fixed">
-       <nav>
-         <div class="nav-wrapper">
-           <a href="#!" class="brand-logo">Logo</a>
-           <ul class="right hide-on-med-and-down">
-             <li><a href="sass.html">Sass</a></li>
-             <li><a href="badges.html">Components</a></li>
-           </ul>
-         </div>
-       </nav>
-     </div>
- -->
-
   <!-- <div class="navbar-fixed"> -->
-  <!-- </div> -->
+  <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
-  <!-- </div> -->
-  <!-- </header> -->
+      <ul class="side-nav" id="mobile-demo">
 
-  <div class="navbar-fixed">
-    <nav class="nav-extended">
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Logo</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
-        </ul>
-        <ul class="side-nav" id="mobile-demo">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
-        </ul>
-      </div>
-      <div class="nav-content">
-        <ul class="tabs tabs-transparent">
-          <li class="tab"><a href="#test1">active requests</a></li>
-          <li class="tab"><a class="active" href="#test2">your dashboard</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+        <li><a href="signin.html">sign out</a></li>
+
+
+      </ul>
+
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#test1">active requests</a></li>
+        <li class="tab"><a class="active" href="#test2">your dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- </div> -->
 
 
   <div id="test1" class="col s12">
@@ -94,7 +58,6 @@
 
         <!--- public listing list-item elements--->
         <ul class="collapsible collection helper-collection-ul" data-collapsible="accordion">
-
           <li>
             <div class="collapsible-header">
               <div class="collection-item avatar helper-position-relative">
@@ -576,8 +539,9 @@
 
           </li>
         </ul>
-          <p class="helper-dashboard-text-header">People helping you</p>
-          <ul class="collapsible collection helper-collection-ul" data-collapsible="accordion">
+        <p class="helper-dashboard-text-header">People helping you</p>
+
+        <ul class="collapsible collection helper-collection-ul" data-collapsible="accordion">
           <li>
             <div class="collapsible-header">
               <div class="collection-item avatar helper-position-relative">
@@ -637,7 +601,8 @@
 
 <div class="footer-fixed center-align">
   <div class="helper-position-fab">
-    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+    <!-- <a class="modal-trigger" href="#modalPay">pay</a> -->
+    <a class="modal-trigger btn-floating btn-large waves-effect waves-light cyan blue accent-3" href="#modalFavor"><i class="material-icons">add</i></a>
   </div>
   <h5 class="white-text footer-text">- 0 hours</h5>
   <!-- <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p> -->
@@ -645,26 +610,68 @@
 
 <!-- Modal Pay -->
 <div id="modalPay" class="modal">
-    <div class="modal-content">
-      <h4>Pay Username</h4>
+  <div class="modal-content">
+    <h4>Pay Username</h4>
+    <form id="form" class="col s12">
+      <div class="row">
+        <div class="col s3"></div>
+        <div class="input-field col s6">
+          <input placeholder="0" id="title" type="number" class="helper-center-input validate">
+          <label for="title">Hours</label>
+        </div>
+        <div class="col s3"></div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
 
-        <form id="form" class="col s12">
+<!-- Modal Favor -->
+<div id="modalFavor" class="modal">
+  <div class="modal-content">
+    <h4>Request a Favor</h4>
+    <form id="formFavor">
+      <div class="row helper-zeromargin">
+        <div class="input-field col s12">
+          <input id="titleFavor" type="text" class="helper-zeromargin-input validate">
+          <label for="title">Title</label>
+        </div>
+      </div>
+      <div class="row helper-zeromargin">
+        <div class="col s12">
+          Estimated:
+          <div class="input-field inline">
+            <input id="estimated" type="number" class="col s4 helper-zeromargin-input validate">
+            <label for="estimated" data-error="wrong" data-success="right">Hours</label>
+          </div>
+        </div>
+      </div>
+      <div class="row helper-zeromargin">
+        <div class="input-field col s12">
+          <input id="date" type="text" class="validate">
+          <label for="date">Date</label>
+        </div>
+      </div>
+      <div class="row helper-zeromargin">
+        <form class="col s12">
           <div class="row">
-            <div class="col s3"></div>
-            <div class="input-field col s6">
-              <input placeholder="0" id="title" type="number" class="helper-center-input validate">
-              <label for="title">Hours</label>
+            <div class="input-field col s12">
+              <textarea id="description" class="materialize-textarea"></textarea>
+              <label for="description">Description</label>
             </div>
-            <div class="col s3"></div>
           </div>
         </form>
-
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
+      </div>
+    </form>
   </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">cancel</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">agree</a>
+  </div>
+</div>
 
 
 

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "knex": "knex"
+    "knex": "knex",
+    "heroku-postbuild": "knex migrate:latest",
+    "nf": "nf start"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,10 @@
     "pg": "^7.1.0"
   },
   "devDependencies": {
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "foreman": "^2.0.0"
+  },
+  "engines": {
+    "node": "8.2.1"
   }
 }
