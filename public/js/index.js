@@ -52,7 +52,6 @@ $.getJSON(`/requests`)
 function getUserId() {
   return $.getJSON('/token')
   .then((res) => {
-    console.log('this is right: res.userId from getUserId() ', res.userId);
     return res.userId;
   })
   .catch((err) => {
@@ -61,7 +60,10 @@ function getUserId() {
 }
 
 function addPaymentListener(requestId) {
+  console.log($('.agreePay'));
   $('.agreePay').on('click', (event) => {
+
+    console.log('inside addPaymentListener');
     sendPayment(requestId);
   });
 }
@@ -172,10 +174,8 @@ function createEntry(request) {
 function createMyRequest(request) {
   if (request.first_name) {
     const name = `${request.first_name} ${request.last_name}`;
-    console.log(`is this the responder\'s name for request ${request.title}?: `, name);
   }
   const requestId = request.id;
-
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
 
@@ -195,12 +195,19 @@ function createMyRequest(request) {
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#!');
-  const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
 
-  const agreePay = $('.agreePay');
-
-  addPaymentListener(requestId);
-
+  responseExists(requestId)
+    .then((res) => {
+      console.log(res);
+      console.log(requestId);
+      if (res) {
+        console.log('there is a response');
+        const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
+        const agreePay = $('.agreePay');
+        addPaymentListener(requestId);
+        cancelLink.after(payLink);
+      }
+    })
 
 
   // actionLink.append(messageIcon);
@@ -223,7 +230,7 @@ function createMyRequest(request) {
   headerDiv.append(avatarDiv);
 
   actionDiv.append(cancelLink);
-  actionDiv.append(payLink);
+  // actionDiv.append(payLink);
 
   flexCollapseDiv.append(actionDiv);
 
@@ -272,6 +279,7 @@ function commitToFavor(request_id) {
 
 function sendPayment(reqId) {
   const actualHours = $('.actualHours').val();
+  console.log(actualHours);
 
   getUserId()
     .then((reqUserId) => {
@@ -319,5 +327,13 @@ function checkCookie(){
       if (!user_id) {
         window.location = 'signin.html'
       }
+    })
+}
+
+function responseExists(reqId) {
+  return $.getJSON(`/requests/${reqId}/responses`)
+    .then((res) => {
+      console.log(res);
+      return res
     })
 }

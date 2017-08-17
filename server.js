@@ -12,6 +12,7 @@ const path = require('path');
 
 const app = express();
 app.disable('x-powered-by');
+app.use(morgan('dev'));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
