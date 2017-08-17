@@ -1,8 +1,6 @@
 $('#form').submit((event) => {
   event.preventDefault();
 
-
-
   const email = $('#email').val().trim();
   const password = $('#password').val();
 

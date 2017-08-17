@@ -2,10 +2,8 @@
 
 const activeRequests = $('#active-requests');
 const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
-// const dashboard = $('#dashboard');
 const myResponses = $('#my-responses');
 const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
-
 const myRequests = $('#my-requests');
 const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
 
@@ -32,8 +30,6 @@ getUserId()
 
   })
 
-
-
 $.getJSON(`/requests`)
   .then((requests) => {
     for (const request of requests) {
@@ -46,10 +42,44 @@ $.getJSON(`/requests`)
     Materialize.toast(err.responseText, 3000);
 });
 
+function getUserId() {
+  return $.getJSON('/token')
+  .then((res) => {
+    return res.userId;
+  })
+  .catch((err) => {
+    Materialize.toast(err.responseText, 3000);
+  });
+}
+
+$('#retract').on('click', (event) => {
+  event.preventDefault();
+
+  const response_id = event.target.id;
+  console.log(response_id);
+
+  deleteResponse(response_id)
+})
+
+function getMyRequests(userId) {
+  return $.getJSON(`/users/${userId}/requests`)
+    .then((myRequests) => {
+      return myRequests;
+    });
+}
+
+function getMyResponses(userId) {
+  return $.getJSON(`/users/${userId}/responses`)
+    .then((myResponses) => {
+      return myResponses;
+    });
+}
+
 function createEntry(request) {
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
   let estimate = request.time_estimate;
+  const responseId = request.response_id;
 
   if (estimate === 1) {
     estimate = `${estimate} hour`
@@ -61,10 +91,10 @@ function createEntry(request) {
   const headerDiv = $('<div>').addClass('collapsible-header');
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const titleSpan = $('<span>').addClass('title').text(request.title);
+  const titleSpan = $('<span>').addClass('title').text(request.title).attr('id', responseId);
   const nameP = $('<p>').text(name);
   const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
-  const estimateP = $('<p>').addClass('helper-absolute helper-lower-right-item').text(`${estimate}`);
+  const estimateP = $('<p>').addClass('helper-absolute helper-lower-right-item').text(estimate);
   const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
   const actionIcon = $('<i>').addClass('material-icons');
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
@@ -114,13 +144,14 @@ function createMyRequest(request) {
   if (request.first_name) {
     const name = `${request.first_name} ${request.last_name}`;
   }
+  const requestId = request.id;
 
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
 
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const titleSpan = $('<span>').addClass('title').text(request.title);
+  const titleSpan = $('<span>').addClass('title').text(request.title).attr('id', requestId);
   const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
   const rightItemDiv = $('<div>').addClass('helper-absolute helper-right-item');
   const flexDiv = $('<div>').addClass('helper-flex')
@@ -169,26 +200,20 @@ function createMyRequest(request) {
   return newRequest;
 }
 
-function getUserId() {
-  return $.getJSON('/token')
-  .then((res) => {
-    return res.userId;
-  })
-  .catch((err) => {
-    Materialize.toast(err.responseText, 3000);
-  });
-}
+function deleteResponse(response_id) {
+  const options = {
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    dataTyle: 'json',
+    type: 'DELETE',
+    url: `/responses/${response_id}`
+  }
 
-function getMyRequests(userId) {
-  return $.getJSON(`/users/${userId}/requests`)
-    .then((myRequests) => {
-      return myRequests;
-    });
-}
-
-function getMyResponses(userId) {
-  return $.getJSON(`/users/${userId}/responses`)
-    .then((myResponses) => {
-      return myResponses;
+  $.ajax(options)
+    .done((res) => {
+      Materialize.toast('Your offer to help has been cancelled.', 3000);
+    })
+    .fail(($xhr) => {
+      Materialize.toast($xhr.responseText, 3000);
     });
 }

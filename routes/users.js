@@ -110,7 +110,7 @@ router.get('/users/:id/responses', (req, res, next) => {
   knex('responses')
     .where('responses.user_id', userId)
     .where('requests.completed', false)
-    .select('requests.completed', 'requests.created_at AS request_created_at', 'requests.updated_at AS request_updated_at', 'requests.description', 'requests.id', 'requests.time_estimate', 'requests.timeframe', 'requests.title', 'requests.user_id AS request_user_id', 'responses.user_id AS response_user_id', 'responses.created_at AS response_created_at', 'responses.updated_at', 'users.first_name', 'users.last_name', 'users.email', 'users.tel')
+    .select('requests.completed', 'requests.created_at AS request_created_at', 'requests.updated_at AS request_updated_at', 'requests.description', 'requests.id', 'responses.id AS response_id', 'requests.time_estimate', 'requests.timeframe', 'requests.title', 'requests.user_id AS request_user_id', 'responses.user_id AS response_user_id', 'responses.created_at AS response_created_at', 'responses.updated_at', 'users.first_name', 'users.last_name', 'users.email', 'users.tel')
     .innerJoin('requests', 'requests.id', 'responses.request_id')
     .innerJoin('users', 'requests.user_id', 'users.id')
     .then((rows) => {
