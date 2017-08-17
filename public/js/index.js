@@ -175,6 +175,7 @@ function createMyRequest(request) {
     console.log(`is this the responder\'s name for request ${request.title}?: `, name);
   }
   const requestId = request.id;
+  const hasResponse = responseExists(requestId)
 
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
@@ -195,14 +196,14 @@ function createMyRequest(request) {
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#!');
+
+  // if (hasResponse) {
+  // }
+
   const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
-
   const agreePay = $('.agreePay');
-
   addPaymentListener(requestId);
-
-
-
+  cancelLink.after(payLink);
   // actionLink.append(messageIcon);
   flexColDiv.append(rightIcon);
 
@@ -319,5 +320,13 @@ function checkCookie(){
       if (!user_id) {
         window.location = 'signin.html'
       }
+    })
+}
+
+function responseExists(reqId) {
+  $.getJSON(`/requests/${reqId}/responses`)
+    .then((res) => {
+      console.log(res);
+      return res
     })
 }

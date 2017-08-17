@@ -100,9 +100,24 @@ router.patch('/requests/:id', (req, res, next) => {
     });
 });
 
-// router.get('/requests/:id/responses', authorize, (req, res, next) => {
-//
-// })
+router.get('/requests/:id/responses', (req, res, next) => {
+  const favorId = Number.parseInt(req.params.id);
+
+  if (Number.isNaN(favorId) || favorId < 0) {
+    return next(boom.create(400, 'Bad request.'));
+  }
+
+  knex('responses')
+    .where('request_id', favorId)
+    .first()
+    .then((row) => {
+      if (!row) {
+        res.send(false)
+      } else {
+        res.send(true)
+      }
+    })
+})
 
 //add a new response to a specific request
 router.post('/requests/:id/responses', authorize, (req, res, next) => {
