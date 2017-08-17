@@ -7,13 +7,14 @@ const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collecti
 const myRequests = $('#my-requests');
 const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
 
+// checkCookie();
+getBalance();
+
 getUserId()
   .then(function(userID) {
     return Promise.all([getMyRequests(userID), getMyResponses(userID)])
   })
   .then(function([requests, responses]) {
-    // myResponses.empty();
-    // myRequests.empty();
     console.log(requests, responses);
 
     for (const response of responses){
@@ -45,6 +46,7 @@ $.getJSON(`/requests`)
 function getUserId() {
   return $.getJSON('/token')
   .then((res) => {
+    console.log('this is right: res.userId from getUserId() ', res.userId);
     return res.userId;
   })
   .catch((err) => {
@@ -52,24 +54,24 @@ function getUserId() {
   });
 }
 
-// $('#retract').on('click', 'a', (event) => {
-//   event.preventDefault();
-//
-//   const response_id = event.target.id;
-//   console.log(response_id);
-//
-//   deleteResponse(response_id)
-// })
-
 function addDeleteListener(buttonLink) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
     const response_id = event.target.id;
+    deleteResponse(response_id);
+    window.location = 'index.html'
+  });
+}
 
-    deleteResponse(response_id)
-    })
+  function addCommitListener(buttonLink) {
+    buttonLink.on('click', (event) => {
+      event.preventDefault();
+
+      const request_id = event.target.id;
+      commitToFavor(request_id);
+      window.location = 'index.html'
+    });
   }
-
 
 function getMyRequests(userId) {
   return $.getJSON(`/users/${userId}/requests`)
@@ -90,6 +92,7 @@ function createEntry(request) {
   const committed = request.committed;
   let estimate = request.time_estimate;
   const responseId = request.response_id;
+  const requestId = request.id;
 
   if (estimate === 1) {
     estimate = `${estimate} hour`
@@ -120,13 +123,14 @@ function createEntry(request) {
     actionIcon.text('delete');
 //if user has committed to favor, option to retract offer
   } else if (committed) {
-    buttonLink.text('can\'t make it').attr('href', '#').attr('id', responseId).addClass('retract');
+    buttonLink.text('can\'t make it').addClass('retract').attr('href', '#').attr('id', responseId);
     addDeleteListener(buttonLink);
-    window.location = 'index.html'
+
 //otherwise, favor is unclaimed; option to commit to do it
   } else {
-    buttonLink.text(`help ${request.first_name}`).attr('href', 'index.html').attr('id', 'commit');
-    actionLink.attr('href', '#!');
+    buttonLink.text(`help ${request.first_name}`).attr('href', '#').addClass('commit').attr('id', requestId);
+    addCommitListener(buttonLink);
+    actionLink.attr('href', '#');
     actionIcon.text('message');
   }
 
@@ -215,7 +219,7 @@ function createMyRequest(request) {
 function deleteResponse(response_id) {
   const options = {
     contentType: 'application/json',
-    dataTyle: 'json',
+    dataType: 'json',
     type: 'DELETE',
     url: `/responses/${response_id}`
   }
@@ -228,3 +232,42 @@ function deleteResponse(response_id) {
       Materialize.toast($xhr.responseText, 3000);
     });
 }
+
+function commitToFavor(request_id) {
+  console.log('committing to favor....');
+  const options = {
+    contentType: 'application/json',
+    dataType: 'json',
+    type: 'POST',
+    url: `/requests/${request_id}/responses`
+  }
+
+  $.ajax(options)
+    .done((res) => {
+      Materialize.toast('Great! You\'re committed to this favor.', 3000);
+    })
+    .fail(($xhr) => {
+      Materialize.toast($xhr.responseText, 3000);
+    });
+}
+
+function getBalance(){
+  let balance = $('#balance');
+
+  getUserId()
+    .then((user_id) => {
+      if (!user_id) {
+        balance.hide();
+      }
+      return $.getJSON(`/users/${user_id}/balance`)
+    })
+    .then((res) => {
+      if (res.balance === 1) {
+        balance.text(`${res.balance} hour`);
+      } else {
+        balance.text(`${res.balance} hours`);
+      }
+    })
+}
+
+// function checkCookie()

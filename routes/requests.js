@@ -65,6 +65,7 @@ router.post('/requests', (req, res, next) => {
 });
 
 //add authorize once hooked up to frontend
+//edit an existing request
 router.patch('/requests/:id', (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
 
@@ -100,8 +101,9 @@ router.patch('/requests/:id', (req, res, next) => {
 });
 
 //add a new response to a specific request
-router.post('/requests/:id/responses', (req, res, next) => {
+router.post('/requests/:id/responses', authorize, (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
+  console.log('req.claim ' + req.claim);
 
   if (Number.isNaN(favorId) || favorId < 0) {
     return next(boom.create(400, 'Bad request.'));
@@ -116,13 +118,12 @@ router.post('/requests/:id/responses', (req, res, next) => {
       }
       return knex('responses')
         .insert({
-          // user_id: req.claim.userId,
-          user_id: req.body.userId,
+          user_id: req.claim.userId,
+          // user_id: req.body.userId,
           request_id: favorId
         }, '*');
     })
     .then((response) => {
-      console.log('response', response, 'response[0]', response[0]);
       res.send(response)
     })
     .catch((err) => {
@@ -164,29 +165,6 @@ router.delete('/requests/:id', (req, res, next) => {
         return next(boom.create(500, 'Internal server error.'))
       });
 });
-
-//find responses to a favor request with id '/:id'--if array.length === 0, then request is active, with no associated responses
-// router.get('/requests/:id/responses', (req, res, next) => {
-//   const favorId = Number.parseInt(req.params.id);
-//
-//   if (Number.isNaN(favorId) || favorId < 0) {
-//     return next(boom.create(404, 'Not found.'));
-//   }
-//
-//   knex('responses')
-//     .where('request_id', favorId)
-//     .first()
-//     .then((row) => {
-//       if (!row) {
-//         res.send('active');
-//       }
-//       res.send(row);
-//     })
-//     .catch((err) => {
-//       return next(boom.create(500, 'Internal server error.'));
-//     });
-// });
-
 
 
 

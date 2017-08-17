@@ -23,7 +23,7 @@ const usersList = [
   { id: 3,
   first_name: 'Lily',
   last_name: 'Briscoe',
-  balance: 0,
+  balance: 5,
   email: 'lb@lighthouse.com',
   tel: '2063333333',
   hashed_password: '$2a$12$eqJeBc.Rh2i3GeIDpq1c0.Fv0UUd26/vtziZR7jBvYi.W6P3Bk95W',   // rapture
