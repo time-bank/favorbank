@@ -7,7 +7,13 @@ const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collecti
 const myRequests = $('#my-requests');
 const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
 
-// checkCookie();
+$(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+    $(".button-collapse").sideNav();
+  });
+
+checkCookie();
 getBalance();
 
 getUserId()
@@ -53,6 +59,13 @@ function getUserId() {
     Materialize.toast(err.responseText, 3000);
   });
 }
+
+function addPaymentListener(requestId) {
+  $('.agreePay').on('click', (event) => {
+    sendPayment(requestId);
+  });
+}
+
 
 function addDeleteListener(buttonLink) {
   buttonLink.on('click', (event) => {
@@ -159,6 +172,7 @@ function createEntry(request) {
 function createMyRequest(request) {
   if (request.first_name) {
     const name = `${request.first_name} ${request.last_name}`;
+    console.log(`is this the responder\'s name for request ${request.title}?: `, name);
   }
   const requestId = request.id;
 
@@ -181,7 +195,13 @@ function createMyRequest(request) {
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#!');
-  const payLink = $('<a>').text('pay').attr('href', '#!')
+  const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
+
+  const agreePay = $('.agreePay');
+
+  addPaymentListener(requestId);
+
+
 
   // actionLink.append(messageIcon);
   flexColDiv.append(rightIcon);
@@ -234,7 +254,6 @@ function deleteResponse(response_id) {
 }
 
 function commitToFavor(request_id) {
-  console.log('committing to favor....');
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -243,12 +262,36 @@ function commitToFavor(request_id) {
   }
 
   $.ajax(options)
-    .done((res) => {
+    .then((res) => {
       Materialize.toast('Great! You\'re committed to this favor.', 3000);
     })
-    .fail(($xhr) => {
-      Materialize.toast($xhr.responseText, 3000);
+    .catch((err) => {
+      Materialize.toast(err.responseText, 3000);
     });
+}
+
+function sendPayment(reqId) {
+  const actualHours = $('.actualHours').val();
+
+  getUserId()
+    .then((reqUserId) => {
+      const options = {
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({ actualHours }),
+        type: 'PATCH',
+        url: `/users/${reqUserId}/requests/${reqId}`
+      }
+      return $.ajax(options)
+    })
+    .then((res) => {
+      Materialize.toast(res, 3000);
+      // setTimeout(changeWindows('index.html'));
+
+    })
+    .catch((err) => {
+      Materialize.toast(err.responseText, 3000)
+    })
 }
 
 function getBalance(){
@@ -270,4 +313,11 @@ function getBalance(){
     })
 }
 
-// function checkCookie()
+function checkCookie(){
+  getUserId()
+    .then((user_id) => {
+      if (!user_id) {
+        window.location = 'signin.html'
+      }
+    })
+}
