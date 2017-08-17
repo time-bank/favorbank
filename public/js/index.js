@@ -133,7 +133,7 @@ function createEntry(request) {
 
 //if own request, options to edit or delete
   if (request.isSelf) {
-    buttonLink.text('edit').attr('href', 'favor.html');
+    buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
     actionLink.attr('href', '#!');
     actionIcon.text('delete');
 //if user has committed to favor, option to retract offer

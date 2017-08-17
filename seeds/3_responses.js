@@ -19,29 +19,7 @@ const responsesList = [
     user_id: 3,
     created_at: new Date('2017-08-15 14:26:16 UTC'),
     updated_at: new Date('2017-08-15 14:26:16 UTC')
-  },
-  {
-    id: 2,
-    request_id: 2,
-    user_id: 1,
-    created_at: new Date('2017-08-12 14:26:16 UTC'),
-    updated_at: new Date('2017-08-12 14:26:16 UTC')
-  },
-  {
-    id: 2,
-    request_id: 2,
-    user_id: 1,
-    created_at: new Date('2017-08-12 14:26:16 UTC'),
-    updated_at: new Date('2017-08-12 14:26:16 UTC')
-  },
-  {
-    id: 2,
-    request_id: 2,
-    user_id: 1,
-    created_at: new Date('2017-08-12 14:26:16 UTC'),
-    updated_at: new Date('2017-08-12 14:26:16 UTC')
-  },
-  
+  }
 ]
 
 exports.seed = function(knex, Promise) {

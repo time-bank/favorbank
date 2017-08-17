@@ -18,15 +18,7 @@ if (window.location.search.split('=').length === 2) {
   autofillReview();
 }
 
-// $('#modalFavorSubmit').on('submit', (event) => {
-//
-//   event.preventDefault();
-//   const favor = createFavor();
-//   if (favor) {
-//     sendFavor(favor)
-//   }
-// });
-/*
+/* this is done by the modal's materialize javascript now.
 $('#modalFavorCancel').on('click', (event) => {
   window.location.href = index.html;
 })
@@ -74,6 +66,7 @@ function createFavor() {
 }
 
 function autofillReview() {
+  console.log("entered autofill")
   $.getJSON(`requests/${favorId}`)
     .then((favor) => {
       $('#title').val(favor.title);
