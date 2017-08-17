@@ -8,20 +8,34 @@ const {
   camelizeKeys,
   decamelizeKeys
 } = require('humps');
+const jwt = require('jsonwebtoken');
+
 const router = express.Router();
 
+const authorize = function(req, res, next) {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
+    if (err) {
+      return next(boom.create(401, 'Unauthorized.'));
+    }
+    req.claim = payload;
+    next();
+  });
+};
+
 //return a user's account balance
-router.get('/users/:id/balance', (req, res, next) => {
+router.get('/users/:id/balance', authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
+  console.log('userId ' + userId);
 
   if (Number.isNaN(userId) || userId < 0) {
+    console.log('weird userId');
     return next(boom.create(404, 'Not found.'));
   }
 
   //check is self--req.claim.userId needs to equal :id
-  // if (userId !== req.claim.userId) {
-  //   return next(boom.create(500, 'Internal server error.'))
-  // }
+  if (userId !== req.claim.userId) {
+    return next(boom.create(500, 'Internal server error.'))
+  }
 
   knex('users')
     .where('id', userId)
@@ -100,6 +114,7 @@ router.get('/users/:id/requests', (req, res, next) => {
     });
 });
 
+//get all of the favors a user has committed to
 router.get('/users/:id/responses', (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
