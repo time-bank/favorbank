@@ -100,6 +100,10 @@ router.patch('/requests/:id', (req, res, next) => {
     });
 });
 
+// router.get('/requests/:id/responses', authorize, (req, res, next) => {
+//
+// })
+
 //add a new response to a specific request
 router.post('/requests/:id/responses', authorize, (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);

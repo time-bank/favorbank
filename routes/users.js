@@ -147,11 +147,16 @@ router.get('/users/:id/responses', (req, res, next) => {
 //once favor has been completed, requestUser opts to 'pay' responseUser; 'payment' will only go through when actualHours get entered into pop-up. Request is updated so that 'request.completed' equals true, and both users' account balances are updated. PATCH req body requires: { responseId, responseUserId, actualHours }
 router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
   const reqUserId = Number.parseInt(req.params.reqUserId);
-  const resUserId = Number.parseInt(req.body.responseUserId);
+  // const resUserId = Number.parseInt(req.body.responseUserId);
   const reqId = Number.parseInt(req.params.reqId);
   const actualHours = Number.parseInt(req.body.actualHours);
+  let resUserId;
   let reqUserBalance;
   let resUserBalance;
+
+  console.log('reqUserId: ', reqUserId);
+  console.log('reqId: ', reqId);
+  console.log('actualHours: ', actualHours);
 
   if (Number.isNaN(reqUserId) || reqUserId < 0 || Number.isNaN(reqId) || reqId < 0) {
     return next(boom.create(404, 'Not found.'));
@@ -168,8 +173,10 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     .first()
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
+      resUserId = row.user_id;
+      console.log('resUserId :', resUserId);
 
       return knex('requests')
         .where('id', reqId)
@@ -179,7 +186,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     //check that request is not already complete; then update request.completed=true
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
 
       if (row.completed !== false) {
@@ -201,7 +208,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     })
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
 
       reqUserBalance = row.balance - actualHours;
@@ -220,7 +227,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     })
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
 
       resUserBalance = row.balance + actualHours;
@@ -235,6 +242,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
       res.send('Account balances have been updated.');
     })
     .catch((err) => {
+      console.log(err);
       return next(err);
     });
 });
