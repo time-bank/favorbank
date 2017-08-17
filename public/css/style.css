@@ -216,6 +216,38 @@
   margin-left: 24px;
 }
 
+.modal-header-text {
+  /*vertical-align: middle;*/
+  /*align-items: center;*/
+  /*align-items: center;*/
+  /*padding: 24px;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+  color: white;
+  align-self: center;
+  text-transform: uppercase;
+}
+
+/*
+.modal-header {
+    background-color: #26a69a;
+}
+*/
+
+input[type=number]:not(.browser-default).helper-center-input {
+    text-rendering: auto;
+    color: initial;
+    text-indent: 0px;
+    text-align:center;
+    padding-bottom: 4px;
+    margin: 0;
+    /*font-size: 4rem;*/
+    font: 4rem system-ui;
+}
+
+.btn-flat {
+  color: #2196F3;
+}
 
 /*body {
   display: flex;
