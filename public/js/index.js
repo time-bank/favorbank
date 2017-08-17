@@ -46,7 +46,6 @@ $.getJSON(`/requests`)
     Materialize.toast(err.responseText, 3000);
 });
 
-
 function createEntry(request) {
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
@@ -130,7 +129,6 @@ function createMyRequest(request) {
   const flexColDiv = $('<div>').addClass('helper-flex-col');
   const rightIcon = $('<i>').addClass('circle-right material-icons').text('account_circle');
 
-//all of above (only) in headerDiv
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
   const descriptionDiv = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(request.description);
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
@@ -155,10 +153,6 @@ function createMyRequest(request) {
   avatarDiv.append(timeframeP);
   avatarDiv.append(rightItemDiv);
 
-// ??
-  // actionLink.append(actionIcon);
-  // avatarDiv.append(actionLink);
-
   headerDiv.append(avatarDiv);
 
   actionDiv.append(cancelLink);
@@ -174,52 +168,6 @@ function createMyRequest(request) {
 
   return newRequest;
 }
-
-// <div class="collapsible-header">
-  // <div class="collection-item avatar helper-position-relative">
-    // <i class="circle material-icons">account_circle</i>
-    // <span class="title">Title of Favor Text</span>
-    // <p>Name</p>
-    // <p class="helper-absolute">Time From - Time To</p>
-
-    // <div class="helper-absolute helper-right-item">
-      // <div class="helper-flex">
-      //   <i class="material-icons helper-icon">message</i>
-      //   <div class="helper-flex-col">
-      //     <i class="circle-right material-icons">account_circle</i>
-//
-//           <!------------------------------------------------------------------------->
-//
-//           <!--what user sees when nobody has volunteered to do this favor for them-->
-//
-//           <!--what user sees when somebody has volunteered to do this favor for them-->
-//           <p>Helper Name</p>
-//
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// </div>
-//
-// <div class="collapsible-body">
-//   <div class="collection collection-item avatar helper-collapsible-body">
-//     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-//     <div class="helper-flex-collapse">
-//       <div class="collapse-content-button-text">
-//         <a href="#">cancel this request</a>
-//         <a href="#">pay</a>
-//       </div>
-//     </div>
-//   </div>
-// </div>
-// </li>
-
-
-
-
-
-
-
 
 function getUserId() {
   return $.getJSON('/token')
