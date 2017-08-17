@@ -26,55 +26,42 @@
   <header>
 
     <!-- <div class="navbar-fixed"> -->
-    <nav class="nav-extended">
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Logo</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-
-        <ul class="side-nav" id="mobile-demo">
-
-          <li><a href="signin.html">sign out</a></li>
-
-
-        </ul>
-
-      </div>
-      <div class="nav-content">
-        <ul class="tabs tabs-transparent">
-          <li class="tab"><a href="#test1">active requests</a></li>
-          <li class="tab"><a class="active" href="#test2">your dashboard</a></li>
-        </ul>
-      </div>
-    </nav>
-    <!-- </div> -->
-
+     <nav class="nav-extended">
+       <div class="nav-wrapper">
+         <a href="#" class="brand-logo">Logo</a>
+         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+         <ul class="side-nav" id="mobile-demo">
+           <li><a href="signin.html">Sign in</a></li>
+\         </ul>
+       </div>
+       <div class="nav-content">
+         <ul class="tabs tabs-transparent">
+           <li class="tab"><a href="#active-requests">active requests</a></li>
+           <li class="tab"><a class="active" href="#dashboard">your dashboard</a></li>
+         </ul>
+       </div>
+     </nav>
+   <!-- </div> -->
   </header>
 
   <main>
 
-    <div class="col s12">
-      <div id="active-requests" class="container">
-        <!--- public listing list-item elements--->
-      </div>
-    </div>
-
-
-    <div id="dashboard" class="col s12">
-      <div class="container">
-        <p class="helper-dashboard-text-header">Favors you're doing</p>
-        <div id="my-responses">
-
-        </div>
-
-        <p class="helper-dashboard-text-header">Favors you've asked for</p>
-        <div id="my-requests">
-
-        </div>
-      </div>
-
-
-    </div>
-  </main>
+   <div class="col s12">
+     <div id="active-requests" class="container">
+       <!--- public listing list-item elements--->
+     </div>
+   </div>
+   <div id="dashboard" class="col s12">
+     <div class="container">
+       <p class="helper-dashboard-text-header">Favors you're doing</p>
+       <div id="my-responses">
+       </div>
+       <p class="helper-dashboard-text-header">Favors you've asked for</p>
+       <div id="my-requests">
+       </div>
+     </div>
+   </div>
+ </main>
 
   <footer>
     <div class="footer-fixed center-align">
@@ -95,7 +82,7 @@
       <div class="row">
         <div class="col s3"></div>
         <div class="input-field col s6">
-          <input placeholder="0" id="title" type="number" class="helper-center-input validate actualHours">
+          <input placeholder="0" id="title" type="number" class="helper-center-input validate">
           <label for="title">Hours</label>
         </div>
         <div class="col s3"></div>
@@ -103,8 +90,8 @@
     </form>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat cancelPay">Cancel</a>
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat agreePay">Agree</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
   </div>
 </div>
 
