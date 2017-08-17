@@ -43,6 +43,27 @@ router.get('/requests', authorize, (req, res, next) => {
     });
 });
 
+//check whether
+router.get('/requests/:id', (req, res, next) => {
+  const favorId = Number.parseInt(req.params.id);
+
+  if (Number.isNaN(favorId) || favorId < 0) {
+    return next(boom.create(404, 'Not found.'));
+  }
+
+  knex('requests')
+    .where('id', favorId)
+    .first()
+    .then((row) => {
+      res.send(row)
+    })
+    .catch((err) => {
+      console.log(err);
+      return next(boom.create(500, 'Internal server error.'))
+    });
+
+})
+
 //post new favors from favor.html form
 //add authorize (and test) once hooked up to frontend
 router.post('/requests', (req, res, next) => {
