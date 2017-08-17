@@ -78,15 +78,25 @@ function addDeleteListener(buttonLink) {
   });
 }
 
-  function addCommitListener(buttonLink) {
-    buttonLink.on('click', (event) => {
-      event.preventDefault();
+function addCancelFavorListener(cancelLink) {
+  cancelLink.on('click', (event) => {
+    event.preventDefault();
 
-      const request_id = event.target.id;
-      commitToFavor(request_id);
-      window.location = 'index.html'
-    });
-  }
+    const request_id = event.target.id
+    cancelFavor(request_id);
+    window.location = 'index.html'
+  })
+}
+
+function addCommitListener(buttonLink) {
+  buttonLink.on('click', (event) => {
+    event.preventDefault();
+
+    const request_id = event.target.id;
+    commitToFavor(request_id);
+    window.location = 'index.html'
+  });
+}
 
 function getMyRequests(userId) {
   return $.getJSON(`/users/${userId}/requests`)
@@ -196,12 +206,10 @@ function createMyRequest(request) {
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#!');
 
+  addCancelFavorListener(cancelLink);
   responseExists(requestId)
     .then((res) => {
-      console.log(res);
-      console.log(requestId);
       if (res) {
-        console.log('there is a response');
         const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
         const agreePay = $('.agreePay');
         addPaymentListener(requestId);
@@ -275,6 +283,20 @@ function commitToFavor(request_id) {
     .catch((err) => {
       Materialize.toast(err.responseText, 3000);
     });
+}
+
+function cancelFavor(request_id) {
+  const options = {
+    contentType: 'application/json',
+    dataType: 'json',
+    type: 'DELETE',
+    url: `/requests/${request_id}`
+  }
+
+  // $.ajax(options)
+  //   .then((res) => {
+  //     Materialize.toast('Your favor has been canceled.')
+  //   })
 }
 
 function sendPayment(reqId) {
