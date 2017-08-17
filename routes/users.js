@@ -173,7 +173,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     .first()
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
       resUserId = row.user_id;
       console.log('resUserId :', resUserId);
@@ -186,7 +186,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     //check that request is not already complete; then update request.completed=true
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
 
       if (row.completed !== false) {
@@ -208,7 +208,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     })
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
 
       reqUserBalance = row.balance - actualHours;
@@ -227,7 +227,7 @@ router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
     })
     .then((row) => {
       if (!row) {
-        return next(boom.create(404, 'Not found.'));
+        throw boom.create(404, 'Not found.');
       }
 
       resUserBalance = row.balance + actualHours;
