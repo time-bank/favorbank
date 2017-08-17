@@ -1,5 +1,14 @@
 'use strict';
 
+$('#modalFavorSubmit').on('click', (event) => {
+  console.log("hello")
+  event.preventDefault();
+  const favor = createFavor();
+  if (favor) {
+    sendFavor(favor)
+  }
+})
+
 let favorId;
 
 
@@ -9,22 +18,25 @@ if (window.location.search.split('=').length === 2) {
   autofillReview();
 }
 
-$('.submit').on('click', (event) => {
-  event.preventDefault();
-  const favor = createFavor();
-  if (favor) {
-    sendFavor(favor)
-  }
-});
-
-$('.cancel').on('click', (event) => {
+// $('#modalFavorSubmit').on('submit', (event) => {
+//
+//   event.preventDefault();
+//   const favor = createFavor();
+//   if (favor) {
+//     sendFavor(favor)
+//   }
+// });
+/*
+$('#modalFavorCancel').on('click', (event) => {
   window.location.href = index.html;
 })
+*/
+
 
 function createFavor() {
-  const title = $('#title').val().trim();
+  const title = $('#favorTitle').val().trim();
   const timeframe = $('#timeframe').val().trim();
-  const timeEstimate = $('#estimate').val().trim();
+  const timeEstimate = $('#estimate').val()
   const description = $('#description').val().trim();
   const userId = 2;
 
@@ -34,7 +46,9 @@ function createFavor() {
     timeEstimate,
     description,
     userId
-    };
+  };
+
+  console.log(data);
 
   if (!title) {
     Materialize.toast('Your favor request needs a title.', 3000);
@@ -92,8 +106,8 @@ function sendFavor(data) {
       setTimeout(changeWindows('index.html'), 3000);
     })
     .fail(($xhr) => {
-        Materialize.toast($xhr.responseText, 3000);
-      });
+      Materialize.toast($xhr.responseText, 3000);
+    });
 }
 
 function changeWindows(url) {

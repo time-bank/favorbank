@@ -19,6 +19,7 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/style.css">
   <title>Favor Bank</title>
+  <script defer src="js/favor.js" charset="utf-8"></script>
   <script defer src="js/index.js" charset="utf-8"></script>
 </head>
 
@@ -78,7 +79,7 @@
 <div id="modalPay" class="modal">
   <div class="modal-content">
     <h4>Pay Username</h4>
-    <form id="form" class="col s12">
+    <form id="formPay" class="col s12">
       <div class="row">
         <div class="col s3"></div>
         <div class="input-field col s6">
@@ -102,23 +103,23 @@
     <form id="formFavor">
       <div class="row helper-zeromargin">
         <div class="input-field col s12">
-          <input id="titleFavor" type="text" class="helper-zeromargin-input validate">
-          <label for="title">Title</label>
+          <input id="favorTitle" type="text" class="helper-zeromargin-input validate">
+          <label for="favorTitle">Title</label>
         </div>
       </div>
       <div class="row helper-zeromargin">
         <div class="col s12">
           Estimated:
           <div class="input-field inline">
-            <input id="estimated" type="number" class="col s4 helper-zeromargin-input validate">
-            <label for="estimated" data-error="wrong" data-success="right">Hours</label>
+            <input id="estimate" type="number" class="col s4 helper-zeromargin-input validate">
+            <label for="estimate" data-error="wrong" data-success="right">Hours</label>
           </div>
         </div>
       </div>
       <div class="row helper-zeromargin">
         <div class="input-field col s12">
-          <input id="date" type="text" class="validate">
-          <label for="date">Date</label>
+          <input id="timeframe" type="text" class="validate">
+          <label for="timeframe">Time Frame</label>
         </div>
       </div>
       <div class="row helper-zeromargin">
@@ -134,8 +135,8 @@
     </form>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">cancel</a>
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">agree</a>
+    <a href="#!" id="modalFavorCancel" class="modal-action modal-close waves-effect waves-green btn-flat">cancel</a>
+    <a href="#!" id="modalFavorSubmit" class="modal-action modal-close waves-effect waves-green btn-flat">submit</a>
   </div>
 </div>
 
