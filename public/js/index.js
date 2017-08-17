@@ -52,7 +52,6 @@ $.getJSON(`/requests`)
 function getUserId() {
   return $.getJSON('/token')
   .then((res) => {
-    console.log('this is right: res.userId from getUserId() ', res.userId);
     return res.userId;
   })
   .catch((err) => {
@@ -61,7 +60,10 @@ function getUserId() {
 }
 
 function addPaymentListener(requestId) {
+  console.log($('.agreePay'));
   $('.agreePay').on('click', (event) => {
+
+    console.log('inside addPaymentListener');
     sendPayment(requestId);
   });
 }
@@ -172,11 +174,8 @@ function createEntry(request) {
 function createMyRequest(request) {
   if (request.first_name) {
     const name = `${request.first_name} ${request.last_name}`;
-    console.log(`is this the responder\'s name for request ${request.title}?: `, name);
   }
   const requestId = request.id;
-  const hasResponse = responseExists(requestId)
-
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
 
@@ -197,13 +196,20 @@ function createMyRequest(request) {
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#!');
 
-  // if (hasResponse) {
-  // }
+  responseExists(requestId)
+    .then((res) => {
+      console.log(res);
+      console.log(requestId);
+      if (res) {
+        console.log('there is a response');
+        const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
+        const agreePay = $('.agreePay');
+        addPaymentListener(requestId);
+        cancelLink.after(payLink);
+      }
+    })
 
-  const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
-  const agreePay = $('.agreePay');
-  addPaymentListener(requestId);
-  cancelLink.after(payLink);
+
   // actionLink.append(messageIcon);
   flexColDiv.append(rightIcon);
 
@@ -224,7 +230,7 @@ function createMyRequest(request) {
   headerDiv.append(avatarDiv);
 
   actionDiv.append(cancelLink);
-  actionDiv.append(payLink);
+  // actionDiv.append(payLink);
 
   flexCollapseDiv.append(actionDiv);
 
@@ -273,6 +279,7 @@ function commitToFavor(request_id) {
 
 function sendPayment(reqId) {
   const actualHours = $('.actualHours').val();
+  console.log(actualHours);
 
   getUserId()
     .then((reqUserId) => {
@@ -324,7 +331,7 @@ function checkCookie(){
 }
 
 function responseExists(reqId) {
-  $.getJSON(`/requests/${reqId}/responses`)
+  return $.getJSON(`/requests/${reqId}/responses`)
     .then((res) => {
       console.log(res);
       return res
