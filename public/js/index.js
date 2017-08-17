@@ -52,14 +52,24 @@ function getUserId() {
   });
 }
 
-$('#retract').on('click', (event) => {
-  event.preventDefault();
+// $('#retract').on('click', 'a', (event) => {
+//   event.preventDefault();
+//
+//   const response_id = event.target.id;
+//   console.log(response_id);
+//
+//   deleteResponse(response_id)
+// })
 
-  const response_id = event.target.id;
-  console.log(response_id);
+function addDeleteListener(buttonLink) {
+  buttonLink.on('click', (event) => {
+    event.preventDefault();
+    const response_id = event.target.id;
 
-  deleteResponse(response_id)
-})
+    deleteResponse(response_id)
+    })
+  }
+
 
 function getMyRequests(userId) {
   return $.getJSON(`/users/${userId}/requests`)
@@ -91,7 +101,7 @@ function createEntry(request) {
   const headerDiv = $('<div>').addClass('collapsible-header');
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const titleSpan = $('<span>').addClass('title').text(request.title).attr('id', responseId);
+  const titleSpan = $('<span>').addClass('title').text(request.title);
   const nameP = $('<p>').text(name);
   const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
   const estimateP = $('<p>').addClass('helper-absolute helper-lower-right-item').text(estimate);
@@ -110,10 +120,12 @@ function createEntry(request) {
     actionIcon.text('delete');
 //if user has committed to favor, option to retract offer
   } else if (committed) {
-    buttonLink.text('can\'t make it').attr('href', 'index.html', 'id', 'retract');
+    buttonLink.text('can\'t make it').attr('href', '#').attr('id', responseId).addClass('retract');
+    addDeleteListener(buttonLink);
+    window.location = 'index.html'
 //otherwise, favor is unclaimed; option to commit to do it
   } else {
-    buttonLink.text(`help ${request.first_name}`).attr('href', 'index.html', 'id', 'commit');
+    buttonLink.text(`help ${request.first_name}`).attr('href', 'index.html').attr('id', 'commit');
     actionLink.attr('href', '#!');
     actionIcon.text('message');
   }
@@ -203,7 +215,6 @@ function createMyRequest(request) {
 function deleteResponse(response_id) {
   const options = {
     contentType: 'application/json',
-    data: JSON.stringify(data),
     dataTyle: 'json',
     type: 'DELETE',
     url: `/responses/${response_id}`
