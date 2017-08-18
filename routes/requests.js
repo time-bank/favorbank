@@ -43,7 +43,7 @@ router.get('/requests', authorize, (req, res, next) => {
     });
 });
 
-//check whether
+//check whether a request exists for a given id
 router.get('/requests/:id', (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
 
@@ -65,7 +65,6 @@ router.get('/requests/:id', (req, res, next) => {
 })
 
 //post new favors from favor.html form
-//add authorize (and test) once hooked up to frontend
 router.post('/requests', authorize, (req, res, next) => {
   return knex('requests')
     .insert({
@@ -84,9 +83,8 @@ router.post('/requests', authorize, (req, res, next) => {
     });
 });
 
-//add authorize once hooked up to frontend
 //edit an existing request
-router.patch('/requests/:id', (req, res, next) => {
+router.patch('/requests/:id', authorize, (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
 
   if (Number.isNaN(favorId) || favorId < 0) {
@@ -129,12 +127,19 @@ router.get('/requests/:id/responses', (req, res, next) => {
 
   knex('responses')
     .where('request_id', favorId)
+    .innerJoin('users', 'users.id', 'responses.user_id')
+    .select('users.first_name')
     .first()
     .then((row) => {
       if (!row) {
-        res.send(false)
+        res.send({
+          isResponse: false
+        })
       } else {
-        res.send(true)
+        res.send({
+          isResponse: true,
+          resName: row.first_name
+        })
       }
     })
 })
@@ -172,7 +177,7 @@ router.post('/requests/:id/responses', authorize, (req, res, next) => {
 })
 
 //delete a request at user initiative
-router.delete('/requests/:id', (req, res, next) => {
+router.delete('/requests/:id', authorize, (req, res, next) => {
   const favorId = Number.parseInt(req.params.id);
 
   if (Number.isNaN(favorId) || favorId < 0) {

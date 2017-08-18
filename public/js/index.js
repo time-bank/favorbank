@@ -67,6 +67,13 @@ function addPaymentListener(requestId) {
   });
 }
 
+//same idea as addPaymentListener?
+// function addUpdateRequestListener(requestId) {
+//   $('.agreePay').on('click', (event) => {
+//
+//     sendPayment(requestId);
+//   });
+// }
 
 function addRetractListener(buttonLink) {
   buttonLink.on('click', (event) => {
@@ -334,7 +341,6 @@ function commitToFavor(request_id) {
 
 function cancelFavor(request_id) {
   console.log(request_id);
-
 
   const options = {
     contentType: 'application/json',

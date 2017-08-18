@@ -2,7 +2,7 @@ const usersList = [
   { id: 1,
   first_name: 'Alfred',
   last_name: 'Prufrock',
-  balance: 0,
+  balance: 8,
   email: 'ajp@lovesong.com',
   tel: '2061111111',
   hashed_password: '$2a$12$rPCLzGBfiFnoTMwgvC0A/e259BWuYVXhtfSn/MmjTrNc1C0ENGw1K',  //theydonotsing
@@ -13,7 +13,7 @@ const usersList = [
   id: 2,
   first_name: 'Samuel',
   last_name: 'Beckett',
-  balance: 0,
+  balance: 6,
   email: 'waiting@godot.com',
   tel: '2062222222',
   hashed_password: '$2a$12$oEnJjrb2XsPOTGhrn0o21.Ck5qiOXF4OIXes1rjCrbQJlRlSwoTVW',// failbetter
