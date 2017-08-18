@@ -81,7 +81,8 @@ function addDeleteListener(buttonLink) {
 function addEditListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     console.log(requestId)
-    editRequest(requestId)
+    let response = editRequest(requestId)
+    console.log(response)
     //event.preventDefault();
     //const response_id = event.target.id;
     //deleteResponse(response_id);

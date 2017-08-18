@@ -11,12 +11,12 @@ $('#modalFavorSubmit').on('click', (event) => {
 
 let favorId;
 
-
-
-if (window.location.search.split('=').length === 2) {
-  favorId = window.location.search.split('=')[1];
-  autofillReview();
-}
+//
+//
+// if (window.location.search.split('=').length === 2) {
+//   favorId = window.location.search.split('=')[1];
+//   autofillReview();
+// }
 
 /* this is done by the modal's materialize javascript now.
 $('#modalFavorCancel').on('click', (event) => {
@@ -30,14 +30,14 @@ function createFavor() {
   const timeframe = $('#timeframe').val().trim();
   const timeEstimate = $('#estimate').val()
   const description = $('#description').val().trim();
-  const userId = 2;
+
 
   const data = {
     title,
     timeframe,
     timeEstimate,
     description,
-    userId
+
   };
 
   console.log(data);
@@ -65,16 +65,16 @@ function createFavor() {
   return data
 }
 
-function autofillReview() {
-  console.log("entered autofill")
-  $.getJSON(`requests/${favorId}`)
-    .then((favor) => {
-      $('#title').val(favor.title);
-      $('#estimate').val(favor.time_estimate);
-      $('#timeframe').val(favor.timeframe);
-      $('#description').val(favor.description)
-    })
-}
+// function autofillReview() {
+//   console.log("entered autofill")
+//   $.getJSON(`requests/${favorId}`)
+//     .then((favor) => {
+//       $('#title').val(favor.title);
+//       $('#estimate').val(favor.time_estimate);
+//       $('#timeframe').val(favor.timeframe);
+//       $('#description').val(favor.description)
+//     })
+// }
 
 function sendFavor(data) {
   const options = {
