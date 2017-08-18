@@ -1,11 +1,21 @@
 /*overrides*/
+.nav-extended {
+  z-index: 998;
+  background-color: #26a69a;
+}
 
+.tabs.tabs-transparent .tab a, .tabs.tabs-transparent .tab.disabled a, .tabs.tabs-transparent .tab.disabled a:hover {
+    color: #004d40;
+}
+
+.collection-item p {
+  color: #9e9e9e;
+}
 .container {
   margin: 0 auto;
   max-width: 1280px;
   width: 100%;
 }
-
 /* collapsable content */
 .collapse-content-button-text a {
   color: #ffab40;
@@ -48,6 +58,18 @@
     border-top: 0;
     padding: 0px;
 }
+/*
+.collapsible-body-lowerlist:nth-last-child(1) {
+    padding-bottom: 32px;
+}
+*/
+.collection .collection-item {
+    background-color: #fff;
+    line-height: 1.5rem;
+    padding: 10px 20px;
+    margin: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
 
 .collapsible {
     border-top: 0;
@@ -59,7 +81,7 @@
 .navbar-fixed {
     position: relative;
     height: 104px;
-    z-index: 997;
+    z-index: 999;
 }
 
 .collection .collection-item.avatar i.circle-right {
@@ -157,9 +179,19 @@
   align-items: center;
 }
 
-.helper-collection-ul:nth-last-child(1) {
+.helper-collection-upperlist-ul:nth-last-child(1) {
+  border-bottom: 0;
+  padding-bottom: 12px;
+}
+
+.helper-collection-lowerlist-ul:nth-last-child(1) {
   border-bottom: 0;
   padding-bottom: 84px;
+}
+
+.helper-collection-lowerlist-collapsible-ul:nth-last-child(4) {
+  border-bottom: 0;
+  padding-bottom: 28px;
 }
 
 .helper-no-border-top {
@@ -178,7 +210,7 @@
     justify-content: center;
     width: 100%;
     position: relative;
-    background-color: #26a69a; /*#ee6e73;*/
+    background-color: #004d40; /*#ee6e73;*/
     height: 84px;
     position: fixed;
     z-index: 997;
@@ -193,6 +225,7 @@
   /*padding: 24px;*/
   /*align-items: center;*/
   /*justify-content: center;*/
+  color: #a7ffeb;
   align-self: center;
   text-transform: uppercase;
 }

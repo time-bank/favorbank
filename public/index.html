@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/style.css">
-  <title>Favor Bank</title>
+  <title>FavorBank</title>
   <script defer src="js/favor.js" charset="utf-8"></script>
   <script defer src="js/index.js" charset="utf-8"></script>
 </head>
@@ -26,10 +26,10 @@
 <body>
   <header>
 
-    <!-- <div class="navbar-fixed"> -->
+    <div class="navbar-fixed">
      <nav class="nav-extended">
        <div class="nav-wrapper">
-         <a href="#" class="brand-logo">Logo</a>
+         <a href="#" class="brand-logo">FavorBank</a>
          <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
          <ul class="side-nav" id="mobile-demo">
            <li><a href="signin.html">Sign in</a></li>
@@ -42,7 +42,7 @@
          </ul>
        </div>
      </nav>
-   <!-- </div> -->
+   </div>
   </header>
 
   <main>
@@ -54,10 +54,10 @@
    </div>
    <div id="dashboard" class="col s12">
      <div class="container">
-       <p class="helper-dashboard-text-header">Favors you're doing</p>
+       <p class="helper-dashboard-text-header grey-text">Favors you're doing</p>
        <div id="my-responses">
        </div>
-       <p class="helper-dashboard-text-header">Favors you've asked for</p>
+       <p class="helper-dashboard-text-header grey-text">Favors you've asked for</p>
        <div id="my-requests">
        </div>
      </div>
@@ -67,9 +67,9 @@
   <footer>
     <div class="footer-fixed center-align">
       <div class="helper-position-fab">
-        <a class="modal-trigger btn-floating btn-large waves-effect waves-light cyan blue accent-3" href="#modalFavor"><i class="material-icons">add</i></a>
+        <a class="modal-trigger btn-floating btn-large waves-effect waves-light yellow accent-4" href="#modalFavor"><i class="material-icons">add</i></a>
       </div>
-      <h5 id="balance" class="white-text footer-text">0 hours</h5>
+      <h5 id="balance" class="footer-text">0 hours</h5>
       <!-- <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p> -->
     </div>
   </footer>
@@ -104,7 +104,7 @@
       <div class="row helper-zeromargin">
         <div class="input-field col s12">
           <input id="favorTitle" type="text" class="helper-zeromargin-input validate">
-          <label for="favorTitle">Title</label>
+          <label id="labelTitle" for="favorTitle">Title</label>
         </div>
       </div>
       <div class="row helper-zeromargin">
@@ -112,14 +112,14 @@
           Estimated:
           <div class="input-field inline">
             <input id="estimate" type="number" class="col s4 helper-zeromargin-input validate">
-            <label for="estimate" data-error="wrong" data-success="right">Hours</label>
+            <label id="labelEstimate" for="estimate" data-error="wrong" data-success="right">Hours</label>
           </div>
         </div>
       </div>
       <div class="row helper-zeromargin">
         <div class="input-field col s12">
           <input id="timeframe" type="text" class="validate">
-          <label for="timeframe">Time Frame</label>
+          <label id="labelTimeframe" for="timeframe">Time Frame</label>
         </div>
       </div>
       <div class="row helper-zeromargin">
@@ -127,7 +127,7 @@
           <div class="row">
             <div class="input-field col s12">
               <textarea id="description" class="materialize-textarea"></textarea>
-              <label for="description">Description</label>
+              <label id="labelDescription" for="description">Description</label>
             </div>
           </div>
         </form>

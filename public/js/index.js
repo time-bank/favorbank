@@ -3,9 +3,9 @@
 const activeRequests = $('#active-requests');
 const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
 const myResponses = $('#my-responses');
-const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
+const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-upperlist-ul').attr("data-collapsible", "accordion").collapsible();
 const myRequests = $('#my-requests');
-const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
+const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-lowerlist-ul collapisble-body').attr("data-collapsible", "accordion").collapsible();
 
 $(document).ready(function(){
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -80,8 +80,20 @@ function addRetractListener(buttonLink) {
 function addEditListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     console.log(requestId)
-    let response = editRequest(requestId)
-    console.log(response)
+    editRequest(requestId)
+      .then((requestToEdit) => {
+        console.log("start populating modal with this response: ",requestToEdit);
+        // Materialize.updateTextFields();
+        $('#favorTitle').val(requestToEdit.title);
+        $('#labelTitle').addClass('active');
+        $('#estimate').val(requestToEdit.time_estimate);
+        $('#labelEstimate').addClass('active');
+        $('#timeframe').val(requestToEdit.timeframe);
+        $('#labelTimeframe').addClass('active');
+        $('#description').val(requestToEdit.description);
+        $('#labelDescription').addClass('active');
+      })
+    //console.log("check this: ", response)
     //event.preventDefault();
     //const response_id = event.target.id;
     //deleteResponse(response_id);
@@ -216,7 +228,7 @@ function createMyRequest(request) {
   const rightIcon = $('<i>').addClass('circle-right material-icons').text('account_circle');
 
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const descriptionDiv = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(request.description);
+  const descriptionDiv = $('<div>').addClass('collection collection-item avatar collection .collection-item').text(request.description);
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#').attr('id', requestId);
@@ -288,14 +300,17 @@ function editRequest(request_id) {
     contentType: 'application/json',
     dataType: 'json',
     type: 'GET',
-    url: `/requests/${response_id}`
+    url: `/requests/${request_id}`
   }
 
-  $.ajax(options)
+    return $.ajax(options)
     .done((res) => {
-      Materialize.toast('Your offer to help has been cancelled.', 3000);
+      console.log("editRequest res", res)
+      Materialize.toast('Your favor request has been updated.', 3000);
+      return res;
     })
     .fail(($xhr) => {
+      console.log("editRequest fail")
       Materialize.toast($xhr.responseText, 3000);
     });
 }
