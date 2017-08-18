@@ -155,17 +155,11 @@ function createEntry(request) {
 
 //if own request, options to edit or delete
   if (request.isSelf) {
-<<<<<<< HEAD
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
-    actionLink.attr('href', '#!');
+    actionLink.attr('href', '#!').attr('id', 'trash');
     actionIcon.text('delete');
     //add event listener to edit link button //requestId
     addEditListener(buttonLink, requestId);
-=======
-    buttonLink.text('edit').attr('href', 'favor.html');
-    actionLink.attr('href', '#!').attr('id', 'trash');
-    actionIcon.text('delete');
->>>>>>> 275d3b7400df81ad5c9a0f25f5988360203873f1
 
 //if user has committed to favor, option to retract offer
   } else if (committed) {
