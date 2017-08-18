@@ -44,7 +44,6 @@ function createFavor() {
     timeframe,
     timeEstimate,
     description,
-    userId
   };
 
   console.log(data);

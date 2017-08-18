@@ -66,15 +66,14 @@ router.get('/requests/:id', (req, res, next) => {
 
 //post new favors from favor.html form
 //add authorize (and test) once hooked up to frontend
-router.post('/requests', (req, res, next) => {
+router.post('/requests', authorize, (req, res, next) => {
   return knex('requests')
     .insert({
       title: req.body.title,
       description: req.body.description,
       time_estimate: req.body.timeEstimate,
       timeframe: req.body.timeframe,
-      user_id: req.body.userId
-      // user_id: req.claim.userId
+      user_id: req.claim.userId
     }, '*')
     .then((favor) => {
       res.send(favor[0])

@@ -68,11 +68,11 @@ function addPaymentListener(requestId) {
 }
 
 
-function addDeleteListener(buttonLink) {
+function addRetractListener(buttonLink) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
     const response_id = event.target.id;
-    deleteResponse(response_id);
+    retractResponse(response_id);
     window.location = 'index.html'
   });
 }
@@ -144,12 +144,13 @@ function createEntry(request) {
 //if own request, options to edit or delete
   if (request.isSelf) {
     buttonLink.text('edit').attr('href', 'favor.html');
-    actionLink.attr('href', '#!');
+    actionLink.attr('href', '#!').attr('id', 'trash');
     actionIcon.text('delete');
+
 //if user has committed to favor, option to retract offer
   } else if (committed) {
     buttonLink.text('can\'t make it').addClass('retract').attr('href', '#').attr('id', responseId);
-    addDeleteListener(buttonLink);
+    addRetractListener(buttonLink);
 
 //otherwise, favor is unclaimed; option to commit to do it
   } else {
@@ -251,7 +252,7 @@ function createMyRequest(request) {
   return newRequest;
 }
 
-function deleteResponse(response_id) {
+function retractResponse(response_id) {
   const options = {
     contentType: 'application/json',
     dataType: 'json',
