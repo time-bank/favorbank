@@ -67,7 +67,6 @@ function addPaymentListener(requestId) {
   });
 }
 
-
 function addRetractListener(buttonLink) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
@@ -80,7 +79,7 @@ function addRetractListener(buttonLink) {
 function addEditListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     console.log(requestId)
-    let response = editRequest(requestId)
+    let   response = editRequest(requestId)
     console.log(response)
     //event.preventDefault();
     //const response_id = event.target.id;
@@ -89,14 +88,12 @@ function addEditListener(buttonLink, requestId) {
   });
 }
 
-function addCancelFavorListener(cancelLink) {
-  cancelLink.on('click', (event) => {
-    console.log('cancelFavor was hit');
+function addCancelFavorListener(element, requestId) {
+  element.on('click', (event) => {
     event.preventDefault();
-
-    const request_id = event.target.id
-    cancelFavor(request_id);
-    // window.location = 'index.html'
+    // const request_id = event.target.id
+    cancelFavor(requestId);
+    window.location = 'index.html'
   })
 }
 
@@ -108,13 +105,6 @@ function addCommitListener(buttonLink) {
     commitToFavor(request_id);
     window.location = 'index.html'
   });
-}
-
-function addTrashRequestListener(actionLink) {
-  actionLink.on('click', (event) => {
-    event.preventDefault();
-
-  })
 }
 
 function getMyRequests(userId) {
@@ -163,11 +153,11 @@ function createEntry(request) {
 //if own request, options to edit or delete
   if (request.isSelf) {
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
-    actionLink.attr('href', '#!').attr('id', 'trash');
+    actionLink.attr('href', '#!').attr('id', `request:${requestId}`);
     actionIcon.text('delete');
     //add event listener to edit link button //requestId
     addEditListener(buttonLink, requestId);
-    addTrashRequestListener(actionLink)
+    addCancelFavorListener(actionLink, requestId)
 
 //if user has committed to favor, option to retract offer
   } else if (committed) {
@@ -224,7 +214,7 @@ function createMyRequest(request) {
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#').attr('id', requestId);
 
-  addCancelFavorListener(cancelLink);
+  addCancelFavorListener(cancelLink, requestId);
   responseExists(requestId)
     .then((res) => {
       if (res) {
@@ -239,21 +229,26 @@ function createMyRequest(request) {
   // actionLink.append(messageIcon);
 
   // flexDiv.append(actionLink);
+  const rightItemDiv = $('<div>').addClass('helper-absolute helper-right-item');
+  const flexDiv = $('<div>').addClass('helper-flex')
+
+  const flexColDiv = $('<div>').addClass('helper-flex-col');
+  const rightIcon = $('<i>').addClass('circle-right material-icons').text('account_circle');
+  flexColDiv.append(rightIcon);
+
   if (name) {
-    const rightItemDiv = $('<div>').addClass('helper-absolute helper-right-item');
-    const flexDiv = $('<div>').addClass('helper-flex')
+    // rightIcon.addClass('');
     const messageIcon = $('<i>').addClass('material-icons helper-icon').text('message');
-    const flexColDiv = $('<div>').addClass('helper-flex-col');
-    const rightIcon = $('<i>').addClass('circle-right material-icons').text('account_circle');
     const helperNameP = $('<p>').text(name)
-    flexColDiv.append(rightIcon);
     flexDiv.append(messageIcon);
     flexColDiv.append(helperNameP)
-    flexDiv.append(flexColDiv);
-    rightItemDiv.append(flexDiv);
-    avatarDiv.append(rightItemDiv);
+  } else {
+    rightIcon.addClass('grey-text text-lighten-2')
   }
 
+  flexDiv.append(flexColDiv);
+  rightItemDiv.append(flexDiv);
+  avatarDiv.append(rightItemDiv);
   avatarDiv.append(avatarIcon);
   avatarDiv.append(titleSpan);
   avatarDiv.append(timeframeP);
