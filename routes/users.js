@@ -84,8 +84,8 @@ router.post('/users', (req, res, next) => {
     });
 });
 
-//returns an array containing all requests for that user that have not yet been completed; requests that have received a response will include responder's name, tel, email
-router.get('/users/:id/requests', (req, res, next) => {
+//returns an array containing all of a user's requests that have not yet been completed; requests that have received a response will include responder's name, tel, email
+router.get('/users/:id/requests', authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
   if (Number.isNaN(userId) || userId < 0) {
@@ -115,7 +115,7 @@ router.get('/users/:id/requests', (req, res, next) => {
 });
 
 //get all of the favors a user has committed to
-router.get('/users/:id/responses', (req, res, next) => {
+router.get('/users/:id/responses', authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
   if (Number.isNaN(userId) || userId < 0) {
@@ -145,27 +145,22 @@ router.get('/users/:id/responses', (req, res, next) => {
 
 
 //once favor has been completed, requestUser opts to 'pay' responseUser; 'payment' will only go through when actualHours get entered into pop-up. Request is updated so that 'request.completed' equals true, and both users' account balances are updated. PATCH req body requires: { responseId, responseUserId, actualHours }
-router.patch('/users/:reqUserId/requests/:reqId', (req, res, next) => {
+router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) => {
   const reqUserId = Number.parseInt(req.params.reqUserId);
-  // const resUserId = Number.parseInt(req.body.responseUserId);
   const reqId = Number.parseInt(req.params.reqId);
   const actualHours = Number.parseInt(req.body.actualHours);
   let resUserId;
   let reqUserBalance;
   let resUserBalance;
 
-  console.log('reqUserId: ', reqUserId);
-  console.log('reqId: ', reqId);
-  console.log('actualHours: ', actualHours);
-
   if (Number.isNaN(reqUserId) || reqUserId < 0 || Number.isNaN(reqId) || reqId < 0) {
     return next(boom.create(404, 'Not found.'));
   }
 
   //check is self--req.claim.userId needs to equal :id
-  // if (reqUserId !== req.claim.userId) {
-  //   return next(boom.create(500, 'Internal server error.'))
-  // }
+  if (reqUserId !== req.claim.userId) {
+    return next(boom.create(500, 'Internal server error.'))
+  }
 
   //check that request has a response associated with it
   knex('responses')

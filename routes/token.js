@@ -55,21 +55,21 @@ router.post('/token', (req, res, next) => {
         secure: router.get('env') === 'production'
       });
       delete user.hashedPassword;
-      res.send(user)
+      res.send(user);
     })
     .catch(bcrypt.MISMATCH_ERROR, () => {
       return next(boom.create(400, 'Invalid email or PASSWORD.'));
     })
     .catch((err) => {
       console.log(err);
-      return next(boom.create(500, 'Internal server error, /token POST.'))
-    })
+      return next(boom.create(500, 'Internal server error, /token POST.'));
+    });
 });
 
 router.delete('/token', (req, res) => {
   res.clearCookie('token');
   res.end();
-})
+});
 
 
 //get token: send back user.id instead of T or F

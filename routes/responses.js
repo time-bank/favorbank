@@ -8,12 +8,18 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-// router.get('/responses', (req, res, next) => {
-//   knex('responses')
-// })
+const authorize = function(req, res, next) {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
+    if (err) {
+      return next(boom.create(401, 'Unauthorized.'));
+    }
+    req.claim = payload;
+    next();
+  });
+};
 
 //cancel a responses
-router.delete('/responses/:id', (req, res, next) => {
+router.delete('/responses/:id', authorize, (req, res, next) => {
   const responseId = Number.parseInt(req.params.id)
 
   if (Number.isNaN(responseId) || responseId < 0) {
@@ -44,7 +50,5 @@ router.delete('/responses/:id', (req, res, next) => {
       return next(boom.create(500, 'Internal server error.'))
     });
 });
-
-
 
 module.exports = router;
