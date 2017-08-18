@@ -38,7 +38,6 @@ function createFavor() {
   const timeframe = $('#timeframe').val().trim();
   const timeEstimate = $('#estimate').val()
   const description = $('#description').val().trim();
-  const userId = 2;
 
   const data = {
     title,

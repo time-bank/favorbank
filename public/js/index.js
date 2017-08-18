@@ -60,7 +60,6 @@ function getUserId() {
 }
 
 function addPaymentListener(requestId) {
-  console.log($('.agreePay'));
   $('.agreePay').on('click', (event) => {
 
     console.log('inside addPaymentListener');
@@ -80,11 +79,12 @@ function addDeleteListener(buttonLink) {
 
 function addCancelFavorListener(cancelLink) {
   cancelLink.on('click', (event) => {
+    console.log('cancelFavor was hit');
     event.preventDefault();
 
     const request_id = event.target.id
     cancelFavor(request_id);
-    window.location = 'index.html'
+    // window.location = 'index.html'
   })
 }
 
@@ -204,7 +204,7 @@ function createMyRequest(request) {
   const descriptionDiv = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(request.description);
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
-  const cancelLink = $('<a>').text('cancel favor').attr('href', '#!');
+  const cancelLink = $('<a>').text('cancel favor').attr('href', '#').attr('id', requestId);
 
   addCancelFavorListener(cancelLink);
   responseExists(requestId)
@@ -286,6 +286,9 @@ function commitToFavor(request_id) {
 }
 
 function cancelFavor(request_id) {
+  console.log(request_id);
+
+
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -293,10 +296,13 @@ function cancelFavor(request_id) {
     url: `/requests/${request_id}`
   }
 
-  // $.ajax(options)
-  //   .then((res) => {
-  //     Materialize.toast('Your favor has been canceled.')
-  //   })
+  $.ajax(options)
+    .then((res) => {
+      Materialize.toast('Your favor has been successfully canceled.')
+    })
+    .catch((err) => {
+      Materialize.toast(err.responseText, 3000)
+    })
 }
 
 function sendPayment(reqId) {
@@ -355,7 +361,6 @@ function checkCookie(){
 function responseExists(reqId) {
   return $.getJSON(`/requests/${reqId}/responses`)
     .then((res) => {
-      console.log(res);
       return res
     })
 }
