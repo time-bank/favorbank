@@ -205,23 +205,18 @@ function createEntry(request) {
 }
 
 function createMyRequest(request) {
-  if (request.first_name) {
-    const name = `${request.first_name} ${request.last_name}`;
-  }
+  const name = request.first_name;
   const requestId = request.id;
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
-
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
   const titleSpan = $('<span>').addClass('title').text(request.title).attr('id', requestId);
   const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
-  const rightItemDiv = $('<div>').addClass('helper-absolute helper-right-item');
-  const flexDiv = $('<div>').addClass('helper-flex')
-  // const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
-  const messageIcon = $('<i>').addClass('material-icons helper-icon').text('message');
-  const flexColDiv = $('<div>').addClass('helper-flex-col');
-  const rightIcon = $('<i>').addClass('circle-right material-icons').text('account_circle');
+
+// **
+
+  // **
 
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
   const descriptionDiv = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(request.description);
@@ -242,21 +237,26 @@ function createMyRequest(request) {
 
 
   // actionLink.append(messageIcon);
-  flexColDiv.append(rightIcon);
 
   // flexDiv.append(actionLink);
-  flexDiv.append(messageIcon);
   if (name) {
+    const rightItemDiv = $('<div>').addClass('helper-absolute helper-right-item');
+    const flexDiv = $('<div>').addClass('helper-flex')
+    const messageIcon = $('<i>').addClass('material-icons helper-icon').text('message');
+    const flexColDiv = $('<div>').addClass('helper-flex-col');
+    const rightIcon = $('<i>').addClass('circle-right material-icons').text('account_circle');
     const helperNameP = $('<p>').text(name)
+    flexColDiv.append(rightIcon);
+    flexDiv.append(messageIcon);
     flexColDiv.append(helperNameP)
+    flexDiv.append(flexColDiv);
+    rightItemDiv.append(flexDiv);
+    avatarDiv.append(rightItemDiv);
   }
-  flexDiv.append(flexColDiv);
-  rightItemDiv.append(flexDiv);
 
   avatarDiv.append(avatarIcon);
   avatarDiv.append(titleSpan);
   avatarDiv.append(timeframeP);
-  avatarDiv.append(rightItemDiv);
 
   headerDiv.append(avatarDiv);
 
