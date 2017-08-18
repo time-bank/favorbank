@@ -31,13 +31,11 @@ function createFavor() {
   const timeEstimate = $('#estimate').val()
   const description = $('#description').val().trim();
 
-
   const data = {
     title,
     timeframe,
     timeEstimate,
     description,
-
   };
 
   console.log(data);
