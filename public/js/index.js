@@ -110,6 +110,13 @@ function addCommitListener(buttonLink) {
   });
 }
 
+function addTrashRequestListener(actionLink) {
+  actionLink.on('click', (event) => {
+    event.preventDefault();
+
+  })
+}
+
 function getMyRequests(userId) {
   return $.getJSON(`/users/${userId}/requests`)
     .then((myRequests) => {
@@ -160,6 +167,7 @@ function createEntry(request) {
     actionIcon.text('delete');
     //add event listener to edit link button //requestId
     addEditListener(buttonLink, requestId);
+    addTrashRequestListener(actionLink)
 
 //if user has committed to favor, option to retract offer
   } else if (committed) {
