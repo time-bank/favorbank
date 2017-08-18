@@ -78,6 +78,17 @@ function addDeleteListener(buttonLink) {
   });
 }
 
+function addEditListener(buttonLink, requestId) {
+  buttonLink.on('click', (event) => {
+    console.log(requestId)
+    editRequest(requestId)
+    //event.preventDefault();
+    //const response_id = event.target.id;
+    //deleteResponse(response_id);
+    //window.location = 'index.html'
+  });
+}
+
 function addCancelFavorListener(cancelLink) {
   cancelLink.on('click', (event) => {
     event.preventDefault();
@@ -146,6 +157,9 @@ function createEntry(request) {
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
     actionLink.attr('href', '#!');
     actionIcon.text('delete');
+    //add event listener to edit link button //requestId
+    addEditListener(buttonLink, requestId);
+
 //if user has committed to favor, option to retract offer
   } else if (committed) {
     buttonLink.text('can\'t make it').addClass('retract').attr('href', '#').attr('id', responseId);
@@ -257,6 +271,23 @@ function deleteResponse(response_id) {
     dataType: 'json',
     type: 'DELETE',
     url: `/responses/${response_id}`
+  }
+
+  $.ajax(options)
+    .done((res) => {
+      Materialize.toast('Your offer to help has been cancelled.', 3000);
+    })
+    .fail(($xhr) => {
+      Materialize.toast($xhr.responseText, 3000);
+    });
+}
+
+function editRequest(request_id) {
+  const options = {
+    contentType: 'application/json',
+    dataType: 'json',
+    type: 'GET',
+    url: `/requests/${response_id}`
   }
 
   $.ajax(options)
