@@ -65,11 +65,11 @@ function addPaymentListener(requestId, reqUserId) {
   });
 }
 
-function addRetractListener(buttonLink) {
+function addRetractListener(buttonLink, responseId) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
-    const response_id = event.target.id;
-    retractResponse(response_id);
+    // const response_id = event.target.id;
+    retractResponse(responseId);
     changeWindows('index.html')
   });
 }
@@ -89,18 +89,15 @@ function addEditListener(buttonLink, requestId) {
 function addCancelFavorListener(element, requestId) {
   element.on('click', (event) => {
     event.preventDefault();
-    // const request_id = event.target.id
     cancelFavor(requestId);
     changeWindows('index.html')
   })
 }
 
-function addCommitListener(buttonLink) {
+function addCommitListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
-
-    const request_id = event.target.id;
-    commitToFavor(request_id);
+    commitToFavor(requestId);
     changeWindows('index.html')
   });
 }
@@ -151,7 +148,6 @@ function createEntry(request) {
 //if own request, options to edit or delete
   if (request.isSelf) {
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
-    actionLink.attr('href', '#!').attr('id', `request:${requestId}`);
     actionIcon.text('delete');
     //add event listener to edit link button //requestId
     addEditListener(buttonLink, requestId);
@@ -159,14 +155,13 @@ function createEntry(request) {
 
 //if user has committed to favor, option to retract offer
   } else if (committed) {
-    buttonLink.text('can\'t make it').addClass('retract').attr('href', '#').attr('id', responseId);
-    addRetractListener(buttonLink);
+    buttonLink.text('can\'t make it').addClass('retract').attr('href', '#');
+    addRetractListener(buttonLink, responseId);
 
 //otherwise, favor is unclaimed; option to commit to do it
   } else {
-    buttonLink.text(`help ${request.first_name}`).attr('href', '#').addClass('commit').attr('id', requestId);
-    addCommitListener(buttonLink);
-    actionLink.attr('href', '#');
+    buttonLink.text(`help ${request.first_name}`).attr('href', '#').addClass('commit');
+    addCommitListener(buttonLink, requestId);
     actionIcon.text('message');
   }
 
