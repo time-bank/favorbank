@@ -65,6 +65,20 @@ function addPaymentListener(requestId, reqUserId) {
   });
 }
 
+//this is meant to behave on favor request modal similar to addPaymentListener with pay modal.
+function submitNewRequestListener(requestId, reqUserId) {
+  $('.agreePay').on('click', (event) => {
+    updateRequest(requestId, reqUserId);
+  });
+}
+
+function submitExistingRequestListener(requestId, reqUserId) {
+  $('.agreePay').on('click', (event) => {
+    sendPayment(requestId, reqUserId);
+  });
+}
+//---
+
 function addRetractListener(buttonLink, responseId) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
@@ -276,6 +290,7 @@ function retractResponse(response_id) {
 }
 
 function editRequest(request_id) {
+  console.log("entered editRequest")
   const options = {
     contentType: 'application/json',
     dataType: 'json',
