@@ -26,6 +26,20 @@ const responsesList = [
     user_id: 4,
     created_at: new Date('2017-08-15 14:26:16 UTC'),
     updated_at: new Date('2017-08-15 14:26:16 UTC')
+  },
+  {
+    id: 5,
+    request_id: 4,
+    user_id: 1,
+    created_at: new Date('2017-08-15 14:26:16 UTC'),
+    updated_at: new Date('2017-08-15 14:26:16 UTC')
+  },
+  {
+    id: 6,
+    request_id: 5,
+    user_id: 1,
+    created_at: new Date('2017-08-15 14:26:16 UTC'),
+    updated_at: new Date('2017-08-15 14:26:16 UTC')
   }
 
 ]

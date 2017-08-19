@@ -34,7 +34,7 @@ router.get('/requests', authorize, (req, res, next) => {
         }
         return request
       })
-      console.log(activeRequests);
+      // console.log(activeRequests);
       res.send(activeRequests);
     })
     .catch((err) => {

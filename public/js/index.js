@@ -61,19 +61,26 @@ function getUserId() {
 
 function addPaymentListener(requestId, reqUserId) {
   $('.agreePay').on('click', (event) => {
+    console.log('agreePay triggered at ', event);
     sendPayment(requestId, reqUserId);
   });
 }
 
 //this is meant to behave on favor request modal similar to addPaymentListener with pay modal.
+// ***Note to DL: this needs a different class tag*****
 function submitNewRequestListener(requestId, reqUserId) {
   $('.agreePay').on('click', (event) => {
+    console.log('agreePay triggered');
+
     updateRequest(requestId, reqUserId);
   });
 }
 
 function submitExistingRequestListener(requestId, reqUserId) {
+  // ***Note to DL: this needs a different class tag*****
   $('.agreePay').on('click', (event) => {
+    console.log('agreePay triggered');
+
     sendPayment(requestId, reqUserId);
   });
 }
@@ -217,7 +224,7 @@ function createMyRequest(request) {
   const descriptionDiv = $('<div>').addClass('collection collection-item avatar; helper-collapsible-body').text(request.description);
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
-  const cancelLink = $('<a>').text('cancel favor').attr('href', '#').attr('id', requestId);
+  const cancelLink = $('<a>').text('cancel favor').attr('href', '#');
 
   addCancelFavorListener(cancelLink, requestId);
   responseExists(requestId)
@@ -225,8 +232,8 @@ function createMyRequest(request) {
       if (res.isResponse) {
         const resName = res.resName;
         $('#payee').text(`Pay ${resName}`);
-        const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay');
-        const agreePay = $('.agreePay');
+        const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay').attr('reqId', requestId);
+        // const agreePay = $('.agreePay');
         addPaymentListener(requestId, reqUserId);
         cancelLink.after(payLink);
       }
@@ -343,6 +350,7 @@ function cancelFavor(request_id) {
 
 function sendPayment(reqId, reqUserId) {
   console.log('reqUserId', reqUserId);
+  console.log('reqId', reqUserId);
   const actualHours = $('.actualHours').val();
   const options = {
     contentType: 'application/json',

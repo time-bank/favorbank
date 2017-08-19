@@ -84,7 +84,7 @@ router.post('/users', (req, res, next) => {
     });
 });
 
-//returns an array containing all of a user's requests that have not yet been completed; requests that have received a response will include responder's name, tel, email
+//myRequests: returns an array containing all of a user's requests that have not yet been completed; requests that have received a response will include responder's name, tel, email
 router.get('/users/:id/requests', authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
@@ -114,7 +114,7 @@ router.get('/users/:id/requests', authorize, (req, res, next) => {
     });
 });
 
-//get all of the favors a user has committed to
+//myResponses: get all the favors a user has committed to
 router.get('/users/:id/responses', authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
@@ -144,10 +144,11 @@ router.get('/users/:id/responses', authorize, (req, res, next) => {
 });
 
 
-//once favor has been completed, requestUser opts to 'pay' responseUser; 'payment' will only go through when actualHours get entered into pop-up. Request is updated so that 'request.completed' equals true, and both users' account balances are updated. PATCH req body requires: { responseId, responseUserId, actualHours }
+//Pay: once favor has been completed, requestUser opts to 'pay' responseUser; 'payment' will only go through when actualHours get entered into pop-up. Request is updated so that 'request.completed' equals true, and both users' account balances are updated. PATCH req body requires: { responseId, responseUserId, actualHours }
 router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) => {
   const reqUserId = Number.parseInt(req.params.reqUserId);
   const reqId = Number.parseInt(req.params.reqId);
+  console.log('requId from params: ', reqId);
   const actualHours = Number.parseInt(req.body.actualHours);
   let resUserId;
   let reqUserBalance;
@@ -162,16 +163,17 @@ router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) =>
     return next(boom.create(500, 'Internal server error.'))
   }
 
-  //check that request has a response associated with it
+  //check that request has a response associated with it; get the responder's user_id
   knex('responses')
     .where('request_id', reqId)
     .first()
     .then((row) => {
+      console.log('here is response row returned at line 170: ', row);
       if (!row) {
         throw boom.create(404, 'Not found.');
       }
       resUserId = row.user_id;
-      console.log('resUserId :', resUserId);
+      console.log('resUserId(line 175) :', resUserId);
 
       return knex('requests')
         .where('id', reqId)
@@ -180,6 +182,7 @@ router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) =>
     })
     //check that request is not already complete; then update request.completed=true
     .then((row) => {
+      console.log('here\'s the row of interest: ', row);
       if (!row) {
         throw boom.create(404, 'Not found.');
       }
