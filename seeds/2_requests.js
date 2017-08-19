@@ -75,6 +75,17 @@ const requestsList = [
     user_id: 4,
     created_at: new Date('2017-08-17 14:26:16 UTC'),
     updated_at: new Date('2017-08-17 14:26:16 UTC')
+  },
+  {
+    id: 8,
+    title: 'Find my hat.',
+    description: 'Track it down.',
+    time_estimate: 3,
+    timeframe: '09/01/17',
+    completed: false,
+    user_id: 2,
+    created_at: new Date('2017-08-18 14:26:16 UTC'),
+    updated_at: new Date('2017-08-18 14:26:16 UTC')
   }
 ];
 
