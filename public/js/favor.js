@@ -1,7 +1,7 @@
 'use strict';
 
 $('#modalFavorSubmit').on('click', (event) => {
-  console.log("hello")
+
   event.preventDefault();
   const favor = createFavor();
   if (favor) {

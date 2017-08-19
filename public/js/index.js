@@ -98,8 +98,20 @@ function addRetractListener(buttonLink, responseId) {
 function addEditListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     console.log(requestId)
-    let   response = editRequest(requestId)
-    console.log(response)
+    editRequest(requestId)
+      .then((requestToEdit) => {
+        console.log("start populating modal with this response: ",requestToEdit);
+        // Materialize.updateTextFields();
+        $('#favorTitle').val(requestToEdit.title);
+        $('#labelTitle').addClass('active');
+        $('#estimate').val(requestToEdit.time_estimate);
+        $('#labelEstimate').addClass('active');
+        $('#timeframe').val(requestToEdit.timeframe);
+        $('#labelTimeframe').addClass('active');
+        $('#description').val(requestToEdit.description);
+        $('#labelDescription').addClass('active');
+      })
+    //console.log("check this: ", response)
     //event.preventDefault();
     //const response_id = event.target.id;
     //deleteResponse(response_id);
