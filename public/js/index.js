@@ -59,9 +59,15 @@ function getUserId() {
   });
 }
 
-function addPaymentListener(requestId, reqUserId) {
+function addModalListener(payLink, requestId, reqUserId) {
+  payLink.on('click', (event) => {
+    payLink.addClass('modal-trigger').attr('href', '#modalPay');
+    addPaymentListener(payLink, requestId, reqUserId)
+  })
+}
+
+function addPaymentListener(payLink, requestId, reqUserId) {
   $('.agreePay').on('click', (event) => {
-    console.log('agreePay triggered at ', event);
     sendPayment(requestId, reqUserId);
   });
 }
@@ -212,7 +218,7 @@ function createMyRequest(request) {
   const name = request.first_name;
   const requestId = request.id;
   const reqUserId = request.request_user_id;
-  console.log('reqUserId', reqUserId);
+  // console.log('reqUserId', reqUserId);
 
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
@@ -232,15 +238,12 @@ function createMyRequest(request) {
       if (res.isResponse) {
         const resName = res.resName;
         $('#payee').text(`Pay ${resName}`);
-        const payLink = $('<a>').text('pay').addClass('modal-trigger').attr('href', '#modalPay').attr('reqId', requestId);
-        // const agreePay = $('.agreePay');
-        addPaymentListener(requestId, reqUserId);
+        const payLink = $('<a>').text('pay').attr('id', requestId);
+        addModalListener(payLink, requestId, reqUserId);
         cancelLink.after(payLink);
       }
     })
 
-  // actionLink.append(messageIcon);
-  // flexDiv.append(actionLink);
   const rightItemDiv = $('<div>').addClass('helper-absolute helper-right-item');
   const flexDiv = $('<div>').addClass('helper-flex');
   const flexColDiv = $('<div>').addClass('helper-flex-col');
@@ -349,8 +352,8 @@ function cancelFavor(request_id) {
 }
 
 function sendPayment(reqId, reqUserId) {
-  console.log('reqUserId', reqUserId);
-  console.log('reqId', reqUserId);
+  // console.log('reqUserId', reqUserId);
+  // console.log('reqId', reqUserId);
   const actualHours = $('.actualHours').val();
   const options = {
     contentType: 'application/json',

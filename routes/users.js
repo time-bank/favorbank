@@ -148,7 +148,6 @@ router.get('/users/:id/responses', authorize, (req, res, next) => {
 router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) => {
   const reqUserId = Number.parseInt(req.params.reqUserId);
   const reqId = Number.parseInt(req.params.reqId);
-  console.log('requId from params: ', reqId);
   const actualHours = Number.parseInt(req.body.actualHours);
   let resUserId;
   let reqUserBalance;
@@ -158,7 +157,7 @@ router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) =>
     return next(boom.create(404, 'Not found.'));
   }
 
-  //check is self--req.claim.userId needs to equal :id
+  //check isSelf--req.claim.userId needs to equal :id
   if (reqUserId !== req.claim.userId) {
     return next(boom.create(500, 'Internal server error.'))
   }
@@ -168,25 +167,21 @@ router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) =>
     .where('request_id', reqId)
     .first()
     .then((row) => {
-      console.log('here is response row returned at line 170: ', row);
       if (!row) {
         throw boom.create(404, 'Not found.');
       }
       resUserId = row.user_id;
-      console.log('resUserId(line 175) :', resUserId);
 
       return knex('requests')
         .where('id', reqId)
-        .where('user_id', reqUserId)
+        // .where('user_id', reqUserId)
         .first()
     })
     //check that request is not already complete; then update request.completed=true
     .then((row) => {
-      console.log('here\'s the row of interest: ', row);
       if (!row) {
         throw boom.create(404, 'Not found.');
       }
-
       if (row.completed !== false) {
         throw boom.create(400, 'That request is already complete; account balances have not been updated.');
       }
