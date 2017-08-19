@@ -232,7 +232,7 @@ router.patch('/users/:reqUserId/requests/:reqId', authorize, (req, res, next) =>
         }, '*');
     })
     .then(() => {
-      res.send('Account balances have been updated.');
+      res.send({ message: 'Account balances have been updated.' });
     })
     .catch((err) => {
       console.log(err);

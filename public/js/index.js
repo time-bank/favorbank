@@ -363,8 +363,8 @@ function sendPayment(reqId, reqUserId) {
     url: `/users/${reqUserId}/requests/${reqId}`
   }
   $.ajax(options)
-    .then((resString) => {
-      Materialize.toast(resString, 3000);
+    .then((res) => {
+      Materialize.toast(res.message, 3000);
       // setTimeout(changeWindows('index.html'), 3000);
       // changeWindows('index.html')
       window.location.href = 'index.html';
