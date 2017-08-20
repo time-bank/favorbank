@@ -1,11 +1,11 @@
 'use strict';
 
 const activeRequests = $('#active-requests');
-const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
+const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-activRequests-ul').attr("data-collapsible", "accordion").collapsible();
 const myResponses = $('#my-responses');
-const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
+const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-upperlist-ul').attr("data-collapsible", "accordion").collapsible();
 const myRequests = $('#my-requests');
-const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul').attr("data-collapsible", "accordion").collapsible();
+const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-lowerlist-ul').attr("data-collapsible", "accordion").collapsible();
 
 $(document).ready(function(){
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -13,7 +13,7 @@ $(document).ready(function(){
     $(".button-collapse").sideNav();
   });
 
-let favorId;
+let favorId = undefined; //i know this seems weird, but i think it has to be assigned undefined for undefined to "take" after it's value has been assigned by other code, after refresh. seemed to fix some issues with program not knowing which logic to follow in the favor modal agree button logic.
 
 $('#modalFavorAgree').on('click', (event) => {
   event.preventDefault();
@@ -86,7 +86,7 @@ function sendFavor(data) {
   };
 
   //if existing favor is being edited, send patch
-  //(note: favorId gets defined at on edit click listener)
+  //(note: favorId gets defined at on addEditListener)
   console.log("before conditional favorId: ", favorId)
   if (favorId !== undefined) {
     options.type = 'PATCH';
@@ -105,6 +105,7 @@ function sendFavor(data) {
         Materialize.toast('Thanks for submitting a new favor!', 3000);
 
       } else {
+        changeWindows('index.html');
         Materialize.toast('Your favor has been updated.', 3000);
         modalFavorReset();
       }
@@ -132,10 +133,6 @@ var modalFavorReset = function() {
 $('#modalFavorCancel').on('click', (event) => {
   modalFavorReset();
 });
-
-function changeWindows(url) {
-  //window.location.href = url;
-}
 
 //---
 
@@ -320,8 +317,6 @@ function createEntry(request) {
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
     actionIcon.text('delete');
 
-    //set global favorId so favor modal can determine post or patch
-    favorId = requestId;
     //add event listener to edit link button
     addEditListener(buttonLink, requestId);
     addCancelFavorListener(actionLink, requestId);
@@ -559,5 +554,5 @@ function responseExists(reqId) {
 }
 
 function changeWindows(url) {
-  //window.location.href = url;
+  window.location.href = url;
 }
