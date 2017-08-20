@@ -13,6 +13,133 @@ $(document).ready(function(){
     $(".button-collapse").sideNav();
   });
 
+let favorId;
+
+$('#modalFavorAgree').on('click', (event) => {
+  event.preventDefault();
+  const favor = createFavor();
+  if (favor) {
+    console.log("before sendFavor favorId: ", favorId)
+    sendFavor(favor)
+  }
+})
+
+// $('#modalFavor').openModal({dismissible:false});
+// $('#modalFavor').modal({
+//       dismissible: true, // Modal can be dismissed by clicking outside of the modal
+//       opacity: .5, // Opacity of modal background
+//       inDuration: 300, // Transition in duration
+//       outDuration: 200, // Transition out duration
+//       startingTop: '4%', // Starting top style attribute
+//       endingTop: '10%', // Ending top style attribute
+//       ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+//         alert("Ready");
+//         console.log(modal, trigger);
+//       },
+//       complete: function() { alert('Closed'); } // Callback for Modal close
+//     }
+//   );
+
+function createFavor(favorId) {
+  const title = $('#favorTitle').val().trim();
+  const timeframe = $('#timeframe').val().trim();
+  const timeEstimate = $('#estimate').val()
+  const description = $('#description').val().trim();
+
+  const data = {
+    title,
+    timeframe,
+    timeEstimate,
+    description,
+  };
+
+  console.log(data);
+
+  if (!title) {
+    Materialize.toast('Your favor request needs a title.', 3000);
+    return;
+  }
+
+  if (!timeEstimate) {
+    Materialize.toast('Please estimate the number of hours this favor will take.', 3000);
+    return;
+  }
+
+  if (!timeframe) {
+    Materialize.toast('Please enter the timeframe you have in mind. If timing doesn\'t matter, enter "Anytime."', 3000);
+    return;
+  }
+
+  if (!description) {
+    Materialize.toast('Please give a description of the favor you\'re requesting.', 3000);
+    return;
+  }
+
+  return data
+}
+
+function sendFavor(data) {
+  const options = {
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    dataType: 'json'
+  };
+
+  //if existing favor is being edited, send patch
+  //(note: favorId gets defined at on edit click listener)
+  console.log("before conditional favorId: ", favorId)
+  if (favorId !== undefined) {
+    options.type = 'PATCH';
+    options.url = `/requests/${favorId}`;
+  } else {
+    //this is a new favor
+    options.type = 'POST';
+    options.url = '/requests'
+  }
+
+  $.ajax(options)
+    .done((res) => {
+      if(favorId === undefined) {
+        //setTimeout(changeWindows('index.html'), 3000);
+        changeWindows('index.html');
+        Materialize.toast('Thanks for submitting a new favor!', 3000);
+
+      } else {
+        Materialize.toast('Your favor has been updated.', 3000);
+        modalFavorReset();
+      }
+    })
+    .fail(($xhr) => {
+      Materialize.toast($xhr.responseText, 3000);
+    });
+}
+
+var modalFavorReset = function() {
+  //reset
+  console.log("reset")
+  $('#favorTitle').val("");
+  $('#labelTitle').addClass('active');
+  $('#estimate').val(0);
+  $('#labelEstimate').addClass('active');
+  $('#timeframe').val("");
+  $('#labelTimeframe').addClass('active');
+  $('#description').val("");
+  $('#labelDescription').addClass('active');
+  favorId = undefined;
+  $('#modalFavorAgree').text('submit')
+}
+
+$('#modalFavorCancel').on('click', (event) => {
+  modalFavorReset();
+});
+
+function changeWindows(url) {
+  //window.location.href = url;
+}
+
+//---
+
+
 checkCookie();
 getBalance();
 
@@ -59,7 +186,32 @@ function getUserId() {
   });
 }
 
+
+function addEditListener(buttonLink, requestId) {
+  //populate request fields
+  buttonLink.on('click', (event) => {
+    editRequest(requestId)
+      .then((requestToEdit) => {
+        console.log("start populating modal with this response: ",requestToEdit);
+        // Materialize.updateTextFields();
+        $('#favorTitle').val(requestToEdit.title);
+        $('#labelTitle').addClass('active');
+        $('#estimate').val(requestToEdit.time_estimate);
+        $('#labelEstimate').addClass('active');
+        $('#timeframe').val(requestToEdit.timeframe);
+        $('#labelTimeframe').addClass('active');
+        $('#description').val(requestToEdit.description);
+        $('#labelDescription').addClass('active');
+
+        $('#modalFavorAgree').text('update')
+        favorId = requestId;
+      })
+  });
+}
+
+
 function addModalListener(payLink, requestId, reqUserId) {
+  //gets called when pay button from menu item clicked.
   payLink.on('click', (event) => {
     payLink.addClass('modal-trigger').attr('href', '#modalPay');
     addPaymentListener(payLink, requestId, reqUserId)
@@ -67,6 +219,7 @@ function addModalListener(payLink, requestId, reqUserId) {
 }
 
 function addPaymentListener(payLink, requestId, reqUserId) {
+  //gets called from the agree button on pay modal.
   $('.agreePay').on('click', (event) => {
     sendPayment(requestId, reqUserId);
   });
@@ -98,30 +251,6 @@ function addRetractListener(buttonLink, responseId) {
     // const response_id = event.target.id;
     retractResponse(responseId);
     changeWindows('index.html')
-  });
-}
-
-function addEditListener(buttonLink, requestId) {
-  buttonLink.on('click', (event) => {
-    console.log(requestId)
-    editRequest(requestId)
-      .then((requestToEdit) => {
-        console.log("start populating modal with this response: ",requestToEdit);
-        // Materialize.updateTextFields();
-        $('#favorTitle').val(requestToEdit.title);
-        $('#labelTitle').addClass('active');
-        $('#estimate').val(requestToEdit.time_estimate);
-        $('#labelEstimate').addClass('active');
-        $('#timeframe').val(requestToEdit.timeframe);
-        $('#labelTimeframe').addClass('active');
-        $('#description').val(requestToEdit.description);
-        $('#labelDescription').addClass('active');
-      })
-    //console.log("check this: ", response)
-    //event.preventDefault();
-    //const response_id = event.target.id;
-    //deleteResponse(response_id);
-    //window.location = 'index.html'
   });
 }
 
@@ -184,11 +313,16 @@ function createEntry(request) {
   const button = $('<div>').addClass('collapse-content-button-text');
   const buttonLink = $('<a>');
 
+
 //if own request, options to edit or delete
   if (request.isSelf) {
+    //set menu item edit button to trigger modal
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
     actionIcon.text('delete');
-    //add event listener to edit link button //requestId
+
+    //set global favorId so favor modal can determine post or patch
+    favorId = requestId;
+    //add event listener to edit link button
     addEditListener(buttonLink, requestId);
     addCancelFavorListener(actionLink, requestId);
 
@@ -251,6 +385,7 @@ function createMyRequest(request) {
         const resName = res.resName;
         $('#payee').text(`Pay ${resName}`);
         const payLink = $('<a>').text('pay').attr('id', requestId);
+
         addModalListener(payLink, requestId, reqUserId);
         cancelLink.after(payLink);
       }
@@ -320,12 +455,14 @@ function editRequest(request_id) {
     url: `/requests/${request_id}`
   }
 
-  $.ajax(options)
+  return $.ajax(options)
     .done((res) => {
-      Materialize.toast('Your offer to help has been cancelled.', 3000);
+      //console.log("editRequest done happened")
+      //Materialize.toast('Your offer to help has been cancelled.', 3000);
     })
     .fail(($xhr) => {
-      Materialize.toast($xhr.responseText, 3000);
+      //console.log("editRequest fail happened")
+      //Materialize.toast("Could not process your request", 3000);
     });
 }
 
@@ -422,5 +559,5 @@ function responseExists(reqId) {
 }
 
 function changeWindows(url) {
-  window.location.href = url;
+  //window.location.href = url;
 }

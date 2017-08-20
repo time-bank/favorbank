@@ -1,7 +1,7 @@
 'use strict';
 
 $('#modalFavorSubmit').on('click', (event) => {
-
+  console.log("hello")
   event.preventDefault();
   const favor = createFavor();
   if (favor) {
@@ -11,12 +11,10 @@ $('#modalFavorSubmit').on('click', (event) => {
 
 let favorId;
 
-//
-//
-// if (window.location.search.split('=').length === 2) {
-//   favorId = window.location.search.split('=')[1];
-//   autofillReview();
-// }
+if (window.location.search.split('=').length === 2) {
+  favorId = window.location.search.split('=')[1];
+  autofillReview();
+}
 
 /* this is done by the modal's materialize javascript now.
 $('#modalFavorCancel').on('click', (event) => {
@@ -26,6 +24,9 @@ $('#modalFavorCancel').on('click', (event) => {
 
 
 function createFavor() {
+  if (favorId != undefined)
+    autofillReview();
+  }
   const title = $('#favorTitle').val().trim();
   const timeframe = $('#timeframe').val().trim();
   const timeEstimate = $('#estimate').val()
