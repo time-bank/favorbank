@@ -19,7 +19,7 @@ $('#modalFavorAgree').on('click', (event) => {
   event.preventDefault();
   const favor = createFavor();
   if (favor) {
-    console.log("before sendFavor favorId: ", favorId)
+
     sendFavor(favor)
   }
 })
@@ -53,7 +53,7 @@ function createFavor(favorId) {
     description,
   };
 
-  console.log(data);
+
 
   if (!title) {
     Materialize.toast('Your favor request needs a title.', 3000);
@@ -86,8 +86,8 @@ function sendFavor(data) {
   };
 
   //if existing favor is being edited, send patch
-  //(note: favorId gets defined at on addEditListener)
-  console.log("before conditional favorId: ", favorId)
+  //(note: favorId gets defined at on addEditListener and reset with call from patch done)
+
   if (favorId !== undefined) {
     options.type = 'PATCH';
     options.url = `/requests/${favorId}`;
@@ -117,7 +117,7 @@ function sendFavor(data) {
 
 var modalFavorReset = function() {
   //reset
-  console.log("reset")
+
   $('#favorTitle').val("");
   $('#labelTitle').addClass('active');
   $('#estimate').val(0);
@@ -145,7 +145,7 @@ getUserId()
     return Promise.all([getMyRequests(userID), getMyResponses(userID)]);
   })
   .then(function([requests, responses]) {
-    console.log(requests, responses);
+
 
     for (const response of responses){
       const newResponse = createEntry(response);
@@ -189,7 +189,7 @@ function addEditListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     editRequest(requestId)
       .then((requestToEdit) => {
-        console.log("start populating modal with this response: ",requestToEdit);
+
         // Materialize.updateTextFields();
         $('#favorTitle').val(requestToEdit.title);
         $('#labelTitle').addClass('active');
@@ -226,7 +226,7 @@ function addPaymentListener(payLink, requestId, reqUserId) {
 // ***Note to DL: this needs a different class tag*****
 function submitNewRequestListener(requestId, reqUserId) {
   $('.agreePay').on('click', (event) => {
-    console.log('agreePay triggered');
+
 
     updateRequest(requestId, reqUserId);
   });
@@ -235,7 +235,7 @@ function submitNewRequestListener(requestId, reqUserId) {
 function submitExistingRequestListener(requestId, reqUserId) {
   // ***Note to DL: this needs a different class tag*****
   $('.agreePay').on('click', (event) => {
-    console.log('agreePay triggered');
+
 
     sendPayment(requestId, reqUserId);
   });
@@ -359,7 +359,6 @@ function createMyRequest(request) {
   const name = request.first_name;
   const requestId = request.id;
   const reqUserId = request.request_user_id;
-  // console.log('reqUserId', reqUserId);
 
   const newRequest = $('<li>');
   const headerDiv = $('<div>').addClass('collapsible-header');
@@ -442,7 +441,7 @@ function retractResponse(response_id) {
 }
 
 function editRequest(request_id) {
-  console.log("entered editRequest")
+
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -496,8 +495,6 @@ function cancelFavor(request_id) {
 }
 
 function sendPayment(reqId, reqUserId) {
-  // console.log('reqUserId', reqUserId);
-  // console.log('reqId', reqUserId);
   const actualHours = $('.actualHours').val();
   const options = {
     contentType: 'application/json',
