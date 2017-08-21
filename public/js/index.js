@@ -206,10 +206,10 @@ function addEditListener(buttonLink, requestId) {
   });
 }
 
-
 function addModalListener(payLink, requestId, reqUserId) {
   //gets called when pay button from menu item clicked.
   payLink.on('click', (event) => {
+    $('#title').val(0);
     payLink.addClass('modal-trigger').attr('href', '#modalPay');
     addPaymentListener(payLink, requestId, reqUserId)
   })
@@ -247,7 +247,8 @@ function addRetractListener(buttonLink, responseId) {
     event.preventDefault();
     // const response_id = event.target.id;
     retractResponse(responseId);
-    changeWindows('index.html')
+    window.location.href = 'index.html#dashboard';
+    window.location.reload(true)
   });
 }
 
@@ -255,7 +256,8 @@ function addCancelFavorListener(element, requestId) {
   element.on('click', (event) => {
     event.preventDefault();
     cancelFavor(requestId);
-    changeWindows('index.html')
+    window.location.href = 'index.html';
+    window.location.reload(true)
   })
 }
 
@@ -263,7 +265,8 @@ function addCommitListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
     commitToFavor(requestId);
-    changeWindows('index.html')
+    window.location.href = 'index.html#dashboard';
+    window.location.reload(true)
   });
 }
 
@@ -505,10 +508,9 @@ function sendPayment(reqId, reqUserId) {
   }
   $.ajax(options)
     .then((res) => {
-      Materialize.toast(res.message, 3000);
-      // setTimeout(changeWindows('index.html'), 3000);
-      // changeWindows('index.html')
-      window.location.href = 'index.html';
+      window.location.href = 'index.html#dashboard';
+      window.location.reload(true)
+      // setTimeout(Materialize.toast("Paid!", 3000), 250);
     })
     .catch((err) => {
       Materialize.toast(err.responseText, 3000)

@@ -1,4 +1,9 @@
 /*overrides*/
+.nav {
+  z-index: 998;
+  background-color: #26a69a;
+}
+
 .nav-extended {
   z-index: 998;
   background-color: #26a69a;
