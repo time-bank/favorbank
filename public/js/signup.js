@@ -19,7 +19,7 @@ $('#form').submit((event) => {
     $.ajax(options)
       .done((res) => {
         Materialize.toast("Registration success", 3000);
-        setTimeout(changeWindows('signin.html'), 3000)
+        setTimeout(changeWindows('signin.html'), 4000)
        })
       .fail(($xhr) => {
         Materialize.toast($xhr.responseText, 3000);
