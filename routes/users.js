@@ -68,9 +68,8 @@ router.post('/users', (req, res, next) => {
           first_name: req.body.firstName,
           last_name: req.body.lastName,
           balance: 0,
-          tel: req.body.tel,
+          // tel: req.body.tel,
           email: req.body.email,
-          preferred_contact: req.body.preferredContact,
           hashed_password: result
         }, '*')
     })
@@ -80,6 +79,7 @@ router.post('/users', (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
+      console.log(err);
       return next(boom.create(500, 'Internal server error from /users POST.'))
     });
 });
