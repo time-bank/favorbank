@@ -59,7 +59,7 @@
     text-align: center;
 }
 
-.collapsible-body {
+.helper-collection-lowerlist-ul:last-child:.collapsible-body {
     border-top: 0;
     padding: 0px;
 }
