@@ -5,7 +5,7 @@ const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collec
 const myResponses = $('#my-responses');
 const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-upperlist-ul').attr("data-collapsible", "accordion").collapsible();
 const myRequests = $('#my-requests');
-const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-lowerlist-ul').attr("data-collapsible", "accordion").collapsible();
+const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-lowerlist-ul helper-collection-lowerlist-collapsible-body-ul').attr("data-collapsible", "accordion").collapsible();
 
 $(document).ready(function(){
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered

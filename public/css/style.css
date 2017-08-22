@@ -200,9 +200,10 @@
   padding-bottom: 84px;
 }
 
-.helper-collection-lowerlist-collapsible-ul:nth-last-child(4) {
+
+.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
   border-bottom: 0;
-  padding-bottom: 28px;
+  padding-bottom: 32px;
 }
 
 .helper-no-border-top {
