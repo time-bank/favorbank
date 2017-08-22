@@ -4,6 +4,7 @@
   background-color: #26a69a;
 }
 
+/*overrides*/
 .nav-extended {
   z-index: 998;
   background-color: #26a69a;
@@ -59,7 +60,7 @@
     text-align: center;
 }
 
-.helper-collection-lowerlist-ul:last-child:.collapsible-body {
+.collapsible-body {
     border-top: 0;
     padding: 0px;
 }
@@ -117,7 +118,6 @@
     background-color: #fff;
     border-bottom: 1px solid #ddd;
 }
-
 
 .collapsible-header.active {
     border-bottom: 0;
@@ -185,18 +185,15 @@
   align-items: center;
 }
 
+.helper-collection-upperlist-ul:nth-last-child(1) {
+  border-bottom: 0;
+  padding-bottom: 12px;
+}
+
 .helper-collection-lowerlist-ul:nth-last-child(1) {
   border-bottom: 0;
   padding-bottom: 84px;
 }
-
-.helper-collection-activRequests-ul:nth-last-child(1) {
-  border-bottom: 0;
-  padding-bottom: 84px;
-}
-
-
-materialize.min.css:13
 
 .helper-collection-lowerlist-collapsible-ul:nth-last-child(4) {
   border-bottom: 0;
