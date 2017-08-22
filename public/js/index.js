@@ -256,7 +256,7 @@ function addCancelFavorListener(element, requestId) {
   element.on('click', (event) => {
     event.preventDefault();
     cancelFavor(requestId);
-    window.location.href = 'index.html';
+    window.location.href = 'index.html#dashboard';
     window.location.reload(true)
   })
 }
