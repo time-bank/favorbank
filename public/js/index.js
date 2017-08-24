@@ -169,6 +169,7 @@ getUserId()
       let collapseBodyHeight = 80; //$(event.target).parents("li").find('.collapsible-body').outerHeight(true);
       let itemHeaderDistToExposureBottom = scrollExposure-clpsBodyDistFromExposureTop;
 
+      //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
       if(collapseBodyHeight > itemHeaderDistToExposureBottom) {
         console.log("bottom scroll")
         let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
@@ -329,7 +330,7 @@ function createEntry(request) {
   const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
   const actionIcon = $('<i>').addClass('material-icons');
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const descriptionDiv = $('<div>').addClass('collection collection-item avatar helper-collapsible-body').text(request.description);
+  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description);
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
   const button = $('<div>').addClass('collapse-content-button-text');
   const buttonLink = $('<a>');
@@ -391,7 +392,7 @@ function createMyRequest(request) {
   const titleSpan = $('<span>').addClass('title').text(request.title);
   const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const descriptionDiv = $('<div>').addClass('collection collection-item avatar; helper-collapsible-body').text(request.description);
+  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description);
   const flexCollapseDiv = $('<div>').addClass('helper-flex-collapse');
   const actionDiv = $('<div>').addClass('collapse-content-button-text');
   const cancelLink = $('<a>').text('cancel favor').attr('href', '#');
