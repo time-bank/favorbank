@@ -24,22 +24,6 @@ $('#modalFavorAgree').on('click', (event) => {
   }
 })
 
-// $('#modalFavor').openModal({dismissible:false});
-// $('#modalFavor').modal({
-//       dismissible: true, // Modal can be dismissed by clicking outside of the modal
-//       opacity: .5, // Opacity of modal background
-//       inDuration: 300, // Transition in duration
-//       outDuration: 200, // Transition out duration
-//       startingTop: '4%', // Starting top style attribute
-//       endingTop: '10%', // Ending top style attribute
-//       ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-//         alert("Ready");
-//         console.log(modal, trigger);
-//       },
-//       complete: function() { alert('Closed'); } // Callback for Modal close
-//     }
-//   );
-
 function createFavor(favorId) {
   const title = $('#favorTitle').val().trim();
   const timeframe = $('#timeframe').val().trim();
@@ -146,20 +130,57 @@ getUserId()
   })
   .then(function([requests, responses]) {
 
-
+    //"favors you're doing"
     for (const response of responses){
       const newResponse = createEntry(response);
       myResponsesUl.append(newResponse);
     }
     myResponses.append(myResponsesUl);
-
+    //"favors you've asked for"
     for (const request of requests) {
       const newRequest = createMyRequest(request);
       myRequestsUl.append(newRequest);
     }
+
+    //--- add listener to dashboard ULs to ensure
+    // collection item and their collapsible content is
+    // visible in scroll, to user upon clicking them open.
+
+    $(myRequestsUl).click((event)=> {
+      let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true)+$('.footer-fixed').outerHeight(true));
+      let upperUlHeight=$('.helper-collection-upperlist-ul').outerHeight(true);
+      let upperlistHeaderHeight=$('#header-upperlist').outerHeight(true);
+      let lowerlistHeaderHeight=$('#header-lowerlist').outerHeight(true);
+      let upperAreaHeight = upperUlHeight+upperlistHeaderHeight+lowerlistHeaderHeight;
+
+      let indexClickedItem = $(event.target).parents("li").index()+1;
+      let itemHeight = 85;//$(event.target).outerHeight(true);
+      let scrollAmount = $(document).scrollTop(); //amount up from 0
+
+      //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
+      if( indexClickedItem*itemHeight - (scrollAmount - upperAreaHeight) < itemHeight ) {
+        console.log("top scroll")
+        let amountToPushDown = (scrollAmount - upperAreaHeight)-(indexClickedItem-1)*itemHeight;
+        let scrollPosition = scrollAmount - amountToPushDown;
+        $('html, body').animate({scrollTop: scrollPosition}, 'slow');
+      }
+
+      let clpsBodyDistFromExposureTop = indexClickedItem*itemHeight - (scrollAmount-upperAreaHeight);
+      let collapseBodyHeight = 80; //$(event.target).parents("li").find('.collapsible-body').outerHeight(true);
+      let itemHeaderDistToExposureBottom = scrollExposure-clpsBodyDistFromExposureTop;
+
+      if(collapseBodyHeight > itemHeaderDistToExposureBottom) {
+        console.log("bottom scroll")
+        let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
+        let scrollPosition = scrollAmount+amountToPushUp;
+        $('html, body').animate({scrollTop: scrollPosition}, 'slow');
+      }
+    })
+
+    //---
     myRequests.append(myRequestsUl);
 
-  })
+  });
 
 $.getJSON(`/requests`)
   .then((requests) => {
