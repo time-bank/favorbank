@@ -65,6 +65,11 @@
     border-top: 0;
     padding: 0px;
 }
+
+.collapsible-body-display-none {
+    display: none;
+}
+
 /*
 .collapsible-body-lowerlist:nth-last-child(1) {
     padding-bottom: 32px;

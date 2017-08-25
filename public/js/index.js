@@ -1,7 +1,7 @@
 'use strict';
 
 const activeRequests = $('#active-requests');
-const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-activRequests-ul').attr("data-collapsible", "accordion").collapsible();
+const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-activRequests-ul helper-collection-lowerlist-collapsible-body-ul').attr("data-collapsible", "accordion").collapsible();
 const myResponses = $('#my-responses');
 const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-upperlist-ul').attr("data-collapsible", "accordion").collapsible();
 const myRequests = $('#my-requests');
@@ -135,6 +135,13 @@ getUserId()
       const newResponse = createEntry(response);
       myResponsesUl.append(newResponse);
     }
+
+    function calcMyResponsesHeaderHeight() {
+      let upperlistHeaderHeight=$('#header-upperlist').outerHeight(true);
+      return upperlistHeaderHeight;
+    };
+
+    addCollapsibleScrollListener(calcMyResponsesHeaderHeight, $(myResponsesUl), 0);
     myResponses.append(myResponsesUl);
     //"favors you've asked for"
     for (const request of requests) {
@@ -145,42 +152,15 @@ getUserId()
     //--- add listener to dashboard ULs to ensure
     // collection item and their collapsible content is
     // visible in scroll, to user upon clicking them open.
-
-    $(myRequestsUl).click((event)=> {
-      let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true)+$('.footer-fixed').outerHeight(true));
+    function calcMyRequestsHeaderHeight() {
       let upperUlHeight=$('.helper-collection-upperlist-ul').outerHeight(true);
       let upperlistHeaderHeight=$('#header-upperlist').outerHeight(true);
       let lowerlistHeaderHeight=$('#header-lowerlist').outerHeight(true);
-      let upperAreaHeight = upperUlHeight+upperlistHeaderHeight+lowerlistHeaderHeight;
+      return upperUlHeight+upperlistHeaderHeight+lowerlistHeaderHeight;
+    };
 
-      let indexClickedItem = $(event.target).parents("li").index()+1;
-      let itemHeight = 85;//$(event.target).outerHeight(true);
-      let scrollAmount = $(document).scrollTop(); //amount up from 0
-
-      //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
-      if( indexClickedItem*itemHeight - (scrollAmount - upperAreaHeight) < itemHeight ) {
-        console.log("top scroll")
-        let amountToPushDown = (scrollAmount - upperAreaHeight)-(indexClickedItem-1)*itemHeight;
-        let scrollPosition = scrollAmount - amountToPushDown;
-        $('html, body').animate({scrollTop: scrollPosition}, 'slow');
-      }
-
-      let clpsBodyDistFromExposureTop = indexClickedItem*itemHeight - (scrollAmount-upperAreaHeight);
-      let collapseBodyHeight = 80; //$(event.target).parents("li").find('.collapsible-body').outerHeight(true);
-      let itemHeaderDistToExposureBottom = scrollExposure-clpsBodyDistFromExposureTop;
-
-      //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
-      if(collapseBodyHeight > itemHeaderDistToExposureBottom) {
-        console.log("bottom scroll")
-        let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
-        let scrollPosition = scrollAmount+amountToPushUp;
-        $('html, body').animate({scrollTop: scrollPosition}, 'slow');
-      }
-    })
-
-    //---
+    addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 32);
     myRequests.append(myRequestsUl);
-
   });
 
 $.getJSON(`/requests`)
@@ -189,6 +169,8 @@ $.getJSON(`/requests`)
       const newRequest = createEntry(request);
       activeRequestUl.append(newRequest);
     }
+
+    addCollapsibleScrollListener(null, $(activeRequestUl), 32);
     activeRequests.append(activeRequestUl);
   })
   .catch((err) => {
@@ -289,6 +271,47 @@ function addCommitListener(buttonLink, requestId) {
     commitToFavor(requestId);
     window.location.href = 'index.html#dashboard';
     window.location.reload(true)
+  });
+}
+
+var gTest;
+//getTopOffset is a callback that will measure current header stuff that should be occcluded from calc if existing.
+//pass null in place of callback function to indicate zero offset.
+function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
+  let topOffset;
+  $ulScroll.click((event)=> {
+    console.log($(event.target).parents("li").find('.collapsible-body').outerHeight(true))
+    gTest = $(event.target);
+    if(getTopOffset !== null) {
+      topOffset = getTopOffset();
+    } else {
+      topOffset = 0;
+    }
+    let upperAreaHeight=topOffset;
+    let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true)+$('.footer-fixed').outerHeight(true));
+    let indexClickedItem = $(event.target).parents("li").index()+1;
+    let itemHeight = $(event.target).parents("li").outerHeight(true); //header: 85
+    let scrollAmount = $(document).scrollTop(); //amount up from 0
+
+    //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
+    if( indexClickedItem*itemHeight - (scrollAmount - upperAreaHeight) < itemHeight ) {
+      console.log("top scroll")
+      let amountToPushDown = (scrollAmount - upperAreaHeight)-(indexClickedItem-1)*itemHeight;
+      let scrollPosition = scrollAmount - amountToPushDown;
+      $('html, body').animate({scrollTop: scrollPosition}, 'slow');
+    }
+
+    let clpsBodyDistFromExposureTop = indexClickedItem*itemHeight - (scrollAmount-upperAreaHeight);
+    let collapseBodyHeight = 185; //permits enough vertical space for text description of 255 chars max.
+    let itemHeaderDistToExposureBottom = scrollExposure-clpsBodyDistFromExposureTop;
+
+    //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
+    if(collapseBodyHeight > itemHeaderDistToExposureBottom) {
+      console.log("bottom scroll")
+      let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
+      let scrollPosition = scrollAmount+amountToPushUp;
+      $('html, body').animate({scrollTop: scrollPosition+bottomExcess}, 'slow');
+    }
   });
 }
 
