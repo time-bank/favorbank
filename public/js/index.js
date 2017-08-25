@@ -274,14 +274,13 @@ function addCommitListener(buttonLink, requestId) {
   });
 }
 
-var gTest;
 //getTopOffset is a callback that will measure current header stuff that should be occcluded from calc if existing.
 //pass null in place of callback function to indicate zero offset.
+let gTest;
 function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
   let topOffset;
   $ulScroll.click((event)=> {
-    console.log($(event.target).parents("li").find('.collapsible-body').outerHeight(true))
-    gTest = $(event.target);
+    gTest=$(event.target)
     if(getTopOffset !== null) {
       topOffset = getTopOffset();
     } else {
@@ -290,7 +289,7 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
     let upperAreaHeight=topOffset;
     let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true)+$('.footer-fixed').outerHeight(true));
     let indexClickedItem = $(event.target).parents("li").index()+1;
-    let itemHeight = $(event.target).parents("li").outerHeight(true); //header: 85
+    let itemHeight = $(event.target).parents("li").find(".collapsible-header").outerHeight(true); //header: 85
     let scrollAmount = $(document).scrollTop(); //amount up from 0
 
     //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
@@ -301,13 +300,20 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
       $('html, body').animate({scrollTop: scrollPosition}, 'slow');
     }
 
-    let clpsBodyDistFromExposureTop = indexClickedItem*itemHeight - (scrollAmount-upperAreaHeight);
     let collapseBodyHeight = 185; //permits enough vertical space for text description of 255 chars max.
+
+    let clpsBodyDistFromExposureTop = indexClickedItem*itemHeight - (scrollAmount-upperAreaHeight);
+    console.log("clpsBodyDistFromExposureTop: ", clpsBodyDistFromExposureTop)
+
     let itemHeaderDistToExposureBottom = scrollExposure-clpsBodyDistFromExposureTop;
 
     //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
     if(collapseBodyHeight > itemHeaderDistToExposureBottom) {
       console.log("bottom scroll")
+      console.log("scrolleExposure: ", scrollExposure)
+      console.log("clpsBodyDistFromExposureTop: ", clpsBodyDistFromExposureTop)
+      console.log("collapseBodyHeight: ", collapseBodyHeight)
+      console.log("itemHeaderDistToExposureBottom: ", itemHeaderDistToExposureBottom)
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount+amountToPushUp;
       $('html, body').animate({scrollTop: scrollPosition+bottomExcess}, 'slow');
