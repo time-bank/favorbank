@@ -602,8 +602,12 @@ function sendPayment(reqId, reqUserId) {
   }
   $.ajax(options)
     .then((res) => {
-      window.location.href = 'index.html#dashboard';
-      window.location.reload(true)
+
+      Materialize.toast('You have paid X Y hour(s).', 3000, 'toast_style');
+      getBalance();
+
+      // window.location.href = 'index.html#dashboard';
+      // window.location.reload(true)
       // setTimeout(Materialize.toast("Paid!", 3000), 250);
     })
     .catch((err) => {
