@@ -251,7 +251,8 @@ function addModalListener(payLink, requestId, reqUserId) {
 function addPaymentListener(payLink, requestId, reqUserId) {
   //gets called from the agree button on pay modal.
   $('.agreePay').on('click', (event) => {
-    sendPayment(requestId, reqUserId);
+    let $itemToRemove=$(payLink).parents("li");
+    sendPayment(requestId, reqUserId, $itemToRemove);
   });
 }
 
@@ -264,7 +265,7 @@ function submitNewRequestListener(requestId, reqUserId) {
     updateRequest(requestId, reqUserId);
   });
 }
-
+/*
 function submitExistingRequestListener(requestId, reqUserId) {
   // ***Note to DL: this needs a different class tag*****
   $('.agreePay').on('click', (event) => {
@@ -273,6 +274,7 @@ function submitExistingRequestListener(requestId, reqUserId) {
     sendPayment(requestId, reqUserId);
   });
 }
+*/
 //---
 
 function addRetractListener(buttonLink, responseId) {
@@ -475,7 +477,7 @@ function createMyRequest(request) {
 
   if (name) {
     const messageIcon = $('<i>').addClass('material-icons helper-icon').text('message');
-    const helperNameP = $('<p>').text(name)
+    const helperNameP = $('<p>').text(name).attr('id','helperName')
     flexDiv.append(messageIcon);
     flexColDiv.append(helperNameP)
   } else {
@@ -589,7 +591,7 @@ function cancelFavor(request_id, $itemToMove) {
     })
 }
 
-function sendPayment(reqId, reqUserId) {
+function sendPayment(reqId, reqUserId, $itemToRemove) {
   const actualHours = $('.actualHours').val();
   const options = {
     contentType: 'application/json',
@@ -602,8 +604,9 @@ function sendPayment(reqId, reqUserId) {
   }
   $.ajax(options)
     .then((res) => {
-
-      Materialize.toast('You have paid X Y hour(s).', 3000, 'toast_style');
+      let namePayee = $('#helperName').text();
+      Materialize.toast(`You have paid ${actualHours} hour(s) to ${namePayee}.`, 3000, 'toast_style');
+      $itemToRemove.remove();
       getBalance();
 
       // window.location.href = 'index.html#dashboard';
