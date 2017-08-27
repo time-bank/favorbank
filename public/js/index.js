@@ -1,25 +1,36 @@
 'use strict';
 
 const activeRequests = $('#active-requests');
-const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-activRequests-ul helper-collection-lowerlist-collapsible-body-ul').attr("data-collapsible", "accordion").collapsible();
+const activeRequestUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-activRequests-ul helper-collection-lowerlist-collapsible-body-ul').attr("data-collapsible", "accordion").attr('id', 'ulActiveRequests').collapsible();
 const myResponses = $('#my-responses');
-const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-upperlist-ul').attr("data-collapsible", "accordion").collapsible();
+const myResponsesUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-upperlist-ul').attr("data-collapsible", "accordion").attr('id', 'ulFavorsYoureDoing').collapsible();
 const myRequests = $('#my-requests');
-const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-lowerlist-ul helper-collection-lowerlist-collapsible-body-ul').attr("data-collapsible", "accordion").collapsible();
+const myRequestsUl = $('<ul>').addClass('collapsible collection helper-collection-ul helper-collection-lowerlist-ul helper-collection-lowerlist-collapsible-body-ul').attr("data-collapsible", "accordion").attr('id', 'ulFavorsYouveAskedFor').collapsible();
 
-$(document).ready(function(){
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-    $(".button-collapse").sideNav();
-  });
+$(document).ready(function() {
+  // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+  $('.modal').modal();
+  $(".button-collapse").sideNav();
+});
 
-let favorId = undefined; //i know this seems weird, but i think it has to be assigned undefined for undefined to "take" after it's value has been assigned by other code, after refresh. seemed to fix some issues with program not knowing which logic to follow in the favor modal agree button logic.
+let favorId = undefined;
+let $itemId = undefined;
+
+$('#tabActiveRequests').on('click', (event) => {
+  $('#ulActiveRequests').empty();
+  populateActiveRequestsUl();
+});
+
+$('#tabDashboard').on('click', (event) => {
+  $('#ulFavorsYoureDoing').empty();
+  $('#ulFavorsYouveAskedFor').empty();
+  populateFavorsYouAreDoingAndFavorsYouRequestedUl();
+});
 
 $('#modalFavorAgree').on('click', (event) => {
   event.preventDefault();
   const favor = createFavor();
   if (favor) {
-
     sendFavor(favor)
   }
 })
@@ -36,8 +47,6 @@ function createFavor(favorId) {
     timeEstimate,
     description,
   };
-
-
 
   if (!title) {
     Materialize.toast('Your favor request needs a title.', 3000);
@@ -62,6 +71,7 @@ function createFavor(favorId) {
   return data
 }
 
+//send favor to backend
 function sendFavor(data) {
   const options = {
     contentType: 'application/json',
@@ -70,7 +80,7 @@ function sendFavor(data) {
   };
 
   //if existing favor is being edited, send patch
-  //(note: favorId gets defined at on addEditListener and reset with call from patch done)
+  //(note: favorId and $itemId gets defined at on addEditListener and reset with call from patch done)
 
   if (favorId !== undefined) {
     options.type = 'PATCH';
@@ -83,14 +93,15 @@ function sendFavor(data) {
 
   $.ajax(options)
     .done((res) => {
-      if(favorId === undefined) {
+      if (favorId === undefined) {
         //setTimeout(changeWindows('index.html'), 3000);
-        changeWindows('index.html');
+        //changeWindows('index.html');
         Materialize.toast('Thanks for submitting a new favor!', 3000);
-
+        //
       } else {
-        changeWindows('index.html');
-        Materialize.toast('Your favor has been updated.', 3000);
+        //changeWindows('index.html');
+        Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
+        editItemDomUpdate();
         modalFavorReset();
       }
     })
@@ -99,9 +110,18 @@ function sendFavor(data) {
     });
 }
 
-var modalFavorReset = function() {
-  //reset
+//uses $itemId value to update dom
+var editItemDomUpdate = function() {
+  $itemId.find("#activeRequestHeaderTitle").text($('#favorTitle').val())
+  $itemId.find("#activeRequestHeaderTimeframe").text($('#timeframe').val())
+  $itemId.find("#activeRequestHeaderTimeEstimate").text($('#estimate').val())
+  $itemId.find("#activeRequestDescription").text($('#description').val())
+  console.log("ok")
+  $itemId = undefined;
+}
 
+var modalFavorReset = function() {
+  //reset form fields
   $('#favorTitle').val("");
   $('#labelTitle').addClass('active');
   $('#estimate').val(0);
@@ -118,83 +138,91 @@ $('#modalFavorCancel').on('click', (event) => {
   modalFavorReset();
 });
 
-//---
-
-
 checkCookie();
 getBalance();
 
-getUserId()
-  .then(function(userID) {
-    return Promise.all([getMyRequests(userID), getMyResponses(userID)]);
-  })
-  .then(function([requests, responses]) {
+populateFavorsYouAreDoingAndFavorsYouRequestedUl();
 
-    //"favors you're doing"
-    for (const response of responses){
-      const newResponse = createEntry(response);
-      myResponsesUl.append(newResponse);
-    }
+function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
+  getUserId()
+    .then(function(userID) {
+      return Promise.all([getMyRequests(userID), getMyResponses(userID)]);
+    })
+    .then(function([requests, responses]) {
 
-    function calcMyResponsesHeaderHeight() {
-      let upperlistHeaderHeight=$('#header-upperlist').outerHeight(true);
-      return upperlistHeaderHeight;
-    };
+      //"favors you're doing"
+      for (const response of responses) {
+        const newResponse = createEntry(response);
+        myResponsesUl.append(newResponse);
+      }
 
-    addCollapsibleScrollListener(calcMyResponsesHeaderHeight, $(myResponsesUl), 0);
-    myResponses.append(myResponsesUl);
-    //"favors you've asked for"
-    for (const request of requests) {
-      const newRequest = createMyRequest(request);
-      myRequestsUl.append(newRequest);
-    }
+      function calcMyResponsesHeaderHeight() {
+        let upperlistHeaderHeight = $('#header-upperlist').outerHeight(true);
+        return upperlistHeaderHeight;
+      };
 
-    //--- add listener to dashboard ULs to ensure
-    // collection item and their collapsible content is
-    // visible in scroll, to user upon clicking them open.
-    function calcMyRequestsHeaderHeight() {
-      let upperUlHeight=$('.helper-collection-upperlist-ul').outerHeight(true);
-      let upperlistHeaderHeight=$('#header-upperlist').outerHeight(true);
-      let lowerlistHeaderHeight=$('#header-lowerlist').outerHeight(true);
-      return upperUlHeight+upperlistHeaderHeight+lowerlistHeaderHeight;
-    };
+      addCollapsibleScrollListener(calcMyResponsesHeaderHeight, $(myResponsesUl), 0);
+      myResponses.append(myResponsesUl);
 
-    addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 32);
-    myRequests.append(myRequestsUl);
-  });
+      //"favors you've asked for"
+      for (const request of requests) {
+        const newRequest = createMyRequest(request);
+        myRequestsUl.append(newRequest);
+      }
 
-$.getJSON(`/requests`)
-  .then((requests) => {
-    for (const request of requests) {
-      const newRequest = createEntry(request);
-      activeRequestUl.append(newRequest);
-    }
+      //--- add listener to dashboard ULs to ensure
+      // collection item and their collapsible content is
+      // visible in scroll, to user upon clicking them open.
+      function calcMyRequestsHeaderHeight() {
+        let upperUlHeight = $('.helper-collection-upperlist-ul').outerHeight(true);
+        let upperlistHeaderHeight = $('#header-upperlist').outerHeight(true);
+        let lowerlistHeaderHeight = $('#header-lowerlist').outerHeight(true);
+        return upperUlHeight + upperlistHeaderHeight + lowerlistHeaderHeight;
+      };
 
-    addCollapsibleScrollListener(null, $(activeRequestUl), 32);
-    activeRequests.append(activeRequestUl);
-  })
-  .catch((err) => {
-    Materialize.toast(err.responseText, 3000);
-});
+      addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 32);
+      myRequests.append(myRequestsUl);
+
+      populateActiveRequestsUl();
+    });
+}
+
+function populateActiveRequestsUl() {
+  console.log("check")
+  $.getJSON(`/requests`)
+    .then((requests) => {
+      for (const request of requests) {
+        const newRequest = createEntry(request);
+        activeRequestUl.append(newRequest);
+      }
+
+      addCollapsibleScrollListener(null, $(activeRequestUl), 32);
+      activeRequests.append(activeRequestUl);
+    })
+    .catch((err) => {
+      Materialize.toast(err.responseText, 3000);
+    });
+}
 
 function getUserId() {
   return $.getJSON('/token')
-  .then((res) => {
-    return res.userId;
-  })
-  .catch((err) => {
-    Materialize.toast(err.responseText, 3000);
-  });
+    .then((res) => {
+      return res.userId;
+    })
+    .catch((err) => {
+      Materialize.toast(err.responseText, 3000);
+    });
 }
 
 
 function addEditListener(buttonLink, requestId) {
   //populate request fields
   buttonLink.on('click', (event) => {
+    //get JSON data for clicked on item from database
     editRequest(requestId)
       .then((requestToEdit) => {
 
-        // Materialize.updateTextFields();
+        // once data is recieved, populate the modal that opened when "edit" lin button was clicked.
         $('#favorTitle').val(requestToEdit.title);
         $('#labelTitle').addClass('active');
         $('#estimate').val(requestToEdit.time_estimate);
@@ -206,6 +234,7 @@ function addEditListener(buttonLink, requestId) {
 
         $('#modalFavorAgree').text('update')
         favorId = requestId;
+        $itemId = buttonLink.parents("li");
       })
   });
 }
@@ -250,73 +279,72 @@ function addRetractListener(buttonLink, responseId) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
     // const response_id = event.target.id;
-    retractResponse(responseId);
-    window.location.href = 'index.html#dashboard';
-    window.location.reload(true)
+    let $itemToRetract = buttonLink.parents("li");
+    retractResponse(responseId, $itemToRetract);
+    buttonLink.parents("li").remove();
   });
 }
 
-function addCancelFavorListener(element, requestId) {
-  element.on('click', (event) => {
+function addCancelFavorListener(cancelLink, requestId) {
+  cancelLink.on('click', (event) => {
     event.preventDefault();
-    cancelFavor(requestId);
-    window.location.href = 'index.html#dashboard';
-    window.location.reload(true)
+    let $itemToMove = cancelLink.parents("li");
+    cancelFavor(requestId, $itemToMove);
+    // window.location.href = 'index.html#dashboard';
+    // window.location.reload(true)
+
   })
 }
 
 function addCommitListener(buttonLink, requestId) {
   buttonLink.on('click', (event) => {
     event.preventDefault();
-    commitToFavor(requestId);
-    window.location.href = 'index.html#dashboard';
-    window.location.reload(true)
+    let $itemToMove = buttonLink.parents("li");
+    commitToFavor(requestId, $itemToMove);
+
+    //window.location.href = 'index.html#dashboard';
+    //window.location.reload(true)
   });
 }
 
 //getTopOffset is a callback that will measure current header stuff that should be occcluded from calc if existing.
 //pass null in place of callback function to indicate zero offset.
-let gTest;
+
 function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
   let topOffset;
-  $ulScroll.click((event)=> {
-    gTest=$(event.target)
-    if(getTopOffset !== null) {
+  $ulScroll.click((event) => {
+
+    if (getTopOffset !== null) {
       topOffset = getTopOffset();
     } else {
       topOffset = 0;
     }
-    let upperAreaHeight=topOffset;
-    let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true)+$('.footer-fixed').outerHeight(true));
-    let indexClickedItem = $(event.target).parents("li").index()+1;
+    let upperAreaHeight = topOffset;
+    let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true) + $('.footer-fixed').outerHeight(true));
+    let indexClickedItem = $(event.target).parents("li").index() + 1;
     let itemHeight = $(event.target).parents("li").find(".collapsible-header").outerHeight(true); //header: 85
     let scrollAmount = $(document).scrollTop(); //amount up from 0
 
     //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
-    if( indexClickedItem*itemHeight - (scrollAmount - upperAreaHeight) < itemHeight ) {
-      console.log("top scroll")
-      let amountToPushDown = (scrollAmount - upperAreaHeight)-(indexClickedItem-1)*itemHeight;
+    if (indexClickedItem * itemHeight - (scrollAmount - upperAreaHeight) < itemHeight) {
+      let amountToPushDown = (scrollAmount - upperAreaHeight) - (indexClickedItem - 1) * itemHeight;
       let scrollPosition = scrollAmount - amountToPushDown;
-      $('html, body').animate({scrollTop: scrollPosition}, 'slow');
+      $('html, body').animate({
+        scrollTop: scrollPosition
+      }, 'slow');
     }
 
     let collapseBodyHeight = 185; //permits enough vertical space for text description of 255 chars max.
-
-    let clpsBodyDistFromExposureTop = indexClickedItem*itemHeight - (scrollAmount-upperAreaHeight);
-    console.log("clpsBodyDistFromExposureTop: ", clpsBodyDistFromExposureTop)
-
-    let itemHeaderDistToExposureBottom = scrollExposure-clpsBodyDistFromExposureTop;
+    let clpsBodyDistFromExposureTop = indexClickedItem * itemHeight - (scrollAmount - upperAreaHeight);
+    let itemHeaderDistToExposureBottom = scrollExposure - clpsBodyDistFromExposureTop;
 
     //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
-    if(collapseBodyHeight > itemHeaderDistToExposureBottom) {
-      console.log("bottom scroll")
-      console.log("scrolleExposure: ", scrollExposure)
-      console.log("clpsBodyDistFromExposureTop: ", clpsBodyDistFromExposureTop)
-      console.log("collapseBodyHeight: ", collapseBodyHeight)
-      console.log("itemHeaderDistToExposureBottom: ", itemHeaderDistToExposureBottom)
+    if (collapseBodyHeight > itemHeaderDistToExposureBottom) {
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
-      let scrollPosition = scrollAmount+amountToPushUp;
-      $('html, body').animate({scrollTop: scrollPosition+bottomExcess}, 'slow');
+      let scrollPosition = scrollAmount + amountToPushUp;
+      $('html, body').animate({
+        scrollTop: scrollPosition + bottomExcess
+      }, 'slow');
     }
   });
 }
@@ -352,20 +380,20 @@ function createEntry(request) {
   const headerDiv = $('<div>').addClass('collapsible-header');
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const titleSpan = $('<span>').addClass('title').text(request.title);
-  const nameP = $('<p>').text(name);
-  const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
-  const estimateP = $('<p>').addClass('helper-absolute helper-lower-right-item').text(estimate);
+  const titleSpan = $('<span>').addClass('title').text(request.title).attr('id', 'activeRequestHeaderTitle');
+  const nameP = $('<p>').text(name).attr('id', 'activeRequestHeaderName');
+  const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe).attr('id', 'activeRequestHeaderTimeframe');
+  const estimateP = $('<p>').addClass('helper-absolute helper-lower-right-item').text(estimate).attr('id', 'activeRequestHeaderTimeEstimate');
   const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
   const actionIcon = $('<i>').addClass('material-icons');
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description);
+  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description).attr('id', 'activeRequestDescription');
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
   const button = $('<div>').addClass('collapse-content-button-text');
   const buttonLink = $('<a>');
 
 
-//if own request, options to edit or delete
+  //if own request, options to edit or delete
   if (request.isSelf) {
     //set menu item edit button to trigger modal
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
@@ -375,12 +403,12 @@ function createEntry(request) {
     addEditListener(buttonLink, requestId);
     addCancelFavorListener(actionLink, requestId);
 
-//if user has committed to favor, option to retract offer
+    //if user has committed to favor, option to retract offer
   } else if (committed) {
     buttonLink.text('can\'t make it').addClass('retract').attr('href', '#');
     addRetractListener(buttonLink, responseId);
 
-//otherwise, favor is unclaimed; option to commit to do it
+    //otherwise, favor is unclaimed; option to commit to do it
   } else {
     buttonLink.text(`help ${request.first_name}`).attr('href', '#').addClass('commit');
     addCommitListener(buttonLink, requestId);
@@ -418,7 +446,7 @@ function createMyRequest(request) {
   const headerDiv = $('<div>').addClass('collapsible-header');
   const avatarDiv = $('<div>').addClass('collection-item avatar helper-position-relative');
   const avatarIcon = $('<i>').addClass('circle material-icons').text('account_circle');
-  const titleSpan = $('<span>').addClass('title').text(request.title);
+  const titleSpan = $('<span>').addClass('title').text(request.title).attr('id', 'title');
   const timeframeP = $('<p>').addClass('helper-absolute').text(request.timeframe);
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
   const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description);
@@ -477,7 +505,7 @@ function createMyRequest(request) {
   return newRequest;
 }
 
-function retractResponse(response_id) {
+function retractResponse(response_id, $itemToRetract) {
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -487,7 +515,9 @@ function retractResponse(response_id) {
 
   $.ajax(options)
     .done((res) => {
-      Materialize.toast('Your offer to help has been cancelled.', 3000);
+      $itemToRetract.remove();
+      // let $toastContent = $('<span>Your offer to help has been cancelled.</span>').addClass('.center-align')
+      Materialize.toast('Your offer to help has been cancelled.', 3000, 'toast_style');
     })
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
@@ -514,7 +544,8 @@ function editRequest(request_id) {
     });
 }
 
-function commitToFavor(request_id) {
+
+function commitToFavor(request_id, $itemToMove) {
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -524,14 +555,20 @@ function commitToFavor(request_id) {
 
   $.ajax(options)
     .then((res) => {
-      Materialize.toast('Great! You\'re committed to this favor.', 3000);
+      //remove item from active requests UL, attach it to favors you're doing UL, and show user toast
+      $itemToMove.remove();
+      //$('#ulFavorsYoureDoing').append($itemToMove);
+      //append this favor to the
+
+      Materialize.toast('Great! You have committed to this this favor.', 3000, 'toast_style');
+
     })
     .catch((err) => {
       Materialize.toast(err.responseText, 3000);
     });
 }
 
-function cancelFavor(request_id) {
+function cancelFavor(request_id, $itemToMove) {
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -541,7 +578,11 @@ function cancelFavor(request_id) {
 
   $.ajax(options)
     .then((res) => {
-      Materialize.toast('Your favor has been successfully canceled.')
+      $itemToMove.remove();
+      //ulActiveRequestsAppendLastFromDb(); //$('#ulActiveRequests').append($itemToMove);
+
+      //reflect updated item in DOM for ActiveRequests UL
+      Materialize.toast('Your favor has been successfully canceled.', 3000, 'toast_style');
     })
     .catch((err) => {
       Materialize.toast(err.responseText, 3000)
@@ -553,7 +594,9 @@ function sendPayment(reqId, reqUserId) {
   const options = {
     contentType: 'application/json',
     dataType: 'json',
-    data: JSON.stringify({ actualHours }),
+    data: JSON.stringify({
+      actualHours
+    }),
     type: 'PATCH',
     url: `/users/${reqUserId}/requests/${reqId}`
   }
@@ -568,7 +611,7 @@ function sendPayment(reqId, reqUserId) {
     })
 }
 
-function getBalance(){
+function getBalance() {
   let balance = $('#balance');
 
   getUserId()
@@ -587,7 +630,7 @@ function getBalance(){
     })
 }
 
-function checkCookie(){
+function checkCookie() {
   getUserId()
     .then((user_id) => {
       if (!user_id) {
