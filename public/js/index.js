@@ -99,7 +99,7 @@ function sendFavor(data) {
         activeRequestUl.append(createEntry(res));
         myRequestsUl.append(createEntry(res));
         Materialize.toast('Thanks for submitting a new favor!', 3000, 'toast_style');
-
+        modalFavorReset();
       } else {
         //changeWindows('index.html');
         Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
@@ -116,21 +116,29 @@ function sendFavor(data) {
 var editItemDomUpdate = function() {
   $itemId.find("#activeRequestHeaderTitle").text($('#favorTitle').val())
   $itemId.find("#activeRequestHeaderTimeframe").text($('#timeframe').val())
-  $itemId.find("#activeRequestHeaderTimeEstimate").text($('#estimate').val())
-  $itemId.find("#activeRequestDescription").text($('#description').val())
+
+  var valEstimate = $('#estimate').val();
+  if (valEstimate === 1) {
+    valEstimate = `${valEstimate} hour`;
+  } else {
+    valEstimate = `${valEstimate} hours`;
+  }
+  $itemId.find("#activeRequestHeaderTimeEstimate").text(valEstimate);
+  $itemId.find("#activeRequestDescription")[0].childNodes[0].nodeValue = ($('#description').val())
   $itemId = undefined;
+
 }
 
 var modalFavorReset = function() {
   //reset form fields
   $('#favorTitle').val("");
-  $('#labelTitle').addClass('active');
-  $('#estimate').val(0);
-  $('#labelEstimate').addClass('active');
+  $('#labelTitle').removeClass('active');
+  $('#estimate').val(null);
+  $('#labelEstimate').removeClass('active');
   $('#timeframe').val("");
-  $('#labelTimeframe').addClass('active');
+  $('#labelTimeframe').removeClass('active');
   $('#description').val("");
-  $('#labelDescription').addClass('active');
+  $('#labelDescription').removeClass('active');
   favorId = undefined;
   $('#modalFavorAgree').text('submit')
 }
@@ -393,7 +401,7 @@ function createEntry(request) {
   const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
   const actionIcon = $('<i>').addClass('material-icons');
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description).attr('id', 'activeRequestDescription');
+  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').attr('id', 'activeRequestDescription').text(request.description);
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
   const button = $('<div>').addClass('collapse-content-button-text');
   const buttonLink = $('<a>');
