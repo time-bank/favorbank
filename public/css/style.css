@@ -219,8 +219,8 @@
 
 
 .helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
-  border-bottom: 0;
-  padding-bottom: 32px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 32px;
 }
 
 .helper-no-border-top {
