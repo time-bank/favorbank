@@ -33,9 +33,9 @@ $('#modalFavorAgree').on('click', (event) => {
   if (favor) {
     sendFavor(favor)
   }
-})
+});
 
-function createFavor(favorId) {
+function createFavor() {
   const title = $('#favorTitle').val().trim();
   const timeframe = $('#timeframe').val().trim();
   const timeEstimate = $('#estimate').val()
@@ -94,10 +94,10 @@ function sendFavor(data) {
   $.ajax(options)
     .done((res) => {
       if (favorId === undefined) {
-        //setTimeout(changeWindows('index.html'), 3000);
-        //changeWindows('index.html');
-        Materialize.toast('Thanks for submitting a new favor!', 3000);
-        //
+        activeRequestUl.append(createEntry(res));
+        Materialize.toast('Thanks for submitting a new favor!', 3000, 'toast_style');
+        res.isSelf=true;
+
       } else {
         //changeWindows('index.html');
         Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
@@ -116,7 +116,6 @@ var editItemDomUpdate = function() {
   $itemId.find("#activeRequestHeaderTimeframe").text($('#timeframe').val())
   $itemId.find("#activeRequestHeaderTimeEstimate").text($('#estimate').val())
   $itemId.find("#activeRequestDescription").text($('#description').val())
-  console.log("ok")
   $itemId = undefined;
 }
 
@@ -188,7 +187,7 @@ function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
 }
 
 function populateActiveRequestsUl() {
-  console.log("check")
+
   $.getJSON(`/requests`)
     .then((requests) => {
       for (const request of requests) {
@@ -239,7 +238,7 @@ function addEditListener(buttonLink, requestId) {
   });
 }
 
-function addModalListener(payLink, requestId, reqUserId) {
+function addPayModalListener(payLink, requestId, reqUserId) {
   //gets called when pay button from menu item clicked.
   payLink.on('click', (event) => {
     $('#title').val(0);
@@ -258,6 +257,7 @@ function addPaymentListener(payLink, requestId, reqUserId) {
 
 //this is meant to behave on favor request modal similar to addPaymentListener with pay modal.
 // ***Note to DL: this needs a different class tag*****
+/*
 function submitNewRequestListener(requestId, reqUserId) {
   $('.agreePay').on('click', (event) => {
 
@@ -265,6 +265,7 @@ function submitNewRequestListener(requestId, reqUserId) {
     updateRequest(requestId, reqUserId);
   });
 }
+*/
 /*
 function submitExistingRequestListener(requestId, reqUserId) {
   // ***Note to DL: this needs a different class tag*****
@@ -366,6 +367,7 @@ function getMyResponses(userId) {
 }
 
 function createEntry(request) {
+  console.log("created from createEntry", request)
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
   let estimate = request.time_estimate;
@@ -464,7 +466,7 @@ function createMyRequest(request) {
         $('#payee').text(`Pay ${resName}`);
         const payLink = $('<a>').text('pay').attr('id', requestId);
 
-        addModalListener(payLink, requestId, reqUserId);
+        addPayModalListener(payLink, requestId, reqUserId);
         cancelLink.after(payLink);
       }
     })
@@ -527,7 +529,6 @@ function retractResponse(response_id, $itemToRetract) {
 }
 
 function editRequest(request_id) {
-
   const options = {
     contentType: 'application/json',
     dataType: 'json',
