@@ -1,10 +1,13 @@
+/*overrides*/
 
 .toast_style {
   height: 84px;
-  background-color: red;
+  /*#2962ff blue accent-4*/
+  background-color: #2962ff;
 }
 
 .toast {
+  text-align: center;
   justify-content: space-around;
 }
 
@@ -201,7 +204,7 @@
 
 .helper-collection-activRequests-ul:last-child {
   border-bottom: 0;
-  padding-bottom: 84px;
+  padding-bottom: 132px;
 }
 
 .helper-collection-upperlist-ul:nth-last-child(1) {
@@ -211,15 +214,20 @@
 
 .helper-collection-lowerlist-ul:nth-last-child(1) {
   border-bottom: 0;
-  padding-bottom: 84px;
+  padding-bottom: 132px; /*84+48*/
 }
 
+/*---these two rules affect padding on collapsible portions of last items in list*/
+/*.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 48px;
+}*/
 
-.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
-  border-bottom: 0;
-  padding-bottom: 32px;
-}
-
+/*.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {*/
+  /*border-bottom: 1px solid #e0e0e0;*/
+  /*padding-bottom: 48px;*/
+/*}*/
+/*---*/
 .helper-no-border-top {
   border-top: 0;
 }
