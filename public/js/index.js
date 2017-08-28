@@ -95,7 +95,9 @@ function sendFavor(data) {
     .done((res) => {
       if (favorId === undefined) {
         res.isSelf=true;
+        //let itemToAppend = createEntry(res);
         activeRequestUl.append(createEntry(res));
+        myRequestsUl.append(createEntry(res));
         Materialize.toast('Thanks for submitting a new favor!', 3000, 'toast_style');
 
       } else {
@@ -563,7 +565,7 @@ function commitToFavor(request_id, $itemToMove) {
       //$('#ulFavorsYoureDoing').append($itemToMove);
       //append this favor to the
 
-      Materialize.toast('Great! You have committed to this this favor.', 3000, 'toast_style');
+      Materialize.toast('Great! You have committed to this this favor. \<br>\ It has been moved to your dashboard.', 3000, 'toast_style');
 
     })
     .catch((err) => {
