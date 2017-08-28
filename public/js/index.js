@@ -189,7 +189,7 @@ function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
         return upperUlHeight + upperlistHeaderHeight + lowerlistHeaderHeight;
       };
 
-      addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 32);
+      addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 48);
       myRequests.append(myRequestsUl);
 
       populateActiveRequestsUl();
@@ -205,7 +205,8 @@ function populateActiveRequestsUl() {
         activeRequestUl.append(newRequest);
       }
 
-      addCollapsibleScrollListener(null, $(activeRequestUl), 32);
+      //note: replace 48 with dynamically pulled value from css
+      addCollapsibleScrollListener(null, $(activeRequestUl), 48);
       activeRequests.append(activeRequestUl);
     })
     .catch((err) => {
