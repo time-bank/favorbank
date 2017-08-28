@@ -97,7 +97,6 @@ function sendFavor(data) {
         activeRequestUl.append(createEntry(res));
         Materialize.toast('Thanks for submitting a new favor!', 3000, 'toast_style');
         res.isSelf=true;
-
       } else {
         //changeWindows('index.html');
         Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
