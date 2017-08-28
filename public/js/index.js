@@ -33,9 +33,9 @@ $('#modalFavorAgree').on('click', (event) => {
   if (favor) {
     sendFavor(favor)
   }
-});
+})
 
-function createFavor() {
+function createFavor(favorId) {
   const title = $('#favorTitle').val().trim();
   const timeframe = $('#timeframe').val().trim();
   const timeEstimate = $('#estimate').val()
@@ -94,12 +94,10 @@ function sendFavor(data) {
   $.ajax(options)
     .done((res) => {
       if (favorId === undefined) {
-        res.isSelf=true;
-        //let itemToAppend = createEntry(res);
-        activeRequestUl.append(createEntry(res));
-        myRequestsUl.append(createEntry(res));
-        Materialize.toast('Thanks for submitting a new favor!', 3000, 'toast_style');
-        modalFavorReset();
+        //setTimeout(changeWindows('index.html'), 3000);
+        //changeWindows('index.html');
+        Materialize.toast('Thanks for submitting a new favor!', 3000);
+        //
       } else {
         //changeWindows('index.html');
         Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
@@ -116,29 +114,22 @@ function sendFavor(data) {
 var editItemDomUpdate = function() {
   $itemId.find("#activeRequestHeaderTitle").text($('#favorTitle').val())
   $itemId.find("#activeRequestHeaderTimeframe").text($('#timeframe').val())
-
-  var valEstimate = $('#estimate').val();
-  if (valEstimate === 1) {
-    valEstimate = `${valEstimate} hour`;
-  } else {
-    valEstimate = `${valEstimate} hours`;
-  }
-  $itemId.find("#activeRequestHeaderTimeEstimate").text(valEstimate);
-  $itemId.find("#activeRequestDescription")[0].childNodes[0].nodeValue = ($('#description').val())
+  $itemId.find("#activeRequestHeaderTimeEstimate").text($('#estimate').val())
+  $itemId.find("#activeRequestDescription").text($('#description').val())
+  console.log("ok")
   $itemId = undefined;
-
 }
 
 var modalFavorReset = function() {
   //reset form fields
   $('#favorTitle').val("");
-  $('#labelTitle').removeClass('active');
-  $('#estimate').val(null);
-  $('#labelEstimate').removeClass('active');
+  $('#labelTitle').addClass('active');
+  $('#estimate').val(0);
+  $('#labelEstimate').addClass('active');
   $('#timeframe').val("");
-  $('#labelTimeframe').removeClass('active');
+  $('#labelTimeframe').addClass('active');
   $('#description').val("");
-  $('#labelDescription').removeClass('active');
+  $('#labelDescription').addClass('active');
   favorId = undefined;
   $('#modalFavorAgree').text('submit')
 }
@@ -189,7 +180,7 @@ function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
         return upperUlHeight + upperlistHeaderHeight + lowerlistHeaderHeight;
       };
 
-      addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 48);
+      addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl), 32);
       myRequests.append(myRequestsUl);
 
       populateActiveRequestsUl();
@@ -197,7 +188,7 @@ function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
 }
 
 function populateActiveRequestsUl() {
-
+  console.log("check")
   $.getJSON(`/requests`)
     .then((requests) => {
       for (const request of requests) {
@@ -205,8 +196,7 @@ function populateActiveRequestsUl() {
         activeRequestUl.append(newRequest);
       }
 
-      //note: replace 48 with dynamically pulled value from css
-      addCollapsibleScrollListener(null, $(activeRequestUl), 48);
+      addCollapsibleScrollListener(null, $(activeRequestUl), 32);
       activeRequests.append(activeRequestUl);
     })
     .catch((err) => {
@@ -249,7 +239,7 @@ function addEditListener(buttonLink, requestId) {
   });
 }
 
-function addPayModalListener(payLink, requestId, reqUserId) {
+function addModalListener(payLink, requestId, reqUserId) {
   //gets called when pay button from menu item clicked.
   payLink.on('click', (event) => {
     $('#title').val(0);
@@ -268,7 +258,6 @@ function addPaymentListener(payLink, requestId, reqUserId) {
 
 //this is meant to behave on favor request modal similar to addPaymentListener with pay modal.
 // ***Note to DL: this needs a different class tag*****
-/*
 function submitNewRequestListener(requestId, reqUserId) {
   $('.agreePay').on('click', (event) => {
 
@@ -276,7 +265,6 @@ function submitNewRequestListener(requestId, reqUserId) {
     updateRequest(requestId, reqUserId);
   });
 }
-*/
 /*
 function submitExistingRequestListener(requestId, reqUserId) {
   // ***Note to DL: this needs a different class tag*****
@@ -353,8 +341,6 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
     let itemHeaderDistToExposureBottom = scrollExposure - clpsBodyDistFromExposureTop;
 
     //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
-    console.log("collapseBodyHeight: ", collapseBodyHeight)
-    console.log("itemHeaderDistToExposureBottom: ",itemHeaderDistToExposureBottom)
     if (collapseBodyHeight > itemHeaderDistToExposureBottom) {
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount + amountToPushUp;
@@ -380,7 +366,6 @@ function getMyResponses(userId) {
 }
 
 function createEntry(request) {
-  console.log("created from createEntry", request)
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
   let estimate = request.time_estimate;
@@ -404,7 +389,7 @@ function createEntry(request) {
   const actionLink = $('<a>').addClass('secondary-content').attr('href', '#!');
   const actionIcon = $('<i>').addClass('material-icons');
   const collabsibleDiv = $('<div>').addClass('collapsible-body');
-  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').attr('id', 'activeRequestDescription').text(request.description);
+  const descriptionDiv = $('<div>').addClass('collection collection-item avatar').text(request.description).attr('id', 'activeRequestDescription');
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
   const button = $('<div>').addClass('collapse-content-button-text');
   const buttonLink = $('<a>');
@@ -479,7 +464,7 @@ function createMyRequest(request) {
         $('#payee').text(`Pay ${resName}`);
         const payLink = $('<a>').text('pay').attr('id', requestId);
 
-        addPayModalListener(payLink, requestId, reqUserId);
+        addModalListener(payLink, requestId, reqUserId);
         cancelLink.after(payLink);
       }
     })
@@ -542,6 +527,7 @@ function retractResponse(response_id, $itemToRetract) {
 }
 
 function editRequest(request_id) {
+
   const options = {
     contentType: 'application/json',
     dataType: 'json',
@@ -576,7 +562,7 @@ function commitToFavor(request_id, $itemToMove) {
       //$('#ulFavorsYoureDoing').append($itemToMove);
       //append this favor to the
 
-      Materialize.toast('Great! You have committed to this this favor. \<br>\ It has been moved to your dashboard.', 3000, 'toast_style');
+      Materialize.toast('Great! You have committed to this this favor.', 3000, 'toast_style');
 
     })
     .catch((err) => {
@@ -656,8 +642,32 @@ function checkCookie() {
     .then((user_id) => {
       if (!user_id) {
         changeWindows('signin.html');
+      } else {
+        $('.login-status').text('Sign out');
+        addSignOutListener()
       }
     })
+}
+
+function addSignOutListener() {
+
+  $('.login-status').on('click', (event) => {
+    const options = {
+      contentType: 'application/json',
+      dataType: 'json',
+      type: 'DELETE',
+      url: `/token`
+    }
+
+    return $.ajax(options)
+    .then(() => {
+      Materialize.toast('See you soon!', 3000);
+    })
+    .catch((err) => {
+      Materialize.toast(err.responseText, 3000);
+    })
+
+  })
 }
 
 function responseExists(reqId) {
