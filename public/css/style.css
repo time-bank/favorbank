@@ -4,9 +4,12 @@
 }
 
 .toast_style {
-  text-align: center;
   height: 84px;
   background-color: red;
+}
+
+.toast {
+  justify-content: space-around;
 }
 
 .nav {

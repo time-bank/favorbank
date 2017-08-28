@@ -94,15 +94,16 @@ function sendFavor(data) {
   $.ajax(options)
     .done((res) => {
       if (favorId === undefined) {
+        res.isSelf=true;
         activeRequestUl.append(createEntry(res));
         Materialize.toast('Thanks for submitting a new favor!', 3000, 'toast_style');
-        res.isSelf=true;
+
       } else {
         //changeWindows('index.html');
         Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
         editItemDomUpdate();
         modalFavorReset();
-      }
+
     })
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
