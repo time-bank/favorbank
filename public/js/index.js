@@ -103,7 +103,7 @@ function sendFavor(data) {
         Materialize.toast('Your favor has been updated.', 3000, 'toast_style');
         editItemDomUpdate();
         modalFavorReset();
-
+      }
     })
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
