@@ -353,6 +353,8 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
     let itemHeaderDistToExposureBottom = scrollExposure - clpsBodyDistFromExposureTop;
 
     //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
+    console.log("collapseBodyHeight: ", collapseBodyHeight)
+    console.log("itemHeaderDistToExposureBottom: ",itemHeaderDistToExposureBottom)
     if (collapseBodyHeight > itemHeaderDistToExposureBottom) {
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount + amountToPushUp;
