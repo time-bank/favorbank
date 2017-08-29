@@ -214,7 +214,7 @@
 
 .helper-collection-lowerlist-ul:nth-last-child(1) {
   border-bottom: 0;
-  padding-bottom: 132px; /*84+48*/
+  margin-bottom: 132px; /*132px; //84+48*/
 }
 
 /*---these two rules affect padding on collapsible portions of last items in list*/

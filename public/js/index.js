@@ -13,6 +13,11 @@ $(document).ready(function() {
   $(".button-collapse").sideNav();
 });
 
+$('.collapsible').collapsible({
+    // accordion: true, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    // onOpen: function(el) { console.log(el); }, // Callback for Collapsible open
+    onClose: function(el) { console.log("snarf: "); } // Callback for Collapsible close
+  });
 let favorId = undefined;
 let $itemId = undefined;
 
@@ -311,7 +316,6 @@ function addCommitListener(buttonLink, requestId) {
 
 //getTopOffset is a callback that will measure current header stuff that should be occcluded from calc if existing.
 //pass null in place of callback function to indicate zero offset.
-
 function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
   let topOffset;
   $ulScroll.click((event) => {
@@ -324,7 +328,7 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
     let upperAreaHeight = topOffset;
     let scrollExposure = $(window).height() - ($('.navbar-fixed').outerHeight(true) + $('.footer-fixed').outerHeight(true));
     let indexClickedItem = $(event.target).parents("li").index() + 1;
-    let itemHeight = $(event.target).parents("li").find(".collapsible-header").outerHeight(true); //header: 85
+    let itemHeight = $(event.target).parents("li").find(".collapsible-header").outerHeight(true); //header: 85, 84
     let scrollAmount = $(document).scrollTop(); //amount up from 0
 
     //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
@@ -336,7 +340,7 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
       }, 'slow');
     }
 
-    let collapseBodyHeight = 185; //permits enough vertical space for text description of 255 chars max.
+    let collapseBodyHeight = parseInt(window.getComputedStyle($(event.target).parents("li").find(".collapsible-body").css('height', '').get(0)).height, 10);
     let clpsBodyDistFromExposureTop = indexClickedItem * itemHeight - (scrollAmount - upperAreaHeight);
     let itemHeaderDistToExposureBottom = scrollExposure - clpsBodyDistFromExposureTop;
 
@@ -344,9 +348,12 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll, bottomExcess) {
     if (collapseBodyHeight > itemHeaderDistToExposureBottom) {
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount + amountToPushUp;
+      console.log("snarf: ", collapseBodyHeight)
+      // $(document).scrollTop(scrollAmount + amountToPushUp); // + amountToPushUp;// - 1
       $('html, body').animate({
-        scrollTop: scrollPosition + bottomExcess
+        scrollTop: scrollPosition + bottomExcess // - 1 //185-134 51
       }, 'slow');
+      $(document).scrollTop(scrollPosition+1);
     }
   });
 }
