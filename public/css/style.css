@@ -204,7 +204,7 @@
 
 .helper-collection-activRequests-ul:last-child {
   border-bottom: 0;
-  padding-bottom: 132px;
+  padding-bottom: 84px;
 }
 
 .helper-collection-upperlist-ul:nth-last-child(1) {
@@ -214,19 +214,22 @@
 
 .helper-collection-lowerlist-ul:nth-last-child(1) {
   border-bottom: 0;
-  margin-bottom: 132px; /*132px; //84+48*/
+  margin-bottom: 84px; /*132px; //84+48*/
 }
 
 /*---these two rules affect padding on collapsible portions of last items in list*/
-/*.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
+/*
+.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
+  border-bottom: 1px solid #e0e0e0;
+  color: red;
+  margin-bottom: 32px;
+}
+
+.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 48px;
-}*/
-
-/*.helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {*/
-  /*border-bottom: 1px solid #e0e0e0;*/
-  /*padding-bottom: 48px;*/
-/*}*/
+}
+*/
 /*---*/
 .helper-no-border-top {
   border-top: 0;
