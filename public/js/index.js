@@ -211,7 +211,7 @@ function populateActiveRequestsUl() {
       }
 
       //note: replace 48 with dynamically pulled value from css
-      //addCollapsibleScrollListener(null, $(activeRequestUl));
+      addCollapsibleScrollListener(null, $(activeRequestUl));
       activeRequests.append(activeRequestUl);
     })
     .catch((err) => {
@@ -368,7 +368,7 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
       $('html, body').animate({
         scrollTop: scrollPosition  + bottomExcess// - 1 //185-134 51
       }, 'slow');
-      $(document).scrollTop(scrollPosition + bottomExcess + 1);
+      // $(document).scrollTop(scrollPosition + bottomExcess + 1);
     }
   });
 }
