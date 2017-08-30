@@ -212,7 +212,8 @@
   padding-bottom: 12px;
 }
 
-.helper-collection-lowerlist-ul:nth-last-child(1) {
+/*.helper-collection-lowerlist-ul:nth-last-child(1) {*/
+.helper-collection-lowerlist-ul:last-child {
   border-bottom: 0;
   margin-bottom: 84px; /*132px; //84+48*/
 }
