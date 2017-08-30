@@ -218,12 +218,14 @@
 }
 
 /*---these two rules affect padding on collapsible portions of last items in list*/
-/*
+
 .helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 0;
+   /*1px solid #e0e0e0;*/
   color: red;
   margin-bottom: 32px;
 }
+/*
 
 .helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
   border-bottom: 1px solid #e0e0e0;
