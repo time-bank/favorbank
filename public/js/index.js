@@ -24,11 +24,13 @@ let $itemId = undefined;
 $('#tabActiveRequests').on('click', (event) => {
   $('#ulActiveRequests').empty();
   populateActiveRequestsUl();
+  showFab(true);
 });
 
 $('#tabDashboard').on('click', (event) => {
   $('#ulFavorsYoureDoing').empty();
   $('#ulFavorsYouveAskedFor').empty();
+  showFab(false);
   populateFavorsYouAreDoingAndFavorsYouRequestedUl();
 });
 
@@ -39,6 +41,29 @@ $('#modalFavorAgree').on('click', (event) => {
     sendFavor(favor)
   }
 });
+
+function showFab(bToggle) {
+  if(bToggle) {
+    //
+    // <div class="helper-position-fab">
+    //   <a class="modal-trigger btn-floating btn-large waves-effect waves-light yellow accent-4" href="#modalFavor">
+    //     <i class="material-icons">add</i>
+    //   </a>
+    // </div>
+
+    const $divFab = $('<div>').addClass('helper-position-fab').attr('id','fab');
+    const $aFab = $('<a>').addClass('modal-trigger btn-floating btn-large waves-effect waves-light yellow accent-4').attr('href','#modalFavor')
+    const $iFab = $('<i>').addClass('material-icons').text('add');
+
+
+    $aFab.append($iFab);
+    $divFab.append($aFab);
+    $('#footer').append($divFab);
+  } else {
+    console.log("snarf remove")
+    $('#fab').remove();
+  }
+}
 
 function createFavor() {
   const title = $('#favorTitle').val().trim();
@@ -355,20 +380,20 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
     }
 
     let collapseBodyHeight = parseInt(window.getComputedStyle($(event.target).parents("li").find(".collapsible-body").css('height', '').get(0)).height, 10);
+    $(event.target).parents("li").find(".collapsible-body").css('height', `${collapseBodyHeight}`)//.get(0)).height, 10);
     let clpsBodyDistFromExposureTop = indexClickedItem * itemHeight - (scrollAmount - upperAreaHeight);
     let itemHeaderDistToExposureBottom = scrollExposure - clpsBodyDistFromExposureTop;
 
-    //if item near bottom of scroll will be partially hidden under footer when expanded, bring it up above footer.
-    if (collapseBodyHeight+bottomExcess > itemHeaderDistToExposureBottom) {
-      console.log("down")
+    if (collapseBodyHeight > itemHeaderDistToExposureBottom) {
+      console.log("down scrolllAmount: ", scrollAmount)
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount + amountToPushUp;
-      console.log("snarf: ", collapseBodyHeight)
-      $(document).scrollTop(scrollAmount); // + amountToPushUp;// - 1
-      $('html, body').animate( {
-        scrollTop: scrollPosition + bottomExcess// - 1 //185-134 51
+      // $(document).scrollTop(scrollPosition);// - 1
+
+      $('body').animate({
+        scrollTop: scrollPosition
       }, 'slow');
-      // $(document).scrollTop(scrollPosition + bottomExcess + 1);
+      // $('body').scrollTop(scrollPosition)
     }
   });
 }

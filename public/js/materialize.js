@@ -1465,6 +1465,9 @@ if (jQuery) {
         });
       }
 
+
+
+
       // Expandable Open
       function expandableOpen(object) {
         if (object.hasClass('active')) {
