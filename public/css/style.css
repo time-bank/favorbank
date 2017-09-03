@@ -215,23 +215,24 @@
 /*.helper-collection-lowerlist-ul:nth-last-child(1) {*/
 .helper-collection-lowerlist-ul:last-child {
   border-bottom: 0;
-  padding-bottom: 84px; /*132px; //84+48*/
+  margin-bottom: 84px; /*132px; //84+48*/
 }
 /*#ulFavorsYouveAskedFor li:last-child .collapsible-header .collection-item {  */
 #ulFavorsYouveAskedFor li:last-child .collapsible-body {
   border-bottom: 0;
-  background-color: red;
+  /*background-color: green;*/
   padding-bottom: 32px; /*132px; //84+48*/
 }
 
 /*---these two rules affect padding on collapsible portions of last items in list*/
-
+/*
 .helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {
   border-bottom: 0;
-   /*1px solid #e0e0e0;*/
+   1px solid #e0e0e0;
   color: red;
   margin-bottom: 32px;
 }
+*/
 /*
 
 .helper-collection-lowerlist-collapsible-body-ul li:last-child .collapsible-body {

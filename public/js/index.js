@@ -364,9 +364,9 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount + amountToPushUp;
       console.log("snarf: ", collapseBodyHeight)
-      // $(document).scrollTop(scrollAmount + amountToPushUp); // + amountToPushUp;// - 1
-      $('html, body').animate({
-        scrollTop: scrollPosition  + bottomExcess// - 1 //185-134 51
+      $(document).scrollTop(scrollAmount); // + amountToPushUp;// - 1
+      $('html, body').animate( {
+        scrollTop: scrollPosition + bottomExcess// - 1 //185-134 51
       }, 'slow');
       // $(document).scrollTop(scrollPosition + bottomExcess + 1);
     }
