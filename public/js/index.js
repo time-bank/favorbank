@@ -388,7 +388,7 @@ function getMyResponses(userId) {
 }
 
 function createEntry(request) {
-  console.log("created from createEntry", request)
+
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
   let estimate = request.time_estimate;
@@ -416,12 +416,24 @@ function createEntry(request) {
   const flexDiv = $('<div>').addClass('helper-flex-collapse');
   const button = $('<div>').addClass('collapse-content-button-text');
   const buttonLink = $('<a>');
-
+  const cancelLink = $('<a>').text('cancel favor').attr('href', '#');
 
   //if own request, options to edit or delete
   if (request.isSelf) {
+
+    /*note to heather: if we want to go back to
+    add-favor floating action button on dashboard screen,
+    we need a conditional check here, for which tab we are on,
+    to make the collapse-body action-link be a "cancel favor button"
+    (if on dashboard) or an "edit" button if on "active requests" tab.
+    */
+
+    //if on "active requests" tab:
     //set menu item edit button to trigger modal
     buttonLink.text('edit').addClass('modal-trigger').attr('href', '#modalFavor');
+    //if on "dashboard" tab:
+    //  button.append(cancelLink);
+
     actionIcon.text('delete');
 
     //add event listener to edit link button
