@@ -353,11 +353,27 @@ function addCommitListener(buttonLink, requestId) {
 
 //getTopOffset is a callback that will measure current header stuff that should be occcluded from calc if existing.
 //pass null in place of callback function to indicate zero offset.
+var gTest;
+window.addEventListener('wheel', function(e) {
+  if (e.deltaY < 0) {
+    console.log('scrolling up');
+
+  }
+  if (e.deltaY > 0) {
+    console.log('scrolling down');
+
+  }
+});
+
 function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
   let bottomExcess=32;
   let topOffset;
   $ulScroll.click((event) => {
 
+    gTest = event;
+    console.log("snarf: ", event.originalEvent)
+
+    // gTest = $(event.target).parents("li").find(".collapsible-header");
     if (getTopOffset !== null) {
       topOffset = getTopOffset();
     } else {
@@ -372,6 +388,7 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
     //if item at top of scroll, on clicking it, push down, so collection item header is fully visible:
     if (indexClickedItem * itemHeight - (scrollAmount - upperAreaHeight) < itemHeight) {
       console.log("up")
+
       let amountToPushDown = (scrollAmount - upperAreaHeight) - (indexClickedItem - 1) * itemHeight;
       let scrollPosition = scrollAmount - amountToPushDown;
       $('html, body').animate({
@@ -380,23 +397,39 @@ function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
     }
 
     let collapseBodyHeight = parseInt(window.getComputedStyle($(event.target).parents("li").find(".collapsible-body").css('height', '').get(0)).height, 10);
-    $(event.target).parents("li").find(".collapsible-body").css('height', `${collapseBodyHeight}`)//.get(0)).height, 10);
+    //$(event.target).parents("li").find(".collapsible-body").css('height', `${collapseBodyHeight}`)//.get(0)).height, 10);
     let clpsBodyDistFromExposureTop = indexClickedItem * itemHeight - (scrollAmount - upperAreaHeight);
     let itemHeaderDistToExposureBottom = scrollExposure - clpsBodyDistFromExposureTop;
 
     if (collapseBodyHeight > itemHeaderDistToExposureBottom) {
+
       console.log("down scrolllAmount: ", scrollAmount)
       let amountToPushUp = collapseBodyHeight - itemHeaderDistToExposureBottom;
       let scrollPosition = scrollAmount + amountToPushUp;
       // $(document).scrollTop(scrollPosition);// - 1
+      //console.log("snarf: ", ($(event.target).parents("li").find(".collapsible-header").css('top','').get(0)).top )//.get(0)).height, 10);
+      //gTest = $(event.target).parents("li") //.find(".collapsible-header");//.get(0)).height, 10);
+      //$(event.target).parents("li").find(".collapsible-header").css('position', 'absolute').css('top','') //.get(0)).height, 10);
 
       $('body').animate({
         scrollTop: scrollPosition
       }, 'slow');
-      // $('body').scrollTop(scrollPosition)
     }
   });
 }
+
+//$('body').animate({ scrollTop: scrollPosition }, 'slow');
+// $('#open a').toggle(
+//     function(){
+//         $('#slidenav').animate({
+//             top: '0'
+//         }, 500);
+//     },
+//     function(){
+//         $('#slidenav').animate({
+//             top: '-4'+$(this).height()
+//         }, 500);
+// });
 
 function getMyRequests(userId) {
   return $.getJSON(`/users/${userId}/requests`)
