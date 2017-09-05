@@ -202,6 +202,7 @@
   align-items: center;
 }
 
+/*.helper-collection-lowerlist-ul:last-child {*/
 #ulActiveRequests li:last-child {
   border-bottom: 0;
   margin-bottom: 84px;
@@ -218,12 +219,13 @@
   border-bottom: 0;
   padding-bottom: 84px; /*132px; //84+48*/
 }
-/*#ulFavorsYouveAskedFor li:last-child .collapsible-header .collection-item {  */
-/*#ulFavorsYouveAskedFor li:last-child .collapsible-body {*/
-  /*border-bottom: 0;*/
+/*#ulActiveRe li:last-child .collapsible-header .collection-item {*/
+#ulActiveRequests li:last-child .collapsible-body {
+  border-bottom: 0;
   /*background-color: green;*/
-  /*padding-bottom: 32px; /*132px; //84+48*/
-/*}*/
+  padding-bottom: 32px;
+  /*132px; 84+48*/
+}
 
 /*---these two rules affect padding on collapsible portions of last items in list*/
 /*

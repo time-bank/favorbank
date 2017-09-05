@@ -24,7 +24,6 @@ let $itemId = undefined;
 $('#tabActiveRequests').on('click', (event) => {
   $('#ulActiveRequests').empty();
   populateActiveRequestsUl();
-  showFab(true);
 });
 
 $('#tabDashboard').on('click', (event) => {
@@ -43,6 +42,13 @@ $('#modalFavorAgree').on('click', (event) => {
 });
 
 function showFab(bToggle) {
+  const $divFab = $('<div>').addClass('helper-position-fab').attr('id','fab');
+  const $aFab = $('<a>').addClass('modal-trigger btn-floating btn-large waves-effect waves-light yellow accent-4').attr('href','#modalFavor')
+  const $iFab = $('<i>').addClass('material-icons').text('add');
+  $aFab.append($iFab);
+  $divFab.append($aFab);
+
+
   if(bToggle) {
     //
     // <div class="helper-position-fab">
@@ -51,13 +57,7 @@ function showFab(bToggle) {
     //   </a>
     // </div>
 
-    const $divFab = $('<div>').addClass('helper-position-fab').attr('id','fab');
-    const $aFab = $('<a>').addClass('modal-trigger btn-floating btn-large waves-effect waves-light yellow accent-4').attr('href','#modalFavor')
-    const $iFab = $('<i>').addClass('material-icons').text('add');
 
-
-    $aFab.append($iFab);
-    $divFab.append($aFab);
     $('#footer').append($divFab);
   } else {
     console.log("snarf remove")
@@ -180,7 +180,9 @@ $('#modalFavorCancel').on('click', (event) => {
 checkCookie();
 getBalance();
 
-populateFavorsYouAreDoingAndFavorsYouRequestedUl();
+populateActiveRequestsUl();
+// populateFavorsYouAreDoingAndFavorsYouRequestedUl();
+
 
 function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
   getUserId()
@@ -200,7 +202,7 @@ function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
         return upperlistHeaderHeight;
       };
 
-      addCollapsibleScrollListener(calcMyResponsesHeaderHeight, $(myResponsesUl));
+      // addCollapsibleScrollListener(calcMyResponsesHeaderHeight, $(myResponsesUl));
       myResponses.append(myResponsesUl);
 
       //"favors you've asked for"
@@ -219,15 +221,15 @@ function populateFavorsYouAreDoingAndFavorsYouRequestedUl() {
         return upperUlHeight + upperlistHeaderHeight + lowerlistHeaderHeight;
       };
 
-      addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl));
+      // addCollapsibleScrollListener(calcMyRequestsHeaderHeight, $(myRequestsUl));
       myRequests.append(myRequestsUl);
 
-      populateActiveRequestsUl();
+      // populateActiveRequestsUl();
     });
 }
 
 function populateActiveRequestsUl() {
-
+  showFab(true)
   $.getJSON(`/requests`)
     .then((requests) => {
       for (const request of requests) {
@@ -236,7 +238,7 @@ function populateActiveRequestsUl() {
       }
 
       //note: replace 48 with dynamically pulled value from css
-      addCollapsibleScrollListener(null, $(activeRequestUl));
+      // addCollapsibleScrollListener(null, $(activeRequestUl));
       activeRequests.append(activeRequestUl);
     })
     .catch((err) => {
@@ -365,13 +367,13 @@ window.addEventListener('wheel', function(e) {
   }
 });
 
+//keep this in here.. would like to get it to work eventually.
 function addCollapsibleScrollListener(getTopOffset, $ulScroll) {
   let bottomExcess=32;
   let topOffset;
   $ulScroll.click((event) => {
 
-    gTest = event;
-    console.log("snarf: ", event.originalEvent)
+    gTest = event.target;
 
     // gTest = $(event.target).parents("li").find(".collapsible-header");
     if (getTopOffset !== null) {
