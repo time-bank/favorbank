@@ -448,7 +448,7 @@ function getMyResponses(userId) {
 }
 
 function createEntry(request) {
-
+  console.log("entered createEntry")
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
   let estimate = request.time_estimate;
