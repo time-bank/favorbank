@@ -64,6 +64,7 @@ router.get('/requests/:id', (req, res, next) => {
 
 })
 
+/*ask heather how to best modify this to also return first and last name*/
 //post new favors from favor.html form
 router.post('/requests', authorize, (req, res, next) => {
   return knex('requests')

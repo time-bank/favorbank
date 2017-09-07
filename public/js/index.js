@@ -65,6 +65,7 @@ function showFab(bToggle) {
   }
 }
 
+
 function createFavor() {
   const title = $('#favorTitle').val().trim();
   const timeframe = $('#timeframe').val().trim();
@@ -115,10 +116,12 @@ function sendFavor(data) {
   if (favorId !== undefined) {
     options.type = 'PATCH';
     options.url = `/requests/${favorId}`;
+
   } else {
     //this is a new favor
     options.type = 'POST';
     options.url = '/requests'
+
   }
 
   $.ajax(options)
@@ -448,7 +451,7 @@ function getMyResponses(userId) {
 }
 
 function createEntry(request) {
-  console.log("entered createEntry: name stuff: ", request.last_name )
+  console.log("createEntry: ", request)
   const name = `${request.first_name} ${request.last_name}`;
   const committed = request.committed;
   let estimate = request.time_estimate;
@@ -535,6 +538,7 @@ function createEntry(request) {
 }
 
 function createMyRequest(request) {
+  console.log("createMyRequest: ", request)
   const name = request.first_name;
   const requestId = request.id;
   const reqUserId = request.request_user_id;
