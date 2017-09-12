@@ -61,12 +61,13 @@ router.get('/requests/:id', (req, res, next) => {
       console.log(err);
       return next(boom.create(500, 'Internal server error.'))
     });
-
 })
 
 /*ask heather how to best modify this to also return first and last name*/
 //post new favors from favor.html form
 router.post('/requests', authorize, (req, res, next) => {
+  let results = {};
+
   return knex('requests')
     .insert({
       title: req.body.title,
@@ -76,8 +77,22 @@ router.post('/requests', authorize, (req, res, next) => {
       user_id: req.claim.userId
     }, '*')
     .then((favor) => {
-      res.send(favor[0])
-    })
+      results.favor = favor;
+      //why is "return" needed?
+      return knex('users')
+        .select('first_name', 'last_name')
+        .where('id', favor[0].user_id)
+      })
+      .then((data) => {
+        console.log(data)
+
+        results.favor[0].first_name = data[0].first_name;
+        results.favor[0].last_name = data[0].last_name;
+        console.log(results.favor)
+
+        res.send(results.favor[0])
+        // res.send(favor[0])
+      })
     .catch((err) => {
       console.log(err);
       return next(boom.create(500, 'Internal server error.'))
